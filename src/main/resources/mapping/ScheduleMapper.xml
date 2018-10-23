@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.familydoctor.doctorsubject.mapper.ScheduleMapper">
+    <resultMap id="BaseResultMap" type="com.familydoctor.doctorsubject.entity.Schedule">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="doctor_id" jdbcType="VARCHAR" property="doctorId"/>
+        <result column="member_id" jdbcType="VARCHAR" property="memberId"/>
+        <result column="place" jdbcType="VARCHAR" property="place"/>
+        <result column="schedule_time" jdbcType="TIMESTAMP" property="scheduleTime"/>
+        <result column="telephone" jdbcType="VARCHAR" property="telephone"/>
+        <result column="event" jdbcType="VARCHAR" property="event"/>
+        <result column="remind" jdbcType="TIMESTAMP" property="remind"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime"/>
+        <result column="create_doctor" jdbcType="VARCHAR" property="createDoctor"/>
+        <result column="update_doctor" jdbcType="VARCHAR" property="updateDoctor"/>
+        <result column="delete_user" jdbcType="VARCHAR" property="deleteUser"/>
+        <result column="del_flag" jdbcType="CHAR" property="delFlag"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, doctor_id, member_id, place, schedule_time, telephone, event, remind, create_time, 
+    update_time, delete_time, create_doctor, update_doctor, delete_user, del_flag
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from schedule
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    <!--逻辑删除-->
+    <update id="softDelete" parameterType="com.familydoctor.doctorsubject.entity.Schedule">
+    update schedule
+    set
+         delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+     del_flag = "1"
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from schedule
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+    <insert id="insert" parameterType="com.familydoctor.doctorsubject.entity.Schedule">
+        <selectKey keyProperty="id" resultType="string" order="BEFORE">
+            select replace(uuid(), '-', '') as id from dual
+        </selectKey>
+        insert into schedule (id, doctor_id, member_id,
+        place, schedule_time, telephone,
+        event, remind, create_time,
+        update_time, delete_time, create_doctor,
+        update_doctor, delete_user, del_flag
+        )
+        values (#{id,jdbcType=VARCHAR}, #{doctorId,jdbcType=VARCHAR}, #{memberId,jdbcType=VARCHAR},
+        #{place,jdbcType=VARCHAR}, #{scheduleTime,jdbcType=TIMESTAMP}, #{telephone,jdbcType=VARCHAR},
+        #{event,jdbcType=VARCHAR}, #{remind,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP},
+        #{updateTime,jdbcType=TIMESTAMP}, #{deleteTime,jdbcType=TIMESTAMP}, #{createDoctor,jdbcType=VARCHAR},
+        #{updateDoctor,jdbcType=VARCHAR}, #{deleteUser,jdbcType=VARCHAR}, #{delFlag,jdbcType=CHAR}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.familydoctor.doctorsubject.entity.Schedule">
+        <selectKey keyProperty="id" resultType="string" order="BEFORE">
+            select replace(uuid(), '-', '') as id from dual
+        </selectKey>
+        insert into schedule
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="doctorId != null">
+                doctor_id,
+            </if>
+            <if test="memberId != null">
+                member_id,
+            </if>
+            <if test="place != null">
+                place,
+            </if>
+            <if test="scheduleTime != null">
+                schedule_time,
+            </if>
+            <if test="telephone != null">
+                telephone,
+            </if>
+            <if test="event != null">
+                event,
+            </if>
+            <if test="remind != null">
+                remind,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="deleteTime != null">
+                delete_time,
+            </if>
+            <if test="createDoctor != null">
+                create_doctor,
+            </if>
+            <if test="updateDoctor != null">
+                update_doctor,
+            </if>
+            <if test="deleteUser != null">
+                delete_user,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="doctorId != null">
+                #{doctorId,jdbcType=VARCHAR},
+            </if>
+            <if test="memberId != null">
+                #{memberId,jdbcType=VARCHAR},
+            </if>
+            <if test="place != null">
+                #{place,jdbcType=VARCHAR},
+            </if>
+            <if test="scheduleTime != null">
+                #{scheduleTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="telephone != null">
+                #{telephone,jdbcType=VARCHAR},
+            </if>
+            <if test="event != null">
+                #{event,jdbcType=VARCHAR},
+            </if>
+            <if test="remind != null">
+                #{remind,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deleteTime != null">
+                #{deleteTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createDoctor != null">
+                #{createDoctor,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDoctor != null">
+                #{updateDoctor,jdbcType=VARCHAR},
+            </if>
+            <if test="deleteUser != null">
+                #{deleteUser,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=CHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.familydoctor.doctorsubject.entity.Schedule">
+        update schedule
+        <set>
+            <if test="doctorId != null">
+                doctor_id = #{doctorId,jdbcType=VARCHAR},
+            </if>
+            <if test="memberId != null">
+                member_id = #{memberId,jdbcType=VARCHAR},
+            </if>
+            <if test="place != null">
+                place = #{place,jdbcType=VARCHAR},
+            </if>
+            <if test="scheduleTime != null">
+                schedule_time = #{scheduleTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="telephone != null">
+                telephone = #{telephone,jdbcType=VARCHAR},
+            </if>
+            <if test="event != null">
+                event = #{event,jdbcType=VARCHAR},
+            </if>
+            <if test="remind != null">
+                remind = #{remind,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deleteTime != null">
+                delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createDoctor != null">
+                create_doctor = #{createDoctor,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDoctor != null">
+                update_doctor = #{updateDoctor,jdbcType=VARCHAR},
+            </if>
+            <if test="deleteUser != null">
+                delete_user = #{deleteUser,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=CHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.familydoctor.doctorsubject.entity.Schedule">
+    update schedule
+    set doctor_id = #{doctorId,jdbcType=VARCHAR},
+      member_id = #{memberId,jdbcType=VARCHAR},
+      place = #{place,jdbcType=VARCHAR},
+      schedule_time = #{scheduleTime,jdbcType=TIMESTAMP},
+      telephone = #{telephone,jdbcType=VARCHAR},
+      event = #{event,jdbcType=VARCHAR},
+      remind = #{remind,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      create_doctor = #{createDoctor,jdbcType=VARCHAR},
+      update_doctor = #{updateDoctor,jdbcType=VARCHAR},
+      delete_user = #{deleteUser,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

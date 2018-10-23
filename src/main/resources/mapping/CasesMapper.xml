@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.familydoctor.doctorsubject.mapper.CasesMapper">
+    <resultMap id="BaseResultMap" type="com.familydoctor.doctorsubject.entity.Cases">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="member_id" jdbcType="VARCHAR" property="memberId"/>
+        <result column="main_suit" jdbcType="VARCHAR" property="mainSuit"/>
+        <result column="past_case_history" jdbcType="VARCHAR" property="pastCaseHistory"/>
+        <result column="case_history" jdbcType="VARCHAR" property="caseHistory"/>
+        <result column="allergic_history" jdbcType="VARCHAR" property="allergicHistory"/>
+        <result column="disease_name" jdbcType="VARCHAR" property="diseaseName"/>
+        <result column="examination_id" jdbcType="VARCHAR" property="examinationId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime"/>
+        <result column="create_doctor" jdbcType="VARCHAR" property="createDoctor"/>
+        <result column="update_doctor" jdbcType="VARCHAR" property="updateDoctor"/>
+        <result column="delete_doctor" jdbcType="VARCHAR" property="deleteDoctor"/>
+        <result column="del_flag" jdbcType="CHAR" property="delFlag"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, member_id, main_suit, past_case_history, case_history, allergic_history, disease_name, 
+    examination_id, create_time, update_time, delete_time, create_doctor, update_doctor, 
+    delete_doctor, del_flag
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from cases
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    <!--分页查询-->
+    <select id="selectPage" parameterType="com.familydoctor.doctorsubject.entity.Cases" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from cases
+        <where>
+            del_flag = '0'
+        </where>
+        limit #{pageSize},#{pageNo}
+    </select>
+    <!--由MemberId查询所有病历-->
+    <select id="selectCasesByMember" parameterType="java.lang.String"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from cases
+        <where>
+            AND member_id = #{memberId,jdbcType=VARCHAR}
+        </where>
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from cases
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+    <delete id="deleteAll" parameterType="java.lang.String">
+    delete from cases
+  </delete>
+    <insert id="insert" parameterType="com.familydoctor.doctorsubject.entity.Cases">
+        <selectKey keyProperty="id" resultType="string" order="BEFORE">
+            select replace(uuid(), '-', '') as id from dual
+        </selectKey>
+        insert into cases (id, member_id, main_suit,
+        past_case_history, case_history, allergic_history,
+        disease_name, examination_id, create_time,
+        update_time, delete_time, create_doctor,
+        update_doctor, delete_doctor, del_flag
+        )
+        values (#{id,jdbcType=VARCHAR}, #{memberId,jdbcType=VARCHAR}, #{mainSuit,jdbcType=VARCHAR},
+        #{pastCaseHistory,jdbcType=VARCHAR}, #{caseHistory,jdbcType=VARCHAR}, #{allergicHistory,jdbcType=VARCHAR},
+        #{diseaseName,jdbcType=VARCHAR}, #{examinationId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+        #{updateTime,jdbcType=TIMESTAMP}, #{deleteTime,jdbcType=TIMESTAMP}, #{createDoctor,jdbcType=VARCHAR},
+        #{updateDoctor,jdbcType=VARCHAR}, #{deleteDoctor,jdbcType=VARCHAR}, #{delFlag,jdbcType=CHAR}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.familydoctor.doctorsubject.entity.Cases">
+        <selectKey keyProperty="id" resultType="string" order="BEFORE">
+            select replace(uuid(), '-', '') as id from dual
+        </selectKey>
+        insert into cases
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="memberId != null">
+                member_id,
+            </if>
+            <if test="mainSuit != null">
+                main_suit,
+            </if>
+            <if test="pastCaseHistory != null">
+                past_case_history,
+            </if>
+            <if test="caseHistory != null">
+                case_history,
+            </if>
+            <if test="allergicHistory != null">
+                allergic_history,
+            </if>
+            <if test="diseaseName != null">
+                disease_name,
+            </if>
+            <if test="examinationId != null">
+                examination_id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="deleteTime != null">
+                delete_time,
+            </if>
+            <if test="createDoctor != null">
+                create_doctor,
+            </if>
+            <if test="updateDoctor != null">
+                update_doctor,
+            </if>
+            <if test="deleteDoctor != null">
+                delete_doctor,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="memberId != null">
+                #{memberId,jdbcType=VARCHAR},
+            </if>
+            <if test="mainSuit != null">
+                #{mainSuit,jdbcType=VARCHAR},
+            </if>
+            <if test="pastCaseHistory != null">
+                #{pastCaseHistory,jdbcType=VARCHAR},
+            </if>
+            <if test="caseHistory != null">
+                #{caseHistory,jdbcType=VARCHAR},
+            </if>
+            <if test="allergicHistory != null">
+                #{allergicHistory,jdbcType=VARCHAR},
+            </if>
+            <if test="diseaseName != null">
+                #{diseaseName,jdbcType=VARCHAR},
+            </if>
+            <if test="examinationId != null">
+                #{examinationId,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deleteTime != null">
+                #{deleteTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createDoctor != null">
+                #{createDoctor,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDoctor != null">
+                #{updateDoctor,jdbcType=VARCHAR},
+            </if>
+            <if test="deleteDoctor != null">
+                #{deleteDoctor,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=CHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.familydoctor.doctorsubject.entity.Cases">
+        update cases
+        <set>
+            <if test="memberId != null">
+                member_id = #{memberId,jdbcType=VARCHAR},
+            </if>
+            <if test="mainSuit != null">
+                main_suit = #{mainSuit,jdbcType=VARCHAR},
+            </if>
+            <if test="pastCaseHistory != null">
+                past_case_history = #{pastCaseHistory,jdbcType=VARCHAR},
+            </if>
+            <if test="caseHistory != null">
+                case_history = #{caseHistory,jdbcType=VARCHAR},
+            </if>
+            <if test="allergicHistory != null">
+                allergic_history = #{allergicHistory,jdbcType=VARCHAR},
+            </if>
+            <if test="diseaseName != null">
+                disease_name = #{diseaseName,jdbcType=VARCHAR},
+            </if>
+            <if test="examinationId != null">
+                examination_id = #{examinationId,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deleteTime != null">
+                delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createDoctor != null">
+                create_doctor = #{createDoctor,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDoctor != null">
+                update_doctor = #{updateDoctor,jdbcType=VARCHAR},
+            </if>
+            <if test="deleteDoctor != null">
+                delete_doctor = #{deleteDoctor,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=CHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.familydoctor.doctorsubject.entity.Cases">
+    update cases
+    set member_id = #{memberId,jdbcType=VARCHAR},
+      main_suit = #{mainSuit,jdbcType=VARCHAR},
+      past_case_history = #{pastCaseHistory,jdbcType=VARCHAR},
+      case_history = #{caseHistory,jdbcType=VARCHAR},
+      allergic_history = #{allergicHistory,jdbcType=VARCHAR},
+      disease_name = #{diseaseName,jdbcType=VARCHAR},
+      examination_id = #{examinationId,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      create_doctor = #{createDoctor,jdbcType=VARCHAR},
+      update_doctor = #{updateDoctor,jdbcType=VARCHAR},
+      delete_doctor = #{deleteDoctor,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

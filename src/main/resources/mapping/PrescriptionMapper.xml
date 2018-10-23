@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.familydoctor.doctorsubject.mapper.PrescriptionMapper">
+    <resultMap id="BaseResultMap" type="com.familydoctor.doctorsubject.entity.Prescription">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="case_id" jdbcType="VARCHAR" property="caseId"/>
+        <result column="drug_id" jdbcType="VARCHAR" property="drugId"/>
+        <result column="usage_dose" jdbcType="VARCHAR" property="usageDose"/>
+        <result column="usage_unit" jdbcType="VARCHAR" property="usageUnit"/>
+        <result column="drug_count" jdbcType="VARCHAR" property="drugCount"/>
+        <result column="frequency_id" jdbcType="VARCHAR" property="frequencyId"/>
+        <result column="delivery_wey_id" jdbcType="VARCHAR" property="deliveryWeyId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime"/>
+        <result column="create_doctor" jdbcType="VARCHAR" property="createDoctor"/>
+        <result column="update_doctor" jdbcType="VARCHAR" property="updateDoctor"/>
+        <result column="delete_user" jdbcType="VARCHAR" property="deleteUser"/>
+        <result column="del_flag" jdbcType="CHAR" property="delFlag"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, case_id, drug_id, usage_dose, usage_unit, drug_count, frequency_id, delivery_wey_id, 
+    create_time, update_time, delete_time, create_doctor, update_doctor, delete_user, 
+    del_flag
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from prescription
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    <!--由Cases.id查询处方-->
+    <select id="selectByCases" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from prescription
+        where case_id = #{caseId,jdbcType=VARCHAR}
+    </select>
+
+    <!--逻辑删除-->
+    <update id="softDelete" parameterType="com.familydoctor.doctorsubject.entity.Prescription">
+    update member
+    set
+         delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+     del_flag = "1"
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from prescription
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+    <insert id="insert" parameterType="com.familydoctor.doctorsubject.entity.Prescription">
+        <selectKey keyProperty="id" resultType="string" order="BEFORE">
+            select replace(uuid(), '-', '') as id from dual
+        </selectKey>
+        insert into prescription (id, case_id, drug_id,
+        usage_dose, usage_unit, drug_count,
+        frequency_id, delivery_wey_id, create_time,
+        update_time, delete_time, create_doctor,
+        update_doctor, delete_user, del_flag
+        )
+        values (#{id,jdbcType=VARCHAR}, #{caseId,jdbcType=VARCHAR}, #{drugId,jdbcType=VARCHAR},
+        #{usageDose,jdbcType=VARCHAR}, #{usageUnit,jdbcType=VARCHAR}, #{drugCount,jdbcType=VARCHAR},
+        #{frequencyId,jdbcType=VARCHAR}, #{deliveryWeyId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+        #{updateTime,jdbcType=TIMESTAMP}, #{deleteTime,jdbcType=TIMESTAMP}, #{createDoctor,jdbcType=VARCHAR},
+        #{updateDoctor,jdbcType=VARCHAR}, #{deleteUser,jdbcType=VARCHAR}, #{delFlag,jdbcType=CHAR}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.familydoctor.doctorsubject.entity.Prescription">
+        <selectKey keyProperty="id" resultType="string" order="BEFORE">
+            select replace(uuid(), '-', '') as id from dual
+        </selectKey>
+        insert into prescription
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="caseId != null">
+                case_id,
+            </if>
+            <if test="drugId != null">
+                drug_id,
+            </if>
+            <if test="usageDose != null">
+                usage_dose,
+            </if>
+            <if test="usageUnit != null">
+                usage_unit,
+            </if>
+            <if test="drugCount != null">
+                drug_count,
+            </if>
+            <if test="frequencyId != null">
+                frequency_id,
+            </if>
+            <if test="deliveryWeyId != null">
+                delivery_wey_id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="deleteTime != null">
+                delete_time,
+            </if>
+            <if test="createDoctor != null">
+                create_doctor,
+            </if>
+            <if test="updateDoctor != null">
+                update_doctor,
+            </if>
+            <if test="deleteUser != null">
+                delete_user,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="caseId != null">
+                #{caseId,jdbcType=VARCHAR},
+            </if>
+            <if test="drugId != null">
+                #{drugId,jdbcType=VARCHAR},
+            </if>
+            <if test="usageDose != null">
+                #{usageDose,jdbcType=VARCHAR},
+            </if>
+            <if test="usageUnit != null">
+                #{usageUnit,jdbcType=VARCHAR},
+            </if>
+            <if test="drugCount != null">
+                #{drugCount,jdbcType=VARCHAR},
+            </if>
+            <if test="frequencyId != null">
+                #{frequencyId,jdbcType=VARCHAR},
+            </if>
+            <if test="deliveryWeyId != null">
+                #{deliveryWeyId,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deleteTime != null">
+                #{deleteTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createDoctor != null">
+                #{createDoctor,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDoctor != null">
+                #{updateDoctor,jdbcType=VARCHAR},
+            </if>
+            <if test="deleteUser != null">
+                #{deleteUser,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=CHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.familydoctor.doctorsubject.entity.Prescription">
+        update prescription
+        <set>
+            <if test="caseId != null">
+                case_id = #{caseId,jdbcType=VARCHAR},
+            </if>
+            <if test="drugId != null">
+                drug_id = #{drugId,jdbcType=VARCHAR},
+            </if>
+            <if test="usageDose != null">
+                usage_dose = #{usageDose,jdbcType=VARCHAR},
+            </if>
+            <if test="usageUnit != null">
+                usage_unit = #{usageUnit,jdbcType=VARCHAR},
+            </if>
+            <if test="drugCount != null">
+                drug_count = #{drugCount,jdbcType=VARCHAR},
+            </if>
+            <if test="frequencyId != null">
+                frequency_id = #{frequencyId,jdbcType=VARCHAR},
+            </if>
+            <if test="deliveryWeyId != null">
+                delivery_wey_id = #{deliveryWeyId,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deleteTime != null">
+                delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createDoctor != null">
+                create_doctor = #{createDoctor,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDoctor != null">
+                update_doctor = #{updateDoctor,jdbcType=VARCHAR},
+            </if>
+            <if test="deleteUser != null">
+                delete_user = #{deleteUser,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=CHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.familydoctor.doctorsubject.entity.Prescription">
+    update prescription
+    set case_id = #{caseId,jdbcType=VARCHAR},
+      drug_id = #{drugId,jdbcType=VARCHAR},
+      usage_dose = #{usageDose,jdbcType=VARCHAR},
+      usage_unit = #{usageUnit,jdbcType=VARCHAR},
+      drug_count = #{drugCount,jdbcType=VARCHAR},
+      frequency_id = #{frequencyId,jdbcType=VARCHAR},
+      delivery_wey_id = #{deliveryWeyId,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      create_doctor = #{createDoctor,jdbcType=VARCHAR},
+      update_doctor = #{updateDoctor,jdbcType=VARCHAR},
+      delete_user = #{deleteUser,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

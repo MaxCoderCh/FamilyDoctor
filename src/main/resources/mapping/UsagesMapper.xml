@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.familydoctor.doctorsubject.mapper.UsagesMapper">
+    <resultMap id="BaseResultMap" type="com.familydoctor.doctorsubject.entity.Usages">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="usage_dose" jdbcType="VARCHAR" property="usageDose"/>
+        <result column="usage_unit" jdbcType="VARCHAR" property="usageUnit"/>
+        <result column="frequency_id" jdbcType="VARCHAR" property="frequencyId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime"/>
+        <result column="create_user" jdbcType="VARCHAR" property="createUser"/>
+        <result column="update_user" jdbcType="VARCHAR" property="updateUser"/>
+        <result column="delete_user" jdbcType="VARCHAR" property="deleteUser"/>
+        <result column="del_flag" jdbcType="CHAR" property="delFlag"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, usage_dose, usage_unit, frequency_id, create_time, update_time, delete_time, 
+    create_user, update_user, delete_user, del_flag
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from usages
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    <!--逻辑删除-->
+    <update id="softDelete" parameterType="com.familydoctor.doctorsubject.entity.Usages">
+    update usages
+    set
+         delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+     del_flag = "1"
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from usages
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+    <insert id="insert" parameterType="com.familydoctor.doctorsubject.entity.Usages">
+        <selectKey keyProperty="id" resultType="string" order="BEFORE">
+            select replace(uuid(), '-', '') as id from dual
+        </selectKey>
+        insert into usages (id, usage_dose, usage_unit,
+        frequency_id, create_time, update_time,
+        delete_time, create_user, update_user,
+        delete_user, del_flag)
+        values (#{id,jdbcType=VARCHAR}, #{usageDose,jdbcType=VARCHAR}, #{usageUnit,jdbcType=VARCHAR},
+        #{frequencyId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+        #{deleteTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, #{updateUser,jdbcType=VARCHAR},
+        #{deleteUser,jdbcType=VARCHAR}, #{delFlag,jdbcType=CHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.familydoctor.doctorsubject.entity.Usages">
+        <selectKey keyProperty="id" resultType="string" order="BEFORE">
+            select replace(uuid(), '-', '') as id from dual
+        </selectKey>
+        insert into usages
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="usageDose != null">
+                usage_dose,
+            </if>
+            <if test="usageUnit != null">
+                usage_unit,
+            </if>
+            <if test="frequencyId != null">
+                frequency_id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="deleteTime != null">
+                delete_time,
+            </if>
+            <if test="createUser != null">
+                create_user,
+            </if>
+            <if test="updateUser != null">
+                update_user,
+            </if>
+            <if test="deleteUser != null">
+                delete_user,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="usageDose != null">
+                #{usageDose,jdbcType=VARCHAR},
+            </if>
+            <if test="usageUnit != null">
+                #{usageUnit,jdbcType=VARCHAR},
+            </if>
+            <if test="frequencyId != null">
+                #{frequencyId,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deleteTime != null">
+                #{deleteTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUser != null">
+                #{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="updateUser != null">
+                #{updateUser,jdbcType=VARCHAR},
+            </if>
+            <if test="deleteUser != null">
+                #{deleteUser,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=CHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.familydoctor.doctorsubject.entity.Usages">
+        update usages
+        <set>
+            <if test="usageDose != null">
+                usage_dose = #{usageDose,jdbcType=VARCHAR},
+            </if>
+            <if test="usageUnit != null">
+                usage_unit = #{usageUnit,jdbcType=VARCHAR},
+            </if>
+            <if test="frequencyId != null">
+                frequency_id = #{frequencyId,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deleteTime != null">
+                delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUser != null">
+                create_user = #{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="updateUser != null">
+                update_user = #{updateUser,jdbcType=VARCHAR},
+            </if>
+            <if test="deleteUser != null">
+                delete_user = #{deleteUser,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=CHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.familydoctor.doctorsubject.entity.Usages">
+    update usages
+    set usage_dose = #{usageDose,jdbcType=VARCHAR},
+      usage_unit = #{usageUnit,jdbcType=VARCHAR},
+      frequency_id = #{frequencyId,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      update_user = #{updateUser,jdbcType=VARCHAR},
+      delete_user = #{deleteUser,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

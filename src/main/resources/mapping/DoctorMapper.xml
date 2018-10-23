@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.familydoctor.doctorsubject.mapper.DoctorMapper">
+  <resultMap id="BaseResultMap" type="com.familydoctor.doctorsubject.entity.Doctor">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="salt" jdbcType="VARCHAR" property="salt" />
+    <result column="locked" jdbcType="BIT" property="locked" />
+    <result column="doctor_name" jdbcType="VARCHAR" property="doctorName" />
+    <result column="doctor_card" jdbcType="VARCHAR" property="doctorCard" />
+    <result column="doctor_occupational_no" jdbcType="VARCHAR" property="doctorOccupationalNo" />
+    <result column="branch_id" jdbcType="VARCHAR" property="branchId" />
+    <result column="doctor_age" jdbcType="VARCHAR" property="doctorAge" />
+    <result column="doctor_grade" jdbcType="VARCHAR" property="doctorGrade" />
+    <result column="doctor_add" jdbcType="VARCHAR" property="doctorAdd" />
+    <result column="doctor_infoadd" jdbcType="VARCHAR" property="doctorInfoadd" />
+    <result column="doctor_birthday" jdbcType="VARCHAR" property="doctorBirthday" />
+    <result column="doctor_sex" jdbcType="VARCHAR" property="doctorSex" />
+    <result column="doctor_info" jdbcType="VARCHAR" property="doctorInfo" />
+    <result column="doctor_good" jdbcType="VARCHAR" property="doctorGood" />
+    <result column="hospital_id" jdbcType="VARCHAR" property="hospitalId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime" />
+    <result column="create_user" jdbcType="VARCHAR" property="createUser" />
+    <result column="update_user" jdbcType="VARCHAR" property="updateUser" />
+    <result column="delete_user" jdbcType="VARCHAR" property="deleteUser" />
+    <result column="del_flag" jdbcType="CHAR" property="delFlag" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, username, password, salt, locked, doctor_name, doctor_card, doctor_occupational_no, 
+    branch_id, doctor_age, doctor_grade, doctor_add, doctor_infoadd, doctor_birthday, 
+    doctor_sex, doctor_info, doctor_good, hospital_id, create_time, update_time, delete_time, 
+    create_user, update_user, delete_user, del_flag
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from doctor
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from doctor
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.familydoctor.doctorsubject.entity.Doctor">
+    insert into doctor (id, username, password, 
+      salt, locked, doctor_name, 
+      doctor_card, doctor_occupational_no, branch_id, 
+      doctor_age, doctor_grade, doctor_add, 
+      doctor_infoadd, doctor_birthday, doctor_sex, 
+      doctor_info, doctor_good, hospital_id, 
+      create_time, update_time, delete_time, 
+      create_user, update_user, delete_user, 
+      del_flag)
+    values (#{id,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{salt,jdbcType=VARCHAR}, #{locked,jdbcType=BIT}, #{doctorName,jdbcType=VARCHAR}, 
+      #{doctorCard,jdbcType=VARCHAR}, #{doctorOccupationalNo,jdbcType=VARCHAR}, #{branchId,jdbcType=VARCHAR}, 
+      #{doctorAge,jdbcType=VARCHAR}, #{doctorGrade,jdbcType=VARCHAR}, #{doctorAdd,jdbcType=VARCHAR}, 
+      #{doctorInfoadd,jdbcType=VARCHAR}, #{doctorBirthday,jdbcType=VARCHAR}, #{doctorSex,jdbcType=VARCHAR}, 
+      #{doctorInfo,jdbcType=VARCHAR}, #{doctorGood,jdbcType=VARCHAR}, #{hospitalId,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{deleteTime,jdbcType=TIMESTAMP}, 
+      #{createUser,jdbcType=VARCHAR}, #{updateUser,jdbcType=VARCHAR}, #{deleteUser,jdbcType=VARCHAR}, 
+      #{delFlag,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.familydoctor.doctorsubject.entity.Doctor">
+    insert into doctor
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="salt != null">
+        salt,
+      </if>
+      <if test="locked != null">
+        locked,
+      </if>
+      <if test="doctorName != null">
+        doctor_name,
+      </if>
+      <if test="doctorCard != null">
+        doctor_card,
+      </if>
+      <if test="doctorOccupationalNo != null">
+        doctor_occupational_no,
+      </if>
+      <if test="branchId != null">
+        branch_id,
+      </if>
+      <if test="doctorAge != null">
+        doctor_age,
+      </if>
+      <if test="doctorGrade != null">
+        doctor_grade,
+      </if>
+      <if test="doctorAdd != null">
+        doctor_add,
+      </if>
+      <if test="doctorInfoadd != null">
+        doctor_infoadd,
+      </if>
+      <if test="doctorBirthday != null">
+        doctor_birthday,
+      </if>
+      <if test="doctorSex != null">
+        doctor_sex,
+      </if>
+      <if test="doctorInfo != null">
+        doctor_info,
+      </if>
+      <if test="doctorGood != null">
+        doctor_good,
+      </if>
+      <if test="hospitalId != null">
+        hospital_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="deleteTime != null">
+        delete_time,
+      </if>
+      <if test="createUser != null">
+        create_user,
+      </if>
+      <if test="updateUser != null">
+        update_user,
+      </if>
+      <if test="deleteUser != null">
+        delete_user,
+      </if>
+      <if test="delFlag != null">
+        del_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="salt != null">
+        #{salt,jdbcType=VARCHAR},
+      </if>
+      <if test="locked != null">
+        #{locked,jdbcType=BIT},
+      </if>
+      <if test="doctorName != null">
+        #{doctorName,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorCard != null">
+        #{doctorCard,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorOccupationalNo != null">
+        #{doctorOccupationalNo,jdbcType=VARCHAR},
+      </if>
+      <if test="branchId != null">
+        #{branchId,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorAge != null">
+        #{doctorAge,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorGrade != null">
+        #{doctorGrade,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorAdd != null">
+        #{doctorAdd,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorInfoadd != null">
+        #{doctorInfoadd,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorBirthday != null">
+        #{doctorBirthday,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorSex != null">
+        #{doctorSex,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorInfo != null">
+        #{doctorInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorGood != null">
+        #{doctorGood,jdbcType=VARCHAR},
+      </if>
+      <if test="hospitalId != null">
+        #{hospitalId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteTime != null">
+        #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null">
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateUser != null">
+        #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="deleteUser != null">
+        #{deleteUser,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.familydoctor.doctorsubject.entity.Doctor">
+    update doctor
+    <set>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="salt != null">
+        salt = #{salt,jdbcType=VARCHAR},
+      </if>
+      <if test="locked != null">
+        locked = #{locked,jdbcType=BIT},
+      </if>
+      <if test="doctorName != null">
+        doctor_name = #{doctorName,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorCard != null">
+        doctor_card = #{doctorCard,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorOccupationalNo != null">
+        doctor_occupational_no = #{doctorOccupationalNo,jdbcType=VARCHAR},
+      </if>
+      <if test="branchId != null">
+        branch_id = #{branchId,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorAge != null">
+        doctor_age = #{doctorAge,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorGrade != null">
+        doctor_grade = #{doctorGrade,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorAdd != null">
+        doctor_add = #{doctorAdd,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorInfoadd != null">
+        doctor_infoadd = #{doctorInfoadd,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorBirthday != null">
+        doctor_birthday = #{doctorBirthday,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorSex != null">
+        doctor_sex = #{doctorSex,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorInfo != null">
+        doctor_info = #{doctorInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorGood != null">
+        doctor_good = #{doctorGood,jdbcType=VARCHAR},
+      </if>
+      <if test="hospitalId != null">
+        hospital_id = #{hospitalId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteTime != null">
+        delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null">
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateUser != null">
+        update_user = #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="deleteUser != null">
+        delete_user = #{deleteUser,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        del_flag = #{delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.familydoctor.doctorsubject.entity.Doctor">
+    update doctor
+    set username = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      salt = #{salt,jdbcType=VARCHAR},
+      locked = #{locked,jdbcType=BIT},
+      doctor_name = #{doctorName,jdbcType=VARCHAR},
+      doctor_card = #{doctorCard,jdbcType=VARCHAR},
+      doctor_occupational_no = #{doctorOccupationalNo,jdbcType=VARCHAR},
+      branch_id = #{branchId,jdbcType=VARCHAR},
+      doctor_age = #{doctorAge,jdbcType=VARCHAR},
+      doctor_grade = #{doctorGrade,jdbcType=VARCHAR},
+      doctor_add = #{doctorAdd,jdbcType=VARCHAR},
+      doctor_infoadd = #{doctorInfoadd,jdbcType=VARCHAR},
+      doctor_birthday = #{doctorBirthday,jdbcType=VARCHAR},
+      doctor_sex = #{doctorSex,jdbcType=VARCHAR},
+      doctor_info = #{doctorInfo,jdbcType=VARCHAR},
+      doctor_good = #{doctorGood,jdbcType=VARCHAR},
+      hospital_id = #{hospitalId,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      update_user = #{updateUser,jdbcType=VARCHAR},
+      delete_user = #{deleteUser,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

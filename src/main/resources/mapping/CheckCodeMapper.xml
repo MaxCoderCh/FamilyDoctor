@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.familydoctor.doctorsubject.mapper.CheckCodeMapper">
+  <resultMap id="BaseResultMap" type="com.familydoctor.doctorsubject.entity.CheckCode">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="doctor_id" jdbcType="VARCHAR" property="doctorId" />
+    <result column="mobile_phone_no" jdbcType="VARCHAR" property="mobilePhoneNo" />
+    <result column="sms_prefix" jdbcType="VARCHAR" property="smsPrefix" />
+    <result column="sms_suffix" jdbcType="VARCHAR" property="smsSuffix" />
+    <result column="sms_code" jdbcType="VARCHAR" property="smsCode" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime" />
+    <result column="create_doctor" jdbcType="VARCHAR" property="createDoctor" />
+    <result column="update_user" jdbcType="VARCHAR" property="updateUser" />
+    <result column="delete_user" jdbcType="VARCHAR" property="deleteUser" />
+    <result column="del_flag" jdbcType="CHAR" property="delFlag" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, doctor_id, mobile_phone_no, sms_prefix, sms_suffix, sms_code, create_time, update_time, 
+    delete_time, create_doctor, update_user, delete_user, del_flag
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from check_code
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from check_code
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.familydoctor.doctorsubject.entity.CheckCode">
+    insert into check_code (id, doctor_id, mobile_phone_no, 
+      sms_prefix, sms_suffix, sms_code, 
+      create_time, update_time, delete_time, 
+      create_doctor, update_user, delete_user, 
+      del_flag)
+    values (#{id,jdbcType=VARCHAR}, #{doctorId,jdbcType=VARCHAR}, #{mobilePhoneNo,jdbcType=VARCHAR}, 
+      #{smsPrefix,jdbcType=VARCHAR}, #{smsSuffix,jdbcType=VARCHAR}, #{smsCode,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{deleteTime,jdbcType=TIMESTAMP}, 
+      #{createDoctor,jdbcType=VARCHAR}, #{updateUser,jdbcType=VARCHAR}, #{deleteUser,jdbcType=VARCHAR}, 
+      #{delFlag,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.familydoctor.doctorsubject.entity.CheckCode">
+    insert into check_code
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="doctorId != null">
+        doctor_id,
+      </if>
+      <if test="mobilePhoneNo != null">
+        mobile_phone_no,
+      </if>
+      <if test="smsPrefix != null">
+        sms_prefix,
+      </if>
+      <if test="smsSuffix != null">
+        sms_suffix,
+      </if>
+      <if test="smsCode != null">
+        sms_code,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="deleteTime != null">
+        delete_time,
+      </if>
+      <if test="createDoctor != null">
+        create_doctor,
+      </if>
+      <if test="updateUser != null">
+        update_user,
+      </if>
+      <if test="deleteUser != null">
+        delete_user,
+      </if>
+      <if test="delFlag != null">
+        del_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorId != null">
+        #{doctorId,jdbcType=VARCHAR},
+      </if>
+      <if test="mobilePhoneNo != null">
+        #{mobilePhoneNo,jdbcType=VARCHAR},
+      </if>
+      <if test="smsPrefix != null">
+        #{smsPrefix,jdbcType=VARCHAR},
+      </if>
+      <if test="smsSuffix != null">
+        #{smsSuffix,jdbcType=VARCHAR},
+      </if>
+      <if test="smsCode != null">
+        #{smsCode,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteTime != null">
+        #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDoctor != null">
+        #{createDoctor,jdbcType=VARCHAR},
+      </if>
+      <if test="updateUser != null">
+        #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="deleteUser != null">
+        #{deleteUser,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.familydoctor.doctorsubject.entity.CheckCode">
+    update check_code
+    <set>
+      <if test="doctorId != null">
+        doctor_id = #{doctorId,jdbcType=VARCHAR},
+      </if>
+      <if test="mobilePhoneNo != null">
+        mobile_phone_no = #{mobilePhoneNo,jdbcType=VARCHAR},
+      </if>
+      <if test="smsPrefix != null">
+        sms_prefix = #{smsPrefix,jdbcType=VARCHAR},
+      </if>
+      <if test="smsSuffix != null">
+        sms_suffix = #{smsSuffix,jdbcType=VARCHAR},
+      </if>
+      <if test="smsCode != null">
+        sms_code = #{smsCode,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteTime != null">
+        delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDoctor != null">
+        create_doctor = #{createDoctor,jdbcType=VARCHAR},
+      </if>
+      <if test="updateUser != null">
+        update_user = #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="deleteUser != null">
+        delete_user = #{deleteUser,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        del_flag = #{delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.familydoctor.doctorsubject.entity.CheckCode">
+    update check_code
+    set doctor_id = #{doctorId,jdbcType=VARCHAR},
+      mobile_phone_no = #{mobilePhoneNo,jdbcType=VARCHAR},
+      sms_prefix = #{smsPrefix,jdbcType=VARCHAR},
+      sms_suffix = #{smsSuffix,jdbcType=VARCHAR},
+      sms_code = #{smsCode,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      create_doctor = #{createDoctor,jdbcType=VARCHAR},
+      update_user = #{updateUser,jdbcType=VARCHAR},
+      delete_user = #{deleteUser,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

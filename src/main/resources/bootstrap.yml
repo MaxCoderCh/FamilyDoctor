@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: family-doctor-server
+  cloud:
+    config:
+      uri: http://192.168.0.222:8880
+      label: master
+      profile: dev

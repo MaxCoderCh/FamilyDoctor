@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.familydoctor.doctorsubject.mapper.MemberMapper">
+    <resultMap id="BaseResultMap" type="com.familydoctor.doctorsubject.entity.Member">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="member_name" jdbcType="VARCHAR" property="memberName"/>
+        <result column="member_card" jdbcType="VARCHAR" property="memberCard"/>
+        <result column="member_company" jdbcType="VARCHAR" property="memberCompany"/>
+        <result column="member_add" jdbcType="VARCHAR" property="memberAdd"/>
+        <result column="member_birthday" jdbcType="TIMESTAMP" property="memberBirthday"/>
+        <result column="member_age" jdbcType="VARCHAR" property="memberAge"/>
+        <result column="member_sex" jdbcType="CHAR" property="memberSex"/>
+        <result column="member_info" jdbcType="VARCHAR" property="memberInfo"/>
+        <result column="member_tell" jdbcType="VARCHAR" property="memberTell"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime"/>
+        <result column="create_doctor" jdbcType="VARCHAR" property="createDoctor"/>
+        <result column="update_doctor" jdbcType="VARCHAR" property="updateDoctor"/>
+        <result column="delete_doctor" jdbcType="VARCHAR" property="deleteDoctor"/>
+        <result column="del_flag" jdbcType="CHAR" property="delFlag"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, member_name, member_card, member_company, member_add, member_birthday, member_age, 
+    member_sex, member_info, member_tell, create_time, update_time, delete_time, create_doctor, 
+    update_doctor, delete_doctor, del_flag
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from member
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <!--分页查询-->
+    <select id="selectPage" parameterType="com.familydoctor.doctorsubject.entity.Member" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from member
+        <where>
+            del_flag = '0'
+        </where>
+        limit #{pageSize},#{pageNo}
+    </select>
+
+    <select id="selectByMemberCard" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from member
+        where member_card = #{memberCard,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from member
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+    <!--逻辑删除-->
+    <update id="softDelete" parameterType="com.familydoctor.doctorsubject.entity.Member">
+    update member
+    set
+         delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+     del_flag = "1"
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+    <!--查询列表-->
+    <select id="selectRound" parameterType="com.familydoctor.doctorsubject.entity.Member" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from member
+        <where>del_flag!="1"</where>
+    </select>
+    <insert id="insert" parameterType="com.familydoctor.doctorsubject.entity.Member">
+
+        <selectKey keyProperty="id" resultType="string" order="BEFORE">
+            select replace(uuid(), '-', '') as id from dual
+        </selectKey>
+        insert into member (id, member_name, member_card,
+        member_company, member_add, member_birthday,
+        member_age, member_sex, member_info,
+        member_tell, create_time, update_time,
+        delete_time, create_doctor, update_doctor,
+        delete_doctor, del_flag)
+        values (#{id,jdbcType=VARCHAR}, #{memberName,jdbcType=VARCHAR}, #{memberCard,jdbcType=VARCHAR},
+        #{memberCompany,jdbcType=VARCHAR}, #{memberAdd,jdbcType=VARCHAR}, #{memberBirthday,jdbcType=TIMESTAMP},
+        #{memberAge,jdbcType=VARCHAR}, #{memberSex,jdbcType=CHAR}, #{memberInfo,jdbcType=VARCHAR},
+        #{memberTell,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+        #{deleteTime,jdbcType=TIMESTAMP}, #{createDoctor,jdbcType=VARCHAR}, #{updateDoctor,jdbcType=VARCHAR},
+        #{deleteDoctor,jdbcType=VARCHAR}, #{delFlag,jdbcType=CHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.familydoctor.doctorsubject.entity.Member">
+
+        <selectKey keyProperty="id" resultType="string" order="BEFORE">
+            select replace(uuid(), '-', '') as id from dual
+        </selectKey>
+        insert into member
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="memberName != null">
+                member_name,
+            </if>
+            <if test="memberCard != null">
+                member_card,
+            </if>
+            <if test="memberCompany != null">
+                member_company,
+            </if>
+            <if test="memberAdd != null">
+                member_add,
+            </if>
+            <if test="memberBirthday != null">
+                member_birthday,
+            </if>
+            <if test="memberAge != null">
+                member_age,
+            </if>
+            <if test="memberSex != null">
+                member_sex,
+            </if>
+            <if test="memberInfo != null">
+                member_info,
+            </if>
+            <if test="memberTell != null">
+                member_tell,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="deleteTime != null">
+                delete_time,
+            </if>
+            <if test="createDoctor != null">
+                create_doctor,
+            </if>
+            <if test="updateDoctor != null">
+                update_doctor,
+            </if>
+            <if test="deleteDoctor != null">
+                delete_doctor,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="memberName != null">
+                #{memberName,jdbcType=VARCHAR},
+            </if>
+            <if test="memberCard != null">
+                #{memberCard,jdbcType=VARCHAR},
+            </if>
+            <if test="memberCompany != null">
+                #{memberCompany,jdbcType=VARCHAR},
+            </if>
+            <if test="memberAdd != null">
+                #{memberAdd,jdbcType=VARCHAR},
+            </if>
+            <if test="memberBirthday != null">
+                #{memberBirthday,jdbcType=TIMESTAMP},
+            </if>
+            <if test="memberAge != null">
+                #{memberAge,jdbcType=VARCHAR},
+            </if>
+            <if test="memberSex != null">
+                #{memberSex,jdbcType=CHAR},
+            </if>
+            <if test="memberInfo != null">
+                #{memberInfo,jdbcType=VARCHAR},
+            </if>
+            <if test="memberTell != null">
+                #{memberTell,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deleteTime != null">
+                #{deleteTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createDoctor != null">
+                #{createDoctor,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDoctor != null">
+                #{updateDoctor,jdbcType=VARCHAR},
+            </if>
+            <if test="deleteDoctor != null">
+                #{deleteDoctor,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=CHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.familydoctor.doctorsubject.entity.Member">
+        update member
+        <set>
+            <if test="memberName != null">
+                member_name = #{memberName,jdbcType=VARCHAR},
+            </if>
+            <if test="memberCard != null">
+                member_card = #{memberCard,jdbcType=VARCHAR},
+            </if>
+            <if test="memberCompany != null">
+                member_company = #{memberCompany,jdbcType=VARCHAR},
+            </if>
+            <if test="memberAdd != null">
+                member_add = #{memberAdd,jdbcType=VARCHAR},
+            </if>
+            <if test="memberBirthday != null">
+                member_birthday = #{memberBirthday,jdbcType=TIMESTAMP},
+            </if>
+            <if test="memberAge != null">
+                member_age = #{memberAge,jdbcType=VARCHAR},
+            </if>
+            <if test="memberSex != null">
+                member_sex = #{memberSex,jdbcType=CHAR},
+            </if>
+            <if test="memberInfo != null">
+                member_info = #{memberInfo,jdbcType=VARCHAR},
+            </if>
+            <if test="memberTell != null">
+                member_tell = #{memberTell,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deleteTime != null">
+                delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createDoctor != null">
+                create_doctor = #{createDoctor,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDoctor != null">
+                update_doctor = #{updateDoctor,jdbcType=VARCHAR},
+            </if>
+            <if test="deleteDoctor != null">
+                delete_doctor = #{deleteDoctor,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=CHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.familydoctor.doctorsubject.entity.Member">
+    update member
+    set member_name = #{memberName,jdbcType=VARCHAR},
+      member_card = #{memberCard,jdbcType=VARCHAR},
+      member_company = #{memberCompany,jdbcType=VARCHAR},
+      member_add = #{memberAdd,jdbcType=VARCHAR},
+      member_birthday = #{memberBirthday,jdbcType=TIMESTAMP},
+      member_age = #{memberAge,jdbcType=VARCHAR},
+      member_sex = #{memberSex,jdbcType=CHAR},
+      member_info = #{memberInfo,jdbcType=VARCHAR},
+      member_tell = #{memberTell,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      create_doctor = #{createDoctor,jdbcType=VARCHAR},
+      update_doctor = #{updateDoctor,jdbcType=VARCHAR},
+      delete_doctor = #{deleteDoctor,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

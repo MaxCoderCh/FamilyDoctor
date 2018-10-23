@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.familydoctor.doctorsubject.mapper.RegisteredTypeMapper">
+    <resultMap id="BaseResultMap" type="com.familydoctor.doctorsubject.entity.RegisteredType">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="type_name" jdbcType="VARCHAR" property="typeName"/>
+        <result column="type_number" jdbcType="VARCHAR" property="typeNumber"/>
+        <result column="branch_id" jdbcType="VARCHAR" property="branchId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime"/>
+        <result column="create_user" jdbcType="VARCHAR" property="createUser"/>
+        <result column="update_user" jdbcType="VARCHAR" property="updateUser"/>
+        <result column="delete_user" jdbcType="VARCHAR" property="deleteUser"/>
+        <result column="del_flag" jdbcType="CHAR" property="delFlag"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, type_name, type_number, branch_id, create_time, update_time, delete_time, create_user, 
+    update_user, delete_user, del_flag
+  </sql>
+    <!--查询科室下所有挂号类型-->
+    <select id="selectByBranch" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from registered_type
+        <where>
+            del_flag!="1"
+            AND branch_id = #{branch_id,jdbcType=VARCHAR}
+        </where>
+    </select>
+    <!--分页查询-->
+    <select id="selectPage" parameterType="com.familydoctor.doctorsubject.entity.RegisteredType" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from registered_type
+        <where>
+            del_flag = '0'
+        </where>
+        limit #{pageSize},#{pageNo}
+    </select>
+
+    <!--查询所有挂号类别-->
+    <select id="selectAllRegisteredType" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from registered_type
+        <where>del_flag!="1"</where>
+    </select>
+    <!--逻辑删除-->
+    <update id="softDelete" parameterType="com.familydoctor.doctorsubject.entity.RegisteredType">
+    update registered_type
+    set
+      delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      del_flag = "1"
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from registered_type
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from registered_type
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+    <insert id="insert" parameterType="com.familydoctor.doctorsubject.entity.RegisteredType">
+        <selectKey keyProperty="id" resultType="string" order="BEFORE">
+            select replace(uuid(), '-', '') as id from dual
+        </selectKey>
+        insert into registered_type (id, type_name, type_number,
+        branch_id, create_time, update_time,
+        delete_time, create_user, update_user,
+        delete_user, del_flag)
+        values (#{id,jdbcType=VARCHAR}, #{typeName,jdbcType=VARCHAR}, #{typeNumber,jdbcType=VARCHAR},
+        #{branchId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+        #{deleteTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, #{updateUser,jdbcType=VARCHAR},
+        #{deleteUser,jdbcType=VARCHAR}, #{delFlag,jdbcType=CHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.familydoctor.doctorsubject.entity.RegisteredType">
+        <selectKey keyProperty="id" resultType="string" order="BEFORE">
+            select replace(uuid(), '-', '') as id from dual
+        </selectKey>
+        insert into registered_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="typeName != null">
+                type_name,
+            </if>
+            <if test="typeNumber != null">
+                type_number,
+            </if>
+            <if test="branchId != null">
+                branch_id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="deleteTime != null">
+                delete_time,
+            </if>
+            <if test="createUser != null">
+                create_user,
+            </if>
+            <if test="updateUser != null">
+                update_user,
+            </if>
+            <if test="deleteUser != null">
+                delete_user,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="typeName != null">
+                #{typeName,jdbcType=VARCHAR},
+            </if>
+            <if test="typeNumber != null">
+                #{typeNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="branchId != null">
+                #{branchId,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deleteTime != null">
+                #{deleteTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUser != null">
+                #{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="updateUser != null">
+                #{updateUser,jdbcType=VARCHAR},
+            </if>
+            <if test="deleteUser != null">
+                #{deleteUser,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=CHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.familydoctor.doctorsubject.entity.RegisteredType">
+        update registered_type
+        <set>
+            <if test="typeName != null">
+                type_name = #{typeName,jdbcType=VARCHAR},
+            </if>
+            <if test="typeNumber != null">
+                type_number = #{typeNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="branchId != null">
+                branch_id = #{branchId,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deleteTime != null">
+                delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUser != null">
+                create_user = #{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="updateUser != null">
+                update_user = #{updateUser,jdbcType=VARCHAR},
+            </if>
+            <if test="deleteUser != null">
+                delete_user = #{deleteUser,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=CHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.familydoctor.doctorsubject.entity.RegisteredType">
+    update registered_type
+    set type_name = #{typeName,jdbcType=VARCHAR},
+      type_number = #{typeNumber,jdbcType=VARCHAR},
+      branch_id = #{branchId,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      update_user = #{updateUser,jdbcType=VARCHAR},
+      delete_user = #{deleteUser,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

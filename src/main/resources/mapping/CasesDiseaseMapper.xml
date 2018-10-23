@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.familydoctor.doctorsubject.mapper.CasesDiseaseMapper">
+  <resultMap id="BaseResultMap" type="com.familydoctor.doctorsubject.entity.CasesDisease">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="disease_id" jdbcType="VARCHAR" property="diseaseId" />
+    <result column="cases_id" jdbcType="VARCHAR" property="casesId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime" />
+    <result column="create_doctor" jdbcType="VARCHAR" property="createDoctor" />
+    <result column="update_doctor" jdbcType="VARCHAR" property="updateDoctor" />
+    <result column="delete_user" jdbcType="VARCHAR" property="deleteUser" />
+    <result column="del_flag" jdbcType="CHAR" property="delFlag" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, disease_id, cases_id, create_time, update_time, delete_time, create_doctor, update_doctor, 
+    delete_user, del_flag
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from cases_disease
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from cases_disease
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.familydoctor.doctorsubject.entity.CasesDisease">
+    <selectKey keyProperty="id" resultType="string" order="BEFORE">
+      select replace(uuid(), '-', '') as id from dual
+    </selectKey>
+    insert into cases_disease (id, disease_id, cases_id, 
+      create_time, update_time, delete_time, 
+      create_doctor, update_doctor, delete_user, 
+      del_flag)
+    values (#{id,jdbcType=VARCHAR}, #{diseaseId,jdbcType=VARCHAR}, #{casesId,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{deleteTime,jdbcType=TIMESTAMP}, 
+      #{createDoctor,jdbcType=VARCHAR}, #{updateDoctor,jdbcType=VARCHAR}, #{deleteUser,jdbcType=VARCHAR}, 
+      #{delFlag,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.familydoctor.doctorsubject.entity.CasesDisease">
+    <selectKey keyProperty="id" resultType="string" order="BEFORE">
+      select replace(uuid(), '-', '') as id from dual
+    </selectKey>
+    insert into cases_disease
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="diseaseId != null">
+        disease_id,
+      </if>
+      <if test="casesId != null">
+        cases_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="deleteTime != null">
+        delete_time,
+      </if>
+      <if test="createDoctor != null">
+        create_doctor,
+      </if>
+      <if test="updateDoctor != null">
+        update_doctor,
+      </if>
+      <if test="deleteUser != null">
+        delete_user,
+      </if>
+      <if test="delFlag != null">
+        del_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="diseaseId != null">
+        #{diseaseId,jdbcType=VARCHAR},
+      </if>
+      <if test="casesId != null">
+        #{casesId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteTime != null">
+        #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDoctor != null">
+        #{createDoctor,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDoctor != null">
+        #{updateDoctor,jdbcType=VARCHAR},
+      </if>
+      <if test="deleteUser != null">
+        #{deleteUser,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.familydoctor.doctorsubject.entity.CasesDisease">
+    update cases_disease
+    <set>
+      <if test="diseaseId != null">
+        disease_id = #{diseaseId,jdbcType=VARCHAR},
+      </if>
+      <if test="casesId != null">
+        cases_id = #{casesId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteTime != null">
+        delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDoctor != null">
+        create_doctor = #{createDoctor,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDoctor != null">
+        update_doctor = #{updateDoctor,jdbcType=VARCHAR},
+      </if>
+      <if test="deleteUser != null">
+        delete_user = #{deleteUser,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        del_flag = #{delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.familydoctor.doctorsubject.entity.CasesDisease">
+    update cases_disease
+    set disease_id = #{diseaseId,jdbcType=VARCHAR},
+      cases_id = #{casesId,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      create_doctor = #{createDoctor,jdbcType=VARCHAR},
+      update_doctor = #{updateDoctor,jdbcType=VARCHAR},
+      delete_user = #{deleteUser,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.familydoctor.doctorsubject.mapper.ExaminationMapper">
+  <resultMap id="BaseResultMap" type="com.familydoctor.doctorsubject.entity.Examination">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="height" jdbcType="VARCHAR" property="height" />
+    <result column="weight" jdbcType="VARCHAR" property="weight" />
+    <result column="bmi" jdbcType="VARCHAR" property="bmi" />
+    <result column="temperature" jdbcType="VARCHAR" property="temperature" />
+    <result column="high_pressure" jdbcType="VARCHAR" property="highPressure" />
+    <result column="low_pressure" jdbcType="VARCHAR" property="lowPressure" />
+    <result column="after_blood_sugar" jdbcType="VARCHAR" property="afterBloodSugar" />
+    <result column="befor_blood_sugar" jdbcType="VARCHAR" property="beforBloodSugar" />
+    <result column="pulse" jdbcType="VARCHAR" property="pulse" />
+    <result column="member_id" jdbcType="VARCHAR" property="memberId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime" />
+    <result column="create_doctor" jdbcType="VARCHAR" property="createDoctor" />
+    <result column="update_doctor" jdbcType="VARCHAR" property="updateDoctor" />
+    <result column="delete_doctor" jdbcType="VARCHAR" property="deleteDoctor" />
+    <result column="del_flag" jdbcType="CHAR" property="delFlag" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, height, weight, bmi, temperature, high_pressure, low_pressure, after_blood_sugar, 
+    befor_blood_sugar, pulse, member_id, create_time, update_time, delete_time, create_doctor, 
+    update_doctor, delete_doctor, del_flag
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from examination
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from examination
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.familydoctor.doctorsubject.entity.Examination">
+    insert into examination (id, height, weight, 
+      bmi, temperature, high_pressure, 
+      low_pressure, after_blood_sugar, befor_blood_sugar, 
+      pulse, member_id, create_time, 
+      update_time, delete_time, create_doctor, 
+      update_doctor, delete_doctor, del_flag
+      )
+    values (#{id,jdbcType=VARCHAR}, #{height,jdbcType=VARCHAR}, #{weight,jdbcType=VARCHAR}, 
+      #{bmi,jdbcType=VARCHAR}, #{temperature,jdbcType=VARCHAR}, #{highPressure,jdbcType=VARCHAR}, 
+      #{lowPressure,jdbcType=VARCHAR}, #{afterBloodSugar,jdbcType=VARCHAR}, #{beforBloodSugar,jdbcType=VARCHAR}, 
+      #{pulse,jdbcType=VARCHAR}, #{memberId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{deleteTime,jdbcType=TIMESTAMP}, #{createDoctor,jdbcType=VARCHAR}, 
+      #{updateDoctor,jdbcType=VARCHAR}, #{deleteDoctor,jdbcType=VARCHAR}, #{delFlag,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.familydoctor.doctorsubject.entity.Examination">
+    insert into examination
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="height != null">
+        height,
+      </if>
+      <if test="weight != null">
+        weight,
+      </if>
+      <if test="bmi != null">
+        bmi,
+      </if>
+      <if test="temperature != null">
+        temperature,
+      </if>
+      <if test="highPressure != null">
+        high_pressure,
+      </if>
+      <if test="lowPressure != null">
+        low_pressure,
+      </if>
+      <if test="afterBloodSugar != null">
+        after_blood_sugar,
+      </if>
+      <if test="beforBloodSugar != null">
+        befor_blood_sugar,
+      </if>
+      <if test="pulse != null">
+        pulse,
+      </if>
+      <if test="memberId != null">
+        member_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="deleteTime != null">
+        delete_time,
+      </if>
+      <if test="createDoctor != null">
+        create_doctor,
+      </if>
+      <if test="updateDoctor != null">
+        update_doctor,
+      </if>
+      <if test="deleteDoctor != null">
+        delete_doctor,
+      </if>
+      <if test="delFlag != null">
+        del_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="height != null">
+        #{height,jdbcType=VARCHAR},
+      </if>
+      <if test="weight != null">
+        #{weight,jdbcType=VARCHAR},
+      </if>
+      <if test="bmi != null">
+        #{bmi,jdbcType=VARCHAR},
+      </if>
+      <if test="temperature != null">
+        #{temperature,jdbcType=VARCHAR},
+      </if>
+      <if test="highPressure != null">
+        #{highPressure,jdbcType=VARCHAR},
+      </if>
+      <if test="lowPressure != null">
+        #{lowPressure,jdbcType=VARCHAR},
+      </if>
+      <if test="afterBloodSugar != null">
+        #{afterBloodSugar,jdbcType=VARCHAR},
+      </if>
+      <if test="beforBloodSugar != null">
+        #{beforBloodSugar,jdbcType=VARCHAR},
+      </if>
+      <if test="pulse != null">
+        #{pulse,jdbcType=VARCHAR},
+      </if>
+      <if test="memberId != null">
+        #{memberId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteTime != null">
+        #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDoctor != null">
+        #{createDoctor,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDoctor != null">
+        #{updateDoctor,jdbcType=VARCHAR},
+      </if>
+      <if test="deleteDoctor != null">
+        #{deleteDoctor,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.familydoctor.doctorsubject.entity.Examination">
+    update examination
+    <set>
+      <if test="height != null">
+        height = #{height,jdbcType=VARCHAR},
+      </if>
+      <if test="weight != null">
+        weight = #{weight,jdbcType=VARCHAR},
+      </if>
+      <if test="bmi != null">
+        bmi = #{bmi,jdbcType=VARCHAR},
+      </if>
+      <if test="temperature != null">
+        temperature = #{temperature,jdbcType=VARCHAR},
+      </if>
+      <if test="highPressure != null">
+        high_pressure = #{highPressure,jdbcType=VARCHAR},
+      </if>
+      <if test="lowPressure != null">
+        low_pressure = #{lowPressure,jdbcType=VARCHAR},
+      </if>
+      <if test="afterBloodSugar != null">
+        after_blood_sugar = #{afterBloodSugar,jdbcType=VARCHAR},
+      </if>
+      <if test="beforBloodSugar != null">
+        befor_blood_sugar = #{beforBloodSugar,jdbcType=VARCHAR},
+      </if>
+      <if test="pulse != null">
+        pulse = #{pulse,jdbcType=VARCHAR},
+      </if>
+      <if test="memberId != null">
+        member_id = #{memberId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteTime != null">
+        delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDoctor != null">
+        create_doctor = #{createDoctor,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDoctor != null">
+        update_doctor = #{updateDoctor,jdbcType=VARCHAR},
+      </if>
+      <if test="deleteDoctor != null">
+        delete_doctor = #{deleteDoctor,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        del_flag = #{delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.familydoctor.doctorsubject.entity.Examination">
+    update examination
+    set height = #{height,jdbcType=VARCHAR},
+      weight = #{weight,jdbcType=VARCHAR},
+      bmi = #{bmi,jdbcType=VARCHAR},
+      temperature = #{temperature,jdbcType=VARCHAR},
+      high_pressure = #{highPressure,jdbcType=VARCHAR},
+      low_pressure = #{lowPressure,jdbcType=VARCHAR},
+      after_blood_sugar = #{afterBloodSugar,jdbcType=VARCHAR},
+      befor_blood_sugar = #{beforBloodSugar,jdbcType=VARCHAR},
+      pulse = #{pulse,jdbcType=VARCHAR},
+      member_id = #{memberId,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      create_doctor = #{createDoctor,jdbcType=VARCHAR},
+      update_doctor = #{updateDoctor,jdbcType=VARCHAR},
+      delete_doctor = #{deleteDoctor,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

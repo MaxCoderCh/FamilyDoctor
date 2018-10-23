@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.familydoctor.doctorsubject.mapper.HospitalMapper">
+    <resultMap id="BaseResultMap" type="com.familydoctor.doctorsubject.entity.Hospital">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="hospital_name" jdbcType="VARCHAR" property="hospitalName"/>
+        <result column="hospital_no" jdbcType="VARCHAR" property="hospitalNo"/>
+        <result column="hospital_grade" jdbcType="VARCHAR" property="hospitalGrade"/>
+        <result column="hospital_info" jdbcType="VARCHAR" property="hospitalInfo"/>
+        <result column="hospital_add" jdbcType="VARCHAR" property="hospitalAdd"/>
+        <result column="city_id" jdbcType="VARCHAR" property="cityId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime"/>
+        <result column="create_user" jdbcType="VARCHAR" property="createUser"/>
+        <result column="update_user" jdbcType="VARCHAR" property="updateUser"/>
+        <result column="delete_user" jdbcType="VARCHAR" property="deleteUser"/>
+        <result column="del_flag" jdbcType="CHAR" property="delFlag"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, hospital_name, hospital_no, hospital_grade, hospital_info, hospital_add, city_id, 
+    create_time, update_time, delete_time, create_user, update_user, delete_user, del_flag
+  </sql>
+    <!--查询列表-->
+    <!--parameterType="com.familydoctor.doctorsubject.entity.Hospital"-->
+    <select id="selectRound"  parameterType="com.familydoctor.doctorsubject.entity.Hospital" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from hospital
+        <where>del_flag!=0</where>
+        limit #{beginNo},#{pageSize}
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from hospital
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from hospital
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+    <insert id="insert" parameterType="com.familydoctor.doctorsubject.entity.Hospital">
+
+        <selectKey keyProperty="id" resultType="string" order="BEFORE">
+            select replace(uuid(), '-', '') as id from dual
+        </selectKey>
+        insert into hospital (id, hospital_name, hospital_no,
+        hospital_grade, hospital_info, hospital_add,
+        city_id, create_time, update_time,
+        delete_time, create_user, update_user,
+        delete_user, del_flag)
+        values (#{id,jdbcType=VARCHAR}, #{hospitalName,jdbcType=VARCHAR}, #{hospitalNo,jdbcType=VARCHAR},
+        #{hospitalGrade,jdbcType=VARCHAR}, #{hospitalInfo,jdbcType=VARCHAR}, #{hospitalAdd,jdbcType=VARCHAR},
+        #{cityId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+        #{deleteTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, #{updateUser,jdbcType=VARCHAR},
+        #{deleteUser,jdbcType=VARCHAR}, #{delFlag,jdbcType=CHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.familydoctor.doctorsubject.entity.Hospital">
+
+        <selectKey keyProperty="id" resultType="string" order="BEFORE">
+            select replace(uuid(), '-', '') as id from dual
+        </selectKey>
+        insert into hospital
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="hospitalName != null">
+                hospital_name,
+            </if>
+            <if test="hospitalNo != null">
+                hospital_no,
+            </if>
+            <if test="hospitalGrade != null">
+                hospital_grade,
+            </if>
+            <if test="hospitalInfo != null">
+                hospital_info,
+            </if>
+            <if test="hospitalAdd != null">
+                hospital_add,
+            </if>
+            <if test="cityId != null">
+                city_id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="deleteTime != null">
+                delete_time,
+            </if>
+            <if test="createUser != null">
+                create_user,
+            </if>
+            <if test="updateUser != null">
+                update_user,
+            </if>
+            <if test="deleteUser != null">
+                delete_user,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="hospitalName != null">
+                #{hospitalName,jdbcType=VARCHAR},
+            </if>
+            <if test="hospitalNo != null">
+                #{hospitalNo,jdbcType=VARCHAR},
+            </if>
+            <if test="hospitalGrade != null">
+                #{hospitalGrade,jdbcType=VARCHAR},
+            </if>
+            <if test="hospitalInfo != null">
+                #{hospitalInfo,jdbcType=VARCHAR},
+            </if>
+            <if test="hospitalAdd != null">
+                #{hospitalAdd,jdbcType=VARCHAR},
+            </if>
+            <if test="cityId != null">
+                #{cityId,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deleteTime != null">
+                #{deleteTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUser != null">
+                #{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="updateUser != null">
+                #{updateUser,jdbcType=VARCHAR},
+            </if>
+            <if test="deleteUser != null">
+                #{deleteUser,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=CHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.familydoctor.doctorsubject.entity.Hospital">
+        update hospital
+        <set>
+            <if test="hospitalName != null">
+                hospital_name = #{hospitalName,jdbcType=VARCHAR},
+            </if>
+            <if test="hospitalNo != null">
+                hospital_no = #{hospitalNo,jdbcType=VARCHAR},
+            </if>
+            <if test="hospitalGrade != null">
+                hospital_grade = #{hospitalGrade,jdbcType=VARCHAR},
+            </if>
+            <if test="hospitalInfo != null">
+                hospital_info = #{hospitalInfo,jdbcType=VARCHAR},
+            </if>
+            <if test="hospitalAdd != null">
+                hospital_add = #{hospitalAdd,jdbcType=VARCHAR},
+            </if>
+            <if test="cityId != null">
+                city_id = #{cityId,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deleteTime != null">
+                delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUser != null">
+                create_user = #{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="updateUser != null">
+                update_user = #{updateUser,jdbcType=VARCHAR},
+            </if>
+            <if test="deleteUser != null">
+                delete_user = #{deleteUser,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=CHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <!--逻辑删除-->
+    <update id="softDelete" parameterType="com.familydoctor.doctorsubject.entity.Hospital">
+    update hospital
+    set
+     delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+     del_flag = "1"
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+    <update id="updateByPrimaryKey" parameterType="com.familydoctor.doctorsubject.entity.Hospital">
+    update hospital
+    set hospital_name = #{hospitalName,jdbcType=VARCHAR},
+      hospital_no = #{hospitalNo,jdbcType=VARCHAR},
+      hospital_grade = #{hospitalGrade,jdbcType=VARCHAR},
+      hospital_info = #{hospitalInfo,jdbcType=VARCHAR},
+      hospital_add = #{hospitalAdd,jdbcType=VARCHAR},
+      city_id = #{cityId,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      update_user = #{updateUser,jdbcType=VARCHAR},
+      delete_user = #{deleteUser,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

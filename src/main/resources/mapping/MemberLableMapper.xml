@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.familydoctor.doctorsubject.mapper.MemberLableMapper">
+    <resultMap id="BaseResultMap" type="com.familydoctor.doctorsubject.entity.MemberLable">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="member_id" jdbcType="VARCHAR" property="memberId"/>
+        <result column="lable_id" jdbcType="VARCHAR" property="lableId"/>
+        <result column="show_view" jdbcType="CHAR" property="showView"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime"/>
+        <result column="create_doctor" jdbcType="VARCHAR" property="createDoctor"/>
+        <result column="update_doctor" jdbcType="VARCHAR" property="updateDoctor"/>
+        <result column="delete_doctor" jdbcType="VARCHAR" property="deleteDoctor"/>
+        <result column="del_flag" jdbcType="CHAR" property="delFlag"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, member_id, lable_id, show_view, create_time, update_time, delete_time, create_doctor, 
+    update_doctor, delete_doctor, del_flag
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from member_lable
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    <!--由member.id查询MemberLable-->
+    <select id="selectByMemberId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from member_lable
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    <!--由lableName列表查询对应的MemberLable列表-->
+    <select id="selectByList" parameterType="com.familydoctor.doctorsubject.bean.MemberLableBean"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from member_lable
+        <where>
+            lable_id in
+            <foreach collection="lableIdList" item="lableName" index="index" open="(" close=")" separator=",">
+                #{lableName}
+            </foreach>
+        </where>
+        limit #{pageSize},#{pageNo}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from member_lable
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+    <insert id="insert" parameterType="com.familydoctor.doctorsubject.entity.MemberLable">
+        <selectKey keyProperty="id" resultType="string" order="BEFORE">
+            select replace(uuid(), '-', '') as id from dual
+        </selectKey>
+        insert into member_lable (id, member_id, lable_id,
+        show_view, create_time, update_time,
+        delete_time, create_doctor, update_doctor,
+        delete_doctor, del_flag)
+        values (#{id,jdbcType=VARCHAR}, #{memberId,jdbcType=VARCHAR}, #{lableId,jdbcType=VARCHAR},
+        #{showView,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+        #{deleteTime,jdbcType=TIMESTAMP}, #{createDoctor,jdbcType=VARCHAR}, #{updateDoctor,jdbcType=VARCHAR},
+        #{deleteDoctor,jdbcType=VARCHAR}, #{delFlag,jdbcType=CHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.familydoctor.doctorsubject.entity.MemberLable">
+        <selectKey keyProperty="id" resultType="string" order="BEFORE">
+            select replace(uuid(), '-', '') as id from dual
+        </selectKey>
+        insert into member_lable
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="memberId != null">
+                member_id,
+            </if>
+            <if test="lableId != null">
+                lable_id,
+            </if>
+            <if test="showView != null">
+                show_view,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="deleteTime != null">
+                delete_time,
+            </if>
+            <if test="createDoctor != null">
+                create_doctor,
+            </if>
+            <if test="updateDoctor != null">
+                update_doctor,
+            </if>
+            <if test="deleteDoctor != null">
+                delete_doctor,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="memberId != null">
+                #{memberId,jdbcType=VARCHAR},
+            </if>
+            <if test="lableId != null">
+                #{lableId,jdbcType=VARCHAR},
+            </if>
+            <if test="showView != null">
+                #{showView,jdbcType=CHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deleteTime != null">
+                #{deleteTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createDoctor != null">
+                #{createDoctor,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDoctor != null">
+                #{updateDoctor,jdbcType=VARCHAR},
+            </if>
+            <if test="deleteDoctor != null">
+                #{deleteDoctor,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=CHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.familydoctor.doctorsubject.entity.MemberLable">
+        update member_lable
+        <set>
+            <if test="memberId != null">
+                member_id = #{memberId,jdbcType=VARCHAR},
+            </if>
+            <if test="lableId != null">
+                lable_id = #{lableId,jdbcType=VARCHAR},
+            </if>
+            <if test="showView != null">
+                show_view = #{showView,jdbcType=CHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deleteTime != null">
+                delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createDoctor != null">
+                create_doctor = #{createDoctor,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDoctor != null">
+                update_doctor = #{updateDoctor,jdbcType=VARCHAR},
+            </if>
+            <if test="deleteDoctor != null">
+                delete_doctor = #{deleteDoctor,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=CHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.familydoctor.doctorsubject.entity.MemberLable">
+    update member_lable
+    set member_id = #{memberId,jdbcType=VARCHAR},
+      lable_id = #{lableId,jdbcType=VARCHAR},
+      show_view = #{showView,jdbcType=CHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      create_doctor = #{createDoctor,jdbcType=VARCHAR},
+      update_doctor = #{updateDoctor,jdbcType=VARCHAR},
+      delete_doctor = #{deleteDoctor,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

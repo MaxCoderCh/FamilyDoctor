@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.familydoctor.doctorsubject.mapper.ProduceMapper">
+    <resultMap id="BaseResultMap" type="com.familydoctor.doctorsubject.entity.Produce">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="produce_name" jdbcType="VARCHAR" property="produceName"/>
+        <result column="produce_no" jdbcType="VARCHAR" property="produceNo"/>
+        <result column="produce_price" jdbcType="VARCHAR" property="producePrice"/>
+        <result column="doctor_id" jdbcType="VARCHAR" property="doctorId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime"/>
+        <result column="create_user" jdbcType="VARCHAR" property="createUser"/>
+        <result column="update_user" jdbcType="VARCHAR" property="updateUser"/>
+        <result column="delete_user" jdbcType="VARCHAR" property="deleteUser"/>
+        <result column="del_flag" jdbcType="CHAR" property="delFlag"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, produce_name, produce_no, produce_price, doctor_id, create_time, update_time, 
+    delete_time, create_user, update_user, delete_user, del_flag
+  </sql>
+    <!--查询同一doctor下所有produce的id-->
+    <select id="selectByDoctorIdGetId" parameterType="java.lang.String" resultType="java.lang.String">
+        select
+        id
+        from produce
+        where doctor_id = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from produce
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    <!--逻辑删除-->
+    <update id="softDelete" parameterType="com.familydoctor.doctorsubject.entity.Produce">
+    update produce
+    set
+         delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+     del_flag = "1"
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+    <!--由doctorId查询列表-->
+    <select id="selectByDoctor" parameterType="com.familydoctor.doctorsubject.entity.Produce" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from produce
+        <where>
+            del_flag!="1"
+            AND
+            doctor_id = #{doctorId,jdbcType=VARCHAR}
+        </where>
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from produce
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+    <insert id="insert" parameterType="com.familydoctor.doctorsubject.entity.Produce">
+        <selectKey keyProperty="id" resultType="string" order="BEFORE">
+            select replace(uuid(), '-', '') as id from dual
+        </selectKey>
+        insert into produce (id, produce_name, produce_no,
+        produce_price, doctor_id, create_time,
+        update_time, delete_time, create_user,
+        update_user, delete_user, del_flag
+        )
+        values (#{id,jdbcType=VARCHAR}, #{produceName,jdbcType=VARCHAR}, #{produceNo,jdbcType=VARCHAR},
+        #{producePrice,jdbcType=VARCHAR}, #{doctorId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+        #{updateTime,jdbcType=TIMESTAMP}, #{deleteTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR},
+        #{updateUser,jdbcType=VARCHAR}, #{deleteUser,jdbcType=VARCHAR}, #{delFlag,jdbcType=CHAR}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.familydoctor.doctorsubject.entity.Produce">
+        <selectKey keyProperty="id" resultType="string" order="BEFORE">
+            select replace(uuid(), '-', '') as id from dual
+        </selectKey>
+        insert into produce
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="produceName != null">
+                produce_name,
+            </if>
+            <if test="produceNo != null">
+                produce_no,
+            </if>
+            <if test="producePrice != null">
+                produce_price,
+            </if>
+            <if test="doctorId != null">
+                doctor_id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="deleteTime != null">
+                delete_time,
+            </if>
+            <if test="createUser != null">
+                create_user,
+            </if>
+            <if test="updateUser != null">
+                update_user,
+            </if>
+            <if test="deleteUser != null">
+                delete_user,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="produceName != null">
+                #{produceName,jdbcType=VARCHAR},
+            </if>
+            <if test="produceNo != null">
+                #{produceNo,jdbcType=VARCHAR},
+            </if>
+            <if test="producePrice != null">
+                #{producePrice,jdbcType=VARCHAR},
+            </if>
+            <if test="doctorId != null">
+                #{doctorId,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deleteTime != null">
+                #{deleteTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUser != null">
+                #{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="updateUser != null">
+                #{updateUser,jdbcType=VARCHAR},
+            </if>
+            <if test="deleteUser != null">
+                #{deleteUser,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=CHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.familydoctor.doctorsubject.entity.Produce">
+        update produce
+        <set>
+            <if test="produceName != null">
+                produce_name = #{produceName,jdbcType=VARCHAR},
+            </if>
+            <if test="produceNo != null">
+                produce_no = #{produceNo,jdbcType=VARCHAR},
+            </if>
+            <if test="producePrice != null">
+                produce_price = #{producePrice,jdbcType=VARCHAR},
+            </if>
+            <if test="doctorId != null">
+                doctor_id = #{doctorId,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deleteTime != null">
+                delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUser != null">
+                create_user = #{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="updateUser != null">
+                update_user = #{updateUser,jdbcType=VARCHAR},
+            </if>
+            <if test="deleteUser != null">
+                delete_user = #{deleteUser,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=CHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.familydoctor.doctorsubject.entity.Produce">
+    update produce
+    set produce_name = #{produceName,jdbcType=VARCHAR},
+      produce_no = #{produceNo,jdbcType=VARCHAR},
+      produce_price = #{producePrice,jdbcType=VARCHAR},
+      doctor_id = #{doctorId,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      update_user = #{updateUser,jdbcType=VARCHAR},
+      delete_user = #{deleteUser,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

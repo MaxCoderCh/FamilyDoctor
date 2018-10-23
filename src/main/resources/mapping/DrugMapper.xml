@@ -1,0 +1,559 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.familydoctor.doctorsubject.mapper.DrugMapper">
+    <resultMap id="BaseResultMap" type="com.familydoctor.doctorsubject.entity.Drug">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="drug_code" jdbcType="VARCHAR" property="drugCode"/>
+        <result column="drug_name_china" jdbcType="VARCHAR" property="drugNameChina"/>
+        <result column="drug_name_pinyin" jdbcType="VARCHAR" property="drugNamePinyin"/>
+        <result column="drug_name_english" jdbcType="VARCHAR" property="drugNameEnglish"/>
+        <result column="drug_package" jdbcType="VARCHAR" property="drugPackage"/>
+        <result column="drug_stand" jdbcType="VARCHAR" property="drugStand"/>
+        <result column="drug_smallest_unit" jdbcType="VARCHAR" property="drugSmallestUnit"/>
+        <result column="delivery_way_id" jdbcType="VARCHAR" property="deliveryWayId"/>
+        <result column="usage_id" jdbcType="VARCHAR" property="usageId"/>
+        <result column="drug_category_id" jdbcType="VARCHAR" property="drugCategoryId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime"/>
+        <result column="create_user" jdbcType="VARCHAR" property="createUser"/>
+        <result column="update_user" jdbcType="VARCHAR" property="updateUser"/>
+        <result column="delete_user" jdbcType="VARCHAR" property="deleteUser"/>
+        <result column="del_flag" jdbcType="CHAR" property="delFlag"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.familydoctor.doctorsubject.entity.Drug">
+        <result column="drug_composition" jdbcType="LONGVARCHAR" property="drugComposition"/>
+        <result column="drug_character" jdbcType="LONGVARCHAR" property="drugCharacter"/>
+        <result column="drug_indications" jdbcType="LONGVARCHAR" property="drugIndications"/>
+        <result column="drug_usages" jdbcType="LONGVARCHAR" property="drugUsages"/>
+        <result column="drug_adverse_reactions" jdbcType="LONGVARCHAR" property="drugAdverseReactions"/>
+        <result column="drug_taboo" jdbcType="LONGVARCHAR" property="drugTaboo"/>
+        <result column="drug_attention" jdbcType="LONGVARCHAR" property="drugAttention"/>
+        <result column="drug_pregnant" jdbcType="LONGVARCHAR" property="drugPregnant"/>
+        <result column="drug_children" jdbcType="LONGVARCHAR" property="drugChildren"/>
+        <result column="drug_elderly" jdbcType="LONGVARCHAR" property="drugElderly"/>
+        <result column="drug_interactions" jdbcType="LONGVARCHAR" property="drugInteractions"/>
+        <result column="drug_overdose" jdbcType="LONGVARCHAR" property="drugOverdose"/>
+        <result column="drug_clinical_trials" jdbcType="LONGVARCHAR" property="drugClinicalTrials"/>
+        <result column="drug_pharmacology_toxicology" jdbcType="LONGVARCHAR" property="drugPharmacologyToxicology"/>
+        <result column="drug_pharmacokinetic" jdbcType="LONGVARCHAR" property="drugPharmacokinetic"/>
+        <result column="drug_period_validity" jdbcType="LONGVARCHAR" property="drugPeriodValidity"/>
+        <result column="drug_execution_standard" jdbcType="LONGVARCHAR" property="drugExecutionStandard"/>
+        <result column="drug_approval_number" jdbcType="LONGVARCHAR" property="drugApprovalNumber"/>
+        <result column="drug_enterprise" jdbcType="LONGVARCHAR" property="drugEnterprise"/>
+        <result column="drug_storage" jdbcType="LONGVARCHAR" property="drugStorage"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, drug_code, drug_name_china, drug_name_pinyin, drug_name_english, drug_package, 
+    drug_stand, drug_smallest_unit, delivery_way_id, usage_id, drug_category_id, create_time, 
+    update_time, delete_time, create_user, update_user, delete_user, del_flag
+  </sql>
+    <sql id="Blob_Column_List">
+    drug_composition, drug_character, drug_indications, drug_usages, drug_adverse_reactions, 
+    drug_taboo, drug_attention, drug_pregnant, drug_children, drug_elderly, drug_interactions, 
+    drug_overdose, drug_clinical_trials, drug_pharmacology_toxicology, drug_pharmacokinetic, 
+    drug_period_validity, drug_execution_standard, drug_approval_number, drug_enterprise, 
+    drug_storage
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from drug
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <!--分页查询-->
+    <select id="selectPage" parameterType="com.familydoctor.doctorsubject.entity.Drug" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from drug
+        <where>
+            del_flag = '0'
+        </where>
+        limit #{pageSize},#{pageNo}
+    </select>
+    <!--查询所有药品-->
+    <select id="selectAroundDrug" parameterType="com.familydoctor.doctorsubject.entity.Drug"
+            resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from drug
+        <where>del_flag="0"</where>
+        limit #{beginNo}, #{pageSize}
+
+
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from drug
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+    <insert id="insert" parameterType="com.familydoctor.doctorsubject.entity.Drug">
+
+        <selectKey keyProperty="id" resultType="string" order="BEFORE">
+            select replace(uuid(), '-', '') as id from dual
+        </selectKey>
+        insert into drug (id, drug_code, drug_name_china,
+        drug_name_pinyin, drug_name_english, drug_package,
+        drug_stand, drug_smallest_unit, delivery_way_id,
+        usage_id, drug_category_id, create_time,
+        update_time, delete_time, create_user,
+        update_user, delete_user, del_flag,
+        drug_composition, drug_character,
+        drug_indications, drug_usages, drug_adverse_reactions,
+        drug_taboo, drug_attention, drug_pregnant,
+        drug_children, drug_elderly, drug_interactions,
+        drug_overdose, drug_clinical_trials,
+        drug_pharmacology_toxicology, drug_pharmacokinetic,
+        drug_period_validity, drug_execution_standard,
+        drug_approval_number, drug_enterprise,
+        drug_storage)
+        values (#{id,jdbcType=VARCHAR}, #{drugCode,jdbcType=VARCHAR}, #{drugNameChina,jdbcType=VARCHAR},
+        #{drugNamePinyin,jdbcType=VARCHAR}, #{drugNameEnglish,jdbcType=VARCHAR}, #{drugPackage,jdbcType=VARCHAR},
+        #{drugStand,jdbcType=VARCHAR}, #{drugSmallestUnit,jdbcType=VARCHAR}, #{deliveryWayId,jdbcType=VARCHAR},
+        #{usageId,jdbcType=VARCHAR}, #{drugCategoryId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+        #{updateTime,jdbcType=TIMESTAMP}, #{deleteTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR},
+        #{updateUser,jdbcType=VARCHAR}, #{deleteUser,jdbcType=VARCHAR}, #{delFlag,jdbcType=CHAR},
+        #{drugComposition,jdbcType=LONGVARCHAR}, #{drugCharacter,jdbcType=LONGVARCHAR},
+        #{drugIndications,jdbcType=LONGVARCHAR}, #{drugUsages,jdbcType=LONGVARCHAR},
+        #{drugAdverseReactions,jdbcType=LONGVARCHAR},
+        #{drugTaboo,jdbcType=LONGVARCHAR}, #{drugAttention,jdbcType=LONGVARCHAR}, #{drugPregnant,jdbcType=LONGVARCHAR},
+        #{drugChildren,jdbcType=LONGVARCHAR}, #{drugElderly,jdbcType=LONGVARCHAR},
+        #{drugInteractions,jdbcType=LONGVARCHAR},
+        #{drugOverdose,jdbcType=LONGVARCHAR}, #{drugClinicalTrials,jdbcType=LONGVARCHAR},
+        #{drugPharmacologyToxicology,jdbcType=LONGVARCHAR}, #{drugPharmacokinetic,jdbcType=LONGVARCHAR},
+        #{drugPeriodValidity,jdbcType=LONGVARCHAR}, #{drugExecutionStandard,jdbcType=LONGVARCHAR},
+        #{drugApprovalNumber,jdbcType=LONGVARCHAR}, #{drugEnterprise,jdbcType=LONGVARCHAR},
+        #{drugStorage,jdbcType=LONGVARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.familydoctor.doctorsubject.entity.Drug">
+
+        <selectKey keyProperty="id" resultType="string" order="BEFORE">
+            select replace(uuid(), '-', '') as id from dual
+        </selectKey>
+        insert into drug
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="drugCode != null">
+                drug_code,
+            </if>
+            <if test="drugNameChina != null">
+                drug_name_china,
+            </if>
+            <if test="drugNamePinyin != null">
+                drug_name_pinyin,
+            </if>
+            <if test="drugNameEnglish != null">
+                drug_name_english,
+            </if>
+            <if test="drugPackage != null">
+                drug_package,
+            </if>
+            <if test="drugStand != null">
+                drug_stand,
+            </if>
+            <if test="drugSmallestUnit != null">
+                drug_smallest_unit,
+            </if>
+            <if test="deliveryWayId != null">
+                delivery_way_id,
+            </if>
+            <if test="usageId != null">
+                usage_id,
+            </if>
+            <if test="drugCategoryId != null">
+                drug_category_id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="deleteTime != null">
+                delete_time,
+            </if>
+            <if test="createUser != null">
+                create_user,
+            </if>
+            <if test="updateUser != null">
+                update_user,
+            </if>
+            <if test="deleteUser != null">
+                delete_user,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="drugComposition != null">
+                drug_composition,
+            </if>
+            <if test="drugCharacter != null">
+                drug_character,
+            </if>
+            <if test="drugIndications != null">
+                drug_indications,
+            </if>
+            <if test="drugUsages != null">
+                drug_usages,
+            </if>
+            <if test="drugAdverseReactions != null">
+                drug_adverse_reactions,
+            </if>
+            <if test="drugTaboo != null">
+                drug_taboo,
+            </if>
+            <if test="drugAttention != null">
+                drug_attention,
+            </if>
+            <if test="drugPregnant != null">
+                drug_pregnant,
+            </if>
+            <if test="drugChildren != null">
+                drug_children,
+            </if>
+            <if test="drugElderly != null">
+                drug_elderly,
+            </if>
+            <if test="drugInteractions != null">
+                drug_interactions,
+            </if>
+            <if test="drugOverdose != null">
+                drug_overdose,
+            </if>
+            <if test="drugClinicalTrials != null">
+                drug_clinical_trials,
+            </if>
+            <if test="drugPharmacologyToxicology != null">
+                drug_pharmacology_toxicology,
+            </if>
+            <if test="drugPharmacokinetic != null">
+                drug_pharmacokinetic,
+            </if>
+            <if test="drugPeriodValidity != null">
+                drug_period_validity,
+            </if>
+            <if test="drugExecutionStandard != null">
+                drug_execution_standard,
+            </if>
+            <if test="drugApprovalNumber != null">
+                drug_approval_number,
+            </if>
+            <if test="drugEnterprise != null">
+                drug_enterprise,
+            </if>
+            <if test="drugStorage != null">
+                drug_storage,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="drugCode != null">
+                #{drugCode,jdbcType=VARCHAR},
+            </if>
+            <if test="drugNameChina != null">
+                #{drugNameChina,jdbcType=VARCHAR},
+            </if>
+            <if test="drugNamePinyin != null">
+                #{drugNamePinyin,jdbcType=VARCHAR},
+            </if>
+            <if test="drugNameEnglish != null">
+                #{drugNameEnglish,jdbcType=VARCHAR},
+            </if>
+            <if test="drugPackage != null">
+                #{drugPackage,jdbcType=VARCHAR},
+            </if>
+            <if test="drugStand != null">
+                #{drugStand,jdbcType=VARCHAR},
+            </if>
+            <if test="drugSmallestUnit != null">
+                #{drugSmallestUnit,jdbcType=VARCHAR},
+            </if>
+            <if test="deliveryWayId != null">
+                #{deliveryWayId,jdbcType=VARCHAR},
+            </if>
+            <if test="usageId != null">
+                #{usageId,jdbcType=VARCHAR},
+            </if>
+            <if test="drugCategoryId != null">
+                #{drugCategoryId,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deleteTime != null">
+                #{deleteTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUser != null">
+                #{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="updateUser != null">
+                #{updateUser,jdbcType=VARCHAR},
+            </if>
+            <if test="deleteUser != null">
+                #{deleteUser,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=CHAR},
+            </if>
+            <if test="drugComposition != null">
+                #{drugComposition,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="drugCharacter != null">
+                #{drugCharacter,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="drugIndications != null">
+                #{drugIndications,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="drugUsages != null">
+                #{drugUsages,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="drugAdverseReactions != null">
+                #{drugAdverseReactions,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="drugTaboo != null">
+                #{drugTaboo,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="drugAttention != null">
+                #{drugAttention,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="drugPregnant != null">
+                #{drugPregnant,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="drugChildren != null">
+                #{drugChildren,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="drugElderly != null">
+                #{drugElderly,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="drugInteractions != null">
+                #{drugInteractions,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="drugOverdose != null">
+                #{drugOverdose,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="drugClinicalTrials != null">
+                #{drugClinicalTrials,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="drugPharmacologyToxicology != null">
+                #{drugPharmacologyToxicology,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="drugPharmacokinetic != null">
+                #{drugPharmacokinetic,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="drugPeriodValidity != null">
+                #{drugPeriodValidity,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="drugExecutionStandard != null">
+                #{drugExecutionStandard,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="drugApprovalNumber != null">
+                #{drugApprovalNumber,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="drugEnterprise != null">
+                #{drugEnterprise,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="drugStorage != null">
+                #{drugStorage,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.familydoctor.doctorsubject.entity.Drug">
+        update drug
+        <set>
+            <if test="drugCode != null">
+                drug_code = #{drugCode,jdbcType=VARCHAR},
+            </if>
+            <if test="drugNameChina != null">
+                drug_name_china = #{drugNameChina,jdbcType=VARCHAR},
+            </if>
+            <if test="drugNamePinyin != null">
+                drug_name_pinyin = #{drugNamePinyin,jdbcType=VARCHAR},
+            </if>
+            <if test="drugNameEnglish != null">
+                drug_name_english = #{drugNameEnglish,jdbcType=VARCHAR},
+            </if>
+            <if test="drugPackage != null">
+                drug_package = #{drugPackage,jdbcType=VARCHAR},
+            </if>
+            <if test="drugStand != null">
+                drug_stand = #{drugStand,jdbcType=VARCHAR},
+            </if>
+            <if test="drugSmallestUnit != null">
+                drug_smallest_unit = #{drugSmallestUnit,jdbcType=VARCHAR},
+            </if>
+            <if test="deliveryWayId != null">
+                delivery_way_id = #{deliveryWayId,jdbcType=VARCHAR},
+            </if>
+            <if test="usageId != null">
+                usage_id = #{usageId,jdbcType=VARCHAR},
+            </if>
+            <if test="drugCategoryId != null">
+                drug_category_id = #{drugCategoryId,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deleteTime != null">
+                delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUser != null">
+                create_user = #{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="updateUser != null">
+                update_user = #{updateUser,jdbcType=VARCHAR},
+            </if>
+            <if test="deleteUser != null">
+                delete_user = #{deleteUser,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=CHAR},
+            </if>
+            <if test="drugComposition != null">
+                drug_composition = #{drugComposition,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="drugCharacter != null">
+                drug_character = #{drugCharacter,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="drugIndications != null">
+                drug_indications = #{drugIndications,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="drugUsages != null">
+                drug_usages = #{drugUsages,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="drugAdverseReactions != null">
+                drug_adverse_reactions = #{drugAdverseReactions,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="drugTaboo != null">
+                drug_taboo = #{drugTaboo,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="drugAttention != null">
+                drug_attention = #{drugAttention,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="drugPregnant != null">
+                drug_pregnant = #{drugPregnant,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="drugChildren != null">
+                drug_children = #{drugChildren,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="drugElderly != null">
+                drug_elderly = #{drugElderly,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="drugInteractions != null">
+                drug_interactions = #{drugInteractions,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="drugOverdose != null">
+                drug_overdose = #{drugOverdose,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="drugClinicalTrials != null">
+                drug_clinical_trials = #{drugClinicalTrials,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="drugPharmacologyToxicology != null">
+                drug_pharmacology_toxicology = #{drugPharmacologyToxicology,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="drugPharmacokinetic != null">
+                drug_pharmacokinetic = #{drugPharmacokinetic,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="drugPeriodValidity != null">
+                drug_period_validity = #{drugPeriodValidity,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="drugExecutionStandard != null">
+                drug_execution_standard = #{drugExecutionStandard,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="drugApprovalNumber != null">
+                drug_approval_number = #{drugApprovalNumber,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="drugEnterprise != null">
+                drug_enterprise = #{drugEnterprise,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="drugStorage != null">
+                drug_storage = #{drugStorage,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="softDelete" parameterType="com.familydoctor.doctorsubject.entity.Drug">
+    update drug
+    set
+    update_time = #{updateTime,jdbcType=TIMESTAMP},
+     del_flag = "1"
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.familydoctor.doctorsubject.entity.Drug">
+    update drug
+    set drug_code = #{drugCode,jdbcType=VARCHAR},
+      drug_name_china = #{drugNameChina,jdbcType=VARCHAR},
+      drug_name_pinyin = #{drugNamePinyin,jdbcType=VARCHAR},
+      drug_name_english = #{drugNameEnglish,jdbcType=VARCHAR},
+      drug_package = #{drugPackage,jdbcType=VARCHAR},
+      drug_stand = #{drugStand,jdbcType=VARCHAR},
+      drug_smallest_unit = #{drugSmallestUnit,jdbcType=VARCHAR},
+      delivery_way_id = #{deliveryWayId,jdbcType=VARCHAR},
+      usage_id = #{usageId,jdbcType=VARCHAR},
+      drug_category_id = #{drugCategoryId,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      update_user = #{updateUser,jdbcType=VARCHAR},
+      delete_user = #{deleteUser,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR},
+      drug_composition = #{drugComposition,jdbcType=LONGVARCHAR},
+      drug_character = #{drugCharacter,jdbcType=LONGVARCHAR},
+      drug_indications = #{drugIndications,jdbcType=LONGVARCHAR},
+      drug_usages = #{drugUsages,jdbcType=LONGVARCHAR},
+      drug_adverse_reactions = #{drugAdverseReactions,jdbcType=LONGVARCHAR},
+      drug_taboo = #{drugTaboo,jdbcType=LONGVARCHAR},
+      drug_attention = #{drugAttention,jdbcType=LONGVARCHAR},
+      drug_pregnant = #{drugPregnant,jdbcType=LONGVARCHAR},
+      drug_children = #{drugChildren,jdbcType=LONGVARCHAR},
+      drug_elderly = #{drugElderly,jdbcType=LONGVARCHAR},
+      drug_interactions = #{drugInteractions,jdbcType=LONGVARCHAR},
+      drug_overdose = #{drugOverdose,jdbcType=LONGVARCHAR},
+      drug_clinical_trials = #{drugClinicalTrials,jdbcType=LONGVARCHAR},
+      drug_pharmacology_toxicology = #{drugPharmacologyToxicology,jdbcType=LONGVARCHAR},
+      drug_pharmacokinetic = #{drugPharmacokinetic,jdbcType=LONGVARCHAR},
+      drug_period_validity = #{drugPeriodValidity,jdbcType=LONGVARCHAR},
+      drug_execution_standard = #{drugExecutionStandard,jdbcType=LONGVARCHAR},
+      drug_approval_number = #{drugApprovalNumber,jdbcType=LONGVARCHAR},
+      drug_enterprise = #{drugEnterprise,jdbcType=LONGVARCHAR},
+      drug_storage = #{drugStorage,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+    <update id="updateByPrimaryKey" parameterType="com.familydoctor.doctorsubject.entity.Drug">
+    update drug
+    set drug_code = #{drugCode,jdbcType=VARCHAR},
+      drug_name_china = #{drugNameChina,jdbcType=VARCHAR},
+      drug_name_pinyin = #{drugNamePinyin,jdbcType=VARCHAR},
+      drug_name_english = #{drugNameEnglish,jdbcType=VARCHAR},
+      drug_package = #{drugPackage,jdbcType=VARCHAR},
+      drug_stand = #{drugStand,jdbcType=VARCHAR},
+      drug_smallest_unit = #{drugSmallestUnit,jdbcType=VARCHAR},
+      delivery_way_id = #{deliveryWayId,jdbcType=VARCHAR},
+      usage_id = #{usageId,jdbcType=VARCHAR},
+      drug_category_id = #{drugCategoryId,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      update_user = #{updateUser,jdbcType=VARCHAR},
+      delete_user = #{deleteUser,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

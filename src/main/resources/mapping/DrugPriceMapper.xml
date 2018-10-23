@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.familydoctor.doctorsubject.mapper.DrugPriceMapper">
+    <resultMap id="BaseResultMap" type="com.familydoctor.doctorsubject.entity.DrugPrice">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="drug_id" jdbcType="VARCHAR" property="drugId"/>
+        <result column="drug_in_price" jdbcType="VARCHAR" property="drugInPrice"/>
+        <result column="drug_out_price" jdbcType="VARCHAR" property="drugOutPrice"/>
+        <result column="drug_unit" jdbcType="VARCHAR" property="drugUnit"/>
+        <result column="start_time" jdbcType="TIMESTAMP" property="startTime"/>
+        <result column="stop_time" jdbcType="TIMESTAMP" property="stopTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime"/>
+        <result column="create_user" jdbcType="VARCHAR" property="createUser"/>
+        <result column="update_user" jdbcType="VARCHAR" property="updateUser"/>
+        <result column="delete_user" jdbcType="VARCHAR" property="deleteUser"/>
+        <result column="del_flag" jdbcType="CHAR" property="delFlag"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, drug_id, drug_in_price, drug_out_price, drug_unit, start_time, stop_time, create_time, 
+    update_time, delete_time, create_user, update_user, delete_user, del_flag
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from drug_price
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    <select id="selectRoundPrice" parameterType="com.familydoctor.doctorsubject.entity.DrugPrice"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from drug_price
+        <where>del_flag!="1"</where>
+    </select>
+    <!--分页查询-->
+    <select id="selectPage" parameterType="com.familydoctor.doctorsubject.entity.DrugPrice" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from drug_price
+        <where>
+            del_flag = '0'
+        </where>
+        limit #{pageSize},#{pageNo}
+    </select>
+    <!-- 动态SQL 查询 -->
+    <select resultMap="BaseResultMap" id="selectTrends" parameterType="com.familydoctor.doctorsubject.entity.PriceType">
+        select
+        <include refid="Base_Column_List"/>
+        from drug_price
+        <where>
+            <if test="drugId != null">
+                AND drug_id = #{drugId,jdbcType=VARCHAR}
+            </if>
+            <if test="drugInPrice != null">
+                AND drug_in_price = #{drugInPrice,jdbcType=VARCHAR}
+            </if>
+            <if test="drugOutPrice != null">
+                AND drug_out_price = #{drugOutPrice,jdbcType=VARCHAR}
+            </if>
+            <if test="drugUnit != null">
+                AND drug_unit = #{drugUnit,jdbcType=VARCHAR}
+            </if>
+            <if test="startTime != null">
+                AND start_time &lt; #{startTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="stopTime != null">
+                AND stop_time &gt; #{stopTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="createTime != null">
+                AND create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null">
+                AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="deleteTime != null">
+                AND delete_time = #{deleteTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="createUser != null">
+                AND create_user = #{createUser,jdbcType=VARCHAR}
+            </if>
+            <if test="updateUser != null">
+                AND update_user = #{updateUser,jdbcType=VARCHAR}
+            </if>
+            <if test="deleteUser != null">
+                AND delete_user = #{deleteUser,jdbcType=VARCHAR}
+            </if>
+            <if test="delFlag != null">
+                AND del_flag = #{delFlag,jdbcType=CHAR},
+            </if>
+        </where>
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from drug_price
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+    <insert id="insert" parameterType="com.familydoctor.doctorsubject.entity.DrugPrice">
+
+        <selectKey keyProperty="id" resultType="string" order="BEFORE">
+            select replace(uuid(), '-', '') as id from dual
+        </selectKey>
+        insert into drug_price (id, drug_id, drug_in_price,
+        drug_out_price, drug_unit, start_time,
+        stop_time, create_time, update_time,
+        delete_time, create_user, update_user,
+        delete_user, del_flag)
+        values (#{id,jdbcType=VARCHAR}, #{drugId,jdbcType=VARCHAR}, #{drugInPrice,jdbcType=VARCHAR},
+        #{drugOutPrice,jdbcType=VARCHAR}, #{drugUnit,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP},
+        #{stopTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+        #{deleteTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, #{updateUser,jdbcType=VARCHAR},
+        #{deleteUser,jdbcType=VARCHAR}, #{delFlag,jdbcType=CHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.familydoctor.doctorsubject.entity.DrugPrice">
+
+        <selectKey keyProperty="id" resultType="string" order="BEFORE">
+            select replace(uuid(), '-', '') as id from dual
+        </selectKey>
+        insert into drug_price
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="drugId != null">
+                drug_id,
+            </if>
+            <if test="drugInPrice != null">
+                drug_in_price,
+            </if>
+            <if test="drugOutPrice != null">
+                drug_out_price,
+            </if>
+            <if test="drugUnit != null">
+                drug_unit,
+            </if>
+            <if test="startTime != null">
+                start_time,
+            </if>
+            <if test="stopTime != null">
+                stop_time,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="deleteTime != null">
+                delete_time,
+            </if>
+            <if test="createUser != null">
+                create_user,
+            </if>
+            <if test="updateUser != null">
+                update_user,
+            </if>
+            <if test="deleteUser != null">
+                delete_user,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="drugId != null">
+                #{drugId,jdbcType=VARCHAR},
+            </if>
+            <if test="drugInPrice != null">
+                #{drugInPrice,jdbcType=VARCHAR},
+            </if>
+            <if test="drugOutPrice != null">
+                #{drugOutPrice,jdbcType=VARCHAR},
+            </if>
+            <if test="drugUnit != null">
+                #{drugUnit,jdbcType=VARCHAR},
+            </if>
+            <if test="startTime != null">
+                #{startTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="stopTime != null">
+                #{stopTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deleteTime != null">
+                #{deleteTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUser != null">
+                #{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="updateUser != null">
+                #{updateUser,jdbcType=VARCHAR},
+            </if>
+            <if test="deleteUser != null">
+                #{deleteUser,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=CHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.familydoctor.doctorsubject.entity.DrugPrice">
+        update drug_price
+        <set>
+            <if test="drugId != null">
+                drug_id = #{drugId,jdbcType=VARCHAR},
+            </if>
+            <if test="drugInPrice != null">
+                drug_in_price = #{drugInPrice,jdbcType=VARCHAR},
+            </if>
+            <if test="drugOutPrice != null">
+                drug_out_price = #{drugOutPrice,jdbcType=VARCHAR},
+            </if>
+            <if test="drugUnit != null">
+                drug_unit = #{drugUnit,jdbcType=VARCHAR},
+            </if>
+            <if test="startTime != null">
+                start_time = #{startTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="stopTime != null">
+                stop_time = #{stopTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deleteTime != null">
+                delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUser != null">
+                create_user = #{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="updateUser != null">
+                update_user = #{updateUser,jdbcType=VARCHAR},
+            </if>
+            <if test="deleteUser != null">
+                delete_user = #{deleteUser,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=CHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="softDelete" parameterType="com.familydoctor.doctorsubject.entity.DrugPrice">
+    update drug_price
+    set
+    delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+     del_flag = "1"
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+    <update id="updateByPrimaryKey" parameterType="com.familydoctor.doctorsubject.entity.DrugPrice">
+    update drug_price
+    set drug_id = #{drugId,jdbcType=VARCHAR},
+      drug_in_price = #{drugInPrice,jdbcType=VARCHAR},
+      drug_out_price = #{drugOutPrice,jdbcType=VARCHAR},
+      drug_unit = #{drugUnit,jdbcType=VARCHAR},
+      start_time = #{startTime,jdbcType=TIMESTAMP},
+      stop_time = #{stopTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      update_user = #{updateUser,jdbcType=VARCHAR},
+      delete_user = #{deleteUser,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

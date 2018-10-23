@@ -1,6 +1,7 @@
 package com.familydoctor.doctorsubject.service;
 
 import com.familydoctor.doctorsubject.entity.Contract;
+import com.familydoctor.doctorsubject.entity.Member;
 
 import java.util.List;
 
@@ -26,4 +27,6 @@ public interface ContractService {
      * @param list
      */
     List<Contract> selectByDoctorId(List<String> list);
+
+    List<Contract> selectByMemberId(Member member);
 }

@@ -80,4 +80,9 @@ public class ProduceServiceImpl implements ProduceService {
     public List<String> selectByDoctorToId(String id) {
         return produceMapper.selectByDoctorIdGetId(id);
     }
+
+    @Override
+    public Produce selectTrends(Produce produce) {
+        return produceMapper.selectTrends(produce);
+    }
 }

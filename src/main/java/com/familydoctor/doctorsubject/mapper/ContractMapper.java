@@ -1,6 +1,7 @@
 package com.familydoctor.doctorsubject.mapper;
 
 import com.familydoctor.doctorsubject.entity.Contract;
+import com.familydoctor.doctorsubject.entity.Member;
 
 import java.util.List;
 
@@ -14,6 +15,8 @@ public interface ContractMapper {
     Contract selectByPrimaryKey(String id);
 
     List<Contract> selectByDoctor(List<String> list);
+
+    List<Contract> selectByMemberId(Member member);
 
     int updateByPrimaryKeySelective(Contract record);
 

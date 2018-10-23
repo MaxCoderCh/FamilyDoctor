@@ -36,6 +36,15 @@
             #{item}
         </foreach>
     </select>
+    <!--memberId查询contract-->
+    <select id="selectByMemberId" parameterType="com.familydoctor.doctorsubject.entity.Member"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from contract
+        where memberId=#{memberId,jdbcType=VARCHAR}
+    </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from contract
     where id = #{id,jdbcType=VARCHAR}

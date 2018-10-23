@@ -79,7 +79,7 @@ public class MemberLableController extends BaseController {
     @GetMapping(value = "selectByTerm")
     public Map selectTerm(MemberLable memberLable, String[] lableNames) {
 
-        //由传入的标签名数组查询对应的标签Id列表
+        //由传入的lableName数组查询对应的lableId列表
         if (lableNames == null) {
             return requestArgumentEmpty("标签名为空");
         }
@@ -105,4 +105,11 @@ public class MemberLableController extends BaseController {
 
         return requestSelectSuccess(memberLableList);
     }
+
+    //签约统计
+    @GetMapping(value = "statistics")
+    public Map signStatistics() {
+        return null;
+    }
+
 }

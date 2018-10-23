@@ -26,7 +26,25 @@
         from member_price
         where id = #{id,jdbcType=VARCHAR}
     </select>
-
+    <!--memberId,priceTypeId,orderIdList查询-->
+    <select id="selectThreePram" parameterType="com.familydoctor.doctorsubject.bean.MemberPriceBean"
+            resultMap="BaseResultMap">
+        select * from member_price
+        <where>
+            <if test="memberId != null">
+                AND member_id = #{memberId,jdbcType=VARCHAR}
+            </if>
+            <if test="priceTypeId != null">
+                AND price_type_id = #{priceTypeId,jdbcType=VARCHAR}
+            </if>
+            <if test="orderId != null">
+                AND order_id in
+                <foreach collection="orderIds" item="orderId" index="index" open="(" close=")" separator=",">
+                    #{orderId}
+                </foreach>
+            </if>
+        </where>
+    </select>
     <!--动态查询-->
     <select id="selectBySelective" parameterType="com.familydoctor.doctorsubject.entity.MemberPrice"
             resultMap="BaseResultMap">
@@ -35,70 +53,37 @@
         from member_price
         <where>
             <if test="price != null">
-                price = #{price,jdbcType=VARCHAR},
+                AND price = #{price,jdbcType=VARCHAR}
             </if>
             <if test="ispay != null">
-                ispay = #{ispay,jdbcType=CHAR},
+                AND ispay = #{ispay,jdbcType=CHAR}
             </if>
             <if test="memberId != null">
-                member_id = #{memberId,jdbcType=VARCHAR},
+                AND member_id = #{memberId,jdbcType=VARCHAR}
             </if>
             <if test="orderId != null">
-                order_id = #{orderId,jdbcType=VARCHAR},
+                AND order_id = #{orderId,jdbcType=VARCHAR}
             </if>
             <if test="priceTypeId != null">
-                price_type_id = #{priceTypeId,jdbcType=VARCHAR},
+                AND price_type_id = #{priceTypeId,jdbcType=VARCHAR}
             </if>
             <if test="createTime != null">
-                create_time = #{createTime,jdbcType=TIMESTAMP},
+                AND create_time = #{createTime,jdbcType=TIMESTAMP}
             </if>
             <if test="updateTime != null">
-                update_time = #{updateTime,jdbcType=TIMESTAMP},
+                AND update_time = #{updateTime,jdbcType=TIMESTAMP}
             </if>
             <if test="deleteTime != null">
-                delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+                AND delete_time = #{deleteTime,jdbcType=TIMESTAMP}
             </if>
             <if test="createDoctor != null">
-                create_doctor = #{createDoctor,jdbcType=VARCHAR},
+                AND create_doctor = #{createDoctor,jdbcType=VARCHAR}
             </if>
             <if test="updateDoctor != null">
-                update_doctor = #{updateDoctor,jdbcType=VARCHAR},
+                AND update_doctor = #{updateDoctor,jdbcType=VARCHAR}
             </if>
             <if test="deleteUser != null">
-                delete_user = #{deleteUser,jdbcType=VARCHAR},
-            </if>
-            <if test="price != null">
-                price = #{price,jdbcType=VARCHAR},
-            </if>
-            <if test="ispay != null">
-                ispay = #{ispay,jdbcType=CHAR},
-            </if>
-            <if test="memberId != null">
-                member_id = #{memberId,jdbcType=VARCHAR},
-            </if>
-            <if test="orderId != null">
-                order_id = #{orderId,jdbcType=VARCHAR},
-            </if>
-            <if test="priceTypeId != null">
-                price_type_id = #{priceTypeId,jdbcType=VARCHAR},
-            </if>
-            <if test="createTime != null">
-                create_time = #{createTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="updateTime != null">
-                update_time = #{updateTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="deleteTime != null">
-                delete_time = #{deleteTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="createDoctor != null">
-                create_doctor = #{createDoctor,jdbcType=VARCHAR},
-            </if>
-            <if test="updateDoctor != null">
-                update_doctor = #{updateDoctor,jdbcType=VARCHAR},
-            </if>
-            <if test="deleteUser != null">
-                delete_user = #{deleteUser,jdbcType=VARCHAR},
+                AND delete_user = #{deleteUser,jdbcType=VARCHAR}
             </if>
         </where>
     </select>

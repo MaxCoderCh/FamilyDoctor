@@ -27,6 +27,33 @@
         where doctor_id = #{id,jdbcType=VARCHAR}
     </select>
 
+    <!--动态查询-->
+    <select id="selectTrends" parameterType="com.familydoctor.doctorsubject.entity.Produce"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from produce
+        <where>
+            <if test="id != null">
+                AND id = #{id,jdbcType=VARCHAR}
+            </if>
+            <if test="produceName != null">
+                AND produceName = #{produceName,jdbcType=VARCHAR}
+            </if>
+            <if test="produceNo != null">
+                AND produceNo = #{produceNo,jdbcType=VARCHAR}
+            </if>
+            <if test="producePrice != null">
+                AND producePrice = #{producePrice,jdbcType=VARCHAR}
+            </if>
+            <if test="priceTypeId != null">
+                AND price_type_id = #{priceTypeId,jdbcType=VARCHAR}
+            </if>
+            <if test="doctorId != null">
+                AND doctorId = #{doctorId,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
     <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>

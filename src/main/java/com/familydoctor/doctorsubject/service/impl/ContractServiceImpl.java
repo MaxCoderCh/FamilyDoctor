@@ -1,6 +1,7 @@
 package com.familydoctor.doctorsubject.service.impl;
 
 import com.familydoctor.doctorsubject.entity.Contract;
+import com.familydoctor.doctorsubject.entity.Member;
 import com.familydoctor.doctorsubject.mapper.ContractMapper;
 import com.familydoctor.doctorsubject.service.ContractService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,5 +46,10 @@ public class ContractServiceImpl implements ContractService {
     @Override
     public List<Contract> selectByDoctorId(List<String> list) {
         return contractMapper.selectByDoctor(list);
+    }
+
+    @Override
+    public List<Contract> selectByMemberId(Member member) {
+        return selectByMemberId(member);
     }
 }

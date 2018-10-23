@@ -74,4 +74,5 @@ public class PriceTypeServiceImpl implements PriceTypeService {
         return priceTypeMapper.selectPage(priceType);
     }
 
+
 }

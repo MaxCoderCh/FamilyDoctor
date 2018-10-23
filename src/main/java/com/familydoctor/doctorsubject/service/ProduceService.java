@@ -35,6 +35,13 @@ public interface ProduceService {
      */
     Produce selectById(String id);
 
+    /**
+     * 动态查询
+     *
+     * @param produce
+     */
+    Produce selectTrends(Produce produce);
+
     int softDel(Produce produce);
 
     int updateById(Produce record);

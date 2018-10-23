@@ -1,6 +1,9 @@
 package com.familydoctor.doctorsubject.service;
 
+import com.familydoctor.doctorsubject.bean.MemberPriceBean;
 import com.familydoctor.doctorsubject.entity.MemberPrice;
+
+import java.util.List;
 
 public interface MemberPriceService {
 
@@ -17,4 +20,8 @@ public interface MemberPriceService {
      * @param memberPrice
      */
     MemberPrice selectBySelective(MemberPrice memberPrice);
+
+    int updateByPrimaryKeySelective(MemberPrice record);
+
+    List<MemberPrice> selectThreePram(MemberPriceBean memberPriceBean);
 }

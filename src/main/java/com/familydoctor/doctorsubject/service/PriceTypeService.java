@@ -43,4 +43,5 @@ public interface PriceTypeService {
 
     List<PriceType> selectPage(PriceType priceType);
 
+
 }

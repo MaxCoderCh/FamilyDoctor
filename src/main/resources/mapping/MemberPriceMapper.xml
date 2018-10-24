@@ -45,26 +45,17 @@
             </if>
         </where>
     </select>
-    <!--memberCard,priceTypeName查询-->
-    <select id="selectTwoPram" parameterType="com.familydoctor.doctorsubject.entity.MemberPrice"
-            resultMap="BaseResultMap">
-        select * from member_price
-        <where>
-            <if test="memberId != null">
-                AND member_id = #{memberId,jdbcType=VARCHAR}
-            </if>
-            <if test="priceTypeId != null">
-                AND price_type_id = #{priceTypeId,jdbcType=VARCHAR}
-            </if>
-        </where>
-    </select>
     <!--动态查询-->
-    <select id="selectBySelective" parameterType="com.familydoctor.doctorsubject.entity.MemberPrice"
+    <select id="selectTrends" parameterType="com.familydoctor.doctorsubject.bean.MemberPriceBean"
             resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from member_price
         <where>
+            AND del_flag = "0"
+            AND ispay = "1"
+            AND create_time &gt;=#{startDate}
+            AND create_time &lt;=#{stopDate}
             <if test="price != null">
                 AND price = #{price,jdbcType=VARCHAR}
             </if>

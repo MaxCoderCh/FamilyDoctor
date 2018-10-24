@@ -1,5 +1,6 @@
 package com.familydoctor.doctorsubject.service.impl;
 
+import com.familydoctor.doctorsubject.bean.ContractBean;
 import com.familydoctor.doctorsubject.entity.Contract;
 import com.familydoctor.doctorsubject.entity.Member;
 import com.familydoctor.doctorsubject.mapper.ContractMapper;
@@ -51,5 +52,10 @@ public class ContractServiceImpl implements ContractService {
     @Override
     public List<Contract> selectByMemberId(Member member) {
         return selectByMemberId(member);
+    }
+
+    @Override
+    public List<Contract> selectTrends(ContractBean contractBean) {
+        return contractMapper.selectTrends(contractBean);
     }
 }

@@ -1,9 +1,12 @@
 package com.familydoctor.doctorsubject.controller;
 
+import com.familydoctor.doctorsubject.YoonaLTsUtils.DateUtils;
+import com.familydoctor.doctorsubject.bean.ContractBean;
 import com.familydoctor.doctorsubject.bean.MemberPriceBean;
 import com.familydoctor.doctorsubject.entity.*;
 import com.familydoctor.doctorsubject.service.*;
 import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
+import com.sun.org.apache.bcel.internal.generic.NEW;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.xml.ws.Action;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "familydoctor/memberPrice")
@@ -145,49 +148,51 @@ public class MemberPriceController extends BaseController {
      */
     @GetMapping(value = "selectPrice")
     public Map selectPrice(String memberCard, String priceTypeName, String startTime, String stopTime) {
-        if (StringUtils.isBlank(memberCard) || StringUtils.isBlank(priceTypeName)) {
+        if (StringUtils.isBlank(memberCard) || StringUtils.isBlank(priceTypeName) || StringUtils.isBlank(startTime) || StringUtils.isBlank(stopTime)) {
             return requestArgumentEmpty("memberCard与priceTypeName为空");
         }
+
+        MemberPriceBean memberPriceBean = new MemberPriceBean();
+
+        //时间格式转换
+        Date startDate = DateUtils.stringToDate(startTime);
+        Date endDate = DateUtils.stringToDate(stopTime);
+        memberPriceBean.setStartDate(startDate);
+        memberPriceBean.setEndDate(endDate);
 
         // 获取memnberId
         Member member = new Member();
         member.setMemberCard(memberCard);
         String memberId = memberService.selectByCard(member).getId();
-
         if (StringUtils.isBlank(memberCard)) {
             return requestSelectFail("memberCard获取memberId失败");
         }
+        memberPriceBean.setMemberId(memberId);
 
-        MemberPrice memberPrice = new MemberPrice();
-        //设置查找memberId
-        memberPrice.setMemberId(memberId);
-
+        //获取与priceTypeName对应的priceTypeId
         PriceType priceType = new PriceType();
         switch (priceTypeName) {
             case "0":
                 priceType.setPriceTypeName("会员费用");
                 String priceTypeIdOne = priceTypeService.selectParam(priceType).get(0).getId();
-                //设置查找priceTypeId
-                memberPrice.setPriceTypeId(priceTypeIdOne);
+                memberPriceBean.setPriceTypeId(priceTypeIdOne);
                 break;
             case "1":
                 priceType.setPriceTypeName("诊疗费用");
                 String priceTypeIdTwo = priceTypeService.selectParam(priceType).get(0).getId();
-                //设置查找priceTypeId
-                memberPrice.setPriceTypeId(priceTypeIdTwo);
+                memberPriceBean.setPriceTypeId(priceTypeIdTwo);
                 break;
             case "2":
                 priceType.setPriceTypeName("药品费用");
                 String priceTypeIdThree = priceTypeService.selectParam(priceType).get(0).getId();
-                //设置查找priceTypeId
-                memberPrice.setPriceTypeId(priceTypeIdThree);
+                memberPriceBean.setPriceTypeId(priceTypeIdThree);
                 break;
             default:
                 return requestArgumentError("传入priceTypeName错误或查询priceTypeId出错");
         }
 
         //查询MemberPrice列表
-        List<MemberPrice> memberPriceList = memberPriceService.selectTwoPram(memberPrice);
+        List<MemberPrice> memberPriceList = memberPriceService.selectTrends(memberPriceBean);
         if (memberPriceList == null || memberPriceList.isEmpty()) {
             return requestSelectFail("memberId,priceTypeName查询memberPrice失败");
         }
@@ -195,13 +200,25 @@ public class MemberPriceController extends BaseController {
         return requestSelectSuccess(memberPriceList);
     }
 
-    //费用类型查询医生收益列表
+    /**
+     * 费用类型查询医生收益
+     *
+     * @param priceTypeName
+     * @param startTime
+     * @param stopTime
+     */
     @GetMapping(value = "selectDoctorIncome")
-    public Map DoctorIncome(String priceTypeName) {
+    public Map DoctorIncome(String priceTypeName, String startTime, String stopTime) {
 
-        if (StringUtils.isBlank(priceTypeName)) {
+        if (StringUtils.isBlank(priceTypeName) || StringUtils.isBlank(startTime) || StringUtils.isBlank(stopTime)) {
             return requestArgumentEmpty("参数为空");
         }
+
+        MemberPriceBean memberPriceBean = new MemberPriceBean();
+        Date startDate = DateUtils.stringToDate(startTime);
+        Date endDate = DateUtils.stringToDate(stopTime);
+        memberPriceBean.setStartDate(startDate);
+        memberPriceBean.setEndDate(endDate);
 
         //由priceTypeName查询MemberPrice
         PriceType priceType = new PriceType();
@@ -216,10 +233,61 @@ public class MemberPriceController extends BaseController {
         if (StringUtils.isBlank(priceTypeId)) {
             return requestSelectFail("查询的priceTypeId为空");
         }
-        MemberPrice memberPrice = new MemberPrice();
-        memberPrice.setPriceTypeId(priceTypeId);
 
-        return requestSelectFail("占位");
+        memberPriceBean.setPriceTypeId(priceTypeId);
+
+        List<MemberPrice> memberPriceList = memberPriceService.selectTrends(memberPriceBean);
+        if (memberPriceList == null || memberPriceList.isEmpty()) {
+            return requestSelectFail("startTime,stopTime,priceTypeName查询的结果为空");
+        }
+
+        //合并memberPrice同一memberId的price项
+        List<String> memberIds = new ArrayList<>();
+        List<MemberPrice> setMemberPrice = new ArrayList<>();
+        for (MemberPrice memberPrice : memberPriceList) {
+            memberIds.add(memberPrice.getMemberId());
+        }
+        HashSet ids = new HashSet(memberIds);
+        memberIds.clear();
+        memberIds.addAll(ids);
+
+        return requestArgumentError("未完成");
     }
 
+    /**
+     * 获取当天统计数据
+     */
+    @GetMapping(value = "intradayData")
+    public Map intradayData() {
+        Date startDate = DateUtils.intradayBegin();
+        Date endDate = DateUtils.intradayEnd();
+
+        //查询Contract
+        ContractBean contractBean = new ContractBean();
+        contractBean.setCreateUser(getCurrentUser());
+        contractBean.setStartDateL(startDate);
+        contractBean.setEndDateL(endDate);
+        List<Contract> contractList = contractService.selectTrends(contractBean);
+
+        //查询MemberPrice
+        MemberPriceBean memberPriceBean = new MemberPriceBean();
+        memberPriceBean.setStartDate(startDate);
+        memberPriceBean.setEndDate(endDate);
+        memberPriceBean.setCreateDoctor(getCurrentUser());
+        List<MemberPrice> memberPriceList = memberPriceService.selectTrends(memberPriceBean);
+
+        //药品费用去重Map
+        Map<String, String> drugMap = new LinkedHashMap<String, String>();
+        //会员费用去重Map
+        Map<String, String> memberMap = new LinkedHashMap<String, String>();
+        //诊疗费用去重Map
+        Map<String, String> diagnosisMap = new LinkedHashMap<String, String>();
+        return requestArgumentError("去重");
+    }
+
+    //获取时间段内药品使用
+    @GetMapping(value = "drugUse")
+    public Map selectDrugUse(String startTime, String stopTime, String drugId) {
+        return null;
+    }
 }

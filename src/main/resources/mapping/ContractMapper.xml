@@ -44,7 +44,53 @@
         from contract
         where memberId=#{memberId,jdbcType=VARCHAR}
     </select>
+    <!--memberPrice统计数据查询-->
+    <select id="selectTrends" parameterType="com.familydoctor.doctorsubject.bean.ContractBean"
+            resultMap="BaseResultMap">
+        select * from contract
+        <where>
+            AND delFlag= "0"
+            AND create_time &gt;=#{startDateL}
+            AND create_time &lt;=#{endDateL}
+            <if test="id != null">
+                AND id,
+            </if>
+            <if test="memberId != null">
+                AND member_id,
+            </if>
+            <if test="produceId != null">
+                AND produce_id,
+            </if>
+            <if test="beginDate != null">
+                AND begin_date,
+            </if>
+            <if test="endDate != null">
+                AND end_date,
+            </if>
+            <if test="createTime != null">
+                AND create_time,
+            </if>
+            <if test="updateTime != null">
+                AND update_time,
+            </if>
+            <if test="deleteTime != null">
+                AND delete_time,
+            </if>
+            <if test="createUser != null">
+                AND create_user,
+            </if>
+            <if test="updateUser != null">
+                AND update_user,
+            </if>
+            <if test="deleteUser != null">
+                AND delete_user,
+            </if>
+            <if test="delFlag != null">
+                AND del_flag,
+            </if>
+        </where>
 
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from contract
     where id = #{id,jdbcType=VARCHAR}

@@ -45,7 +45,7 @@ public class DateUtils {
 
 
         Date date;
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         try {
             date = simpleDateFormat.parse(string); //toString -->Mon Jan 14 00:00:00 CST 2013
@@ -58,7 +58,7 @@ public class DateUtils {
     }
 
     /**
-     * Date yo String("yyyy-MM-dd")
+     * Date yo String("yyyy-MM-dd HH:mm:ss")
      *
      * @param date
      * @return string
@@ -84,5 +84,40 @@ public class DateUtils {
         calendar.add(Calendar.YEAR, 1);//增加一年
         return calendar.getTime();
     }
+
+    /**
+     * 获取当天0:0:0时刻
+     */
+    public static Date intradayBegin() {
+        Date dateNow = new Date();
+        Calendar day = Calendar.getInstance();
+        day.setTime(dateNow);
+        day.set(Calendar.HOUR_OF_DAY, 0);
+        day.set(Calendar.MINUTE, 0);
+        day.set(Calendar.SECOND, 0);
+        day.set(Calendar.MILLISECOND, 0);
+        Date date = day.getTime();
+
+        return date;
+
+    }
+
+    /**
+     * 获取当天24:00:00时刻
+     */
+    public static Date intradayEnd() {
+        Date dateNow = new Date();
+        Calendar day = Calendar.getInstance();
+        day.setTime(dateNow);
+        day.set(Calendar.HOUR_OF_DAY, 23);
+        day.set(Calendar.MINUTE, 59);
+        day.set(Calendar.SECOND, 59);
+        day.set(Calendar.MILLISECOND, 999);
+        Date date = day.getTime();
+
+        return date;
+
+    }
+
 
 }

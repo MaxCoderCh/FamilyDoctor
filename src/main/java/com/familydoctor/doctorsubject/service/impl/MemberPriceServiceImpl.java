@@ -29,12 +29,12 @@ public class MemberPriceServiceImpl implements MemberPriceService {
     /**
      * 选择查询
      *
-     * @param memberPrice
+     * @param memberPriceBean
      * @return memberPriceMapper.selectBySelective(memberPrice)
      */
     @Override
-    public MemberPrice selectBySelective(MemberPrice memberPrice) {
-        return memberPriceMapper.selectBySelective(memberPrice);
+    public List<MemberPrice> selectTrends(MemberPriceBean memberPriceBean) {
+        return memberPriceMapper.selectTrends(memberPriceBean);
     }
 
     @Override
@@ -47,8 +47,4 @@ public class MemberPriceServiceImpl implements MemberPriceService {
         return memberPriceMapper.selectThreePram(memberPriceBean);
     }
 
-    @Override
-    public List<MemberPrice> selectTwoPram(MemberPrice memberPrice) {
-        return memberPriceMapper.selectTwoPram(memberPrice);
-    }
 }

@@ -1,5 +1,6 @@
 package com.familydoctor.doctorsubject.service;
 
+import com.familydoctor.doctorsubject.bean.ContractBean;
 import com.familydoctor.doctorsubject.entity.Contract;
 import com.familydoctor.doctorsubject.entity.Member;
 
@@ -29,4 +30,6 @@ public interface ContractService {
     List<Contract> selectByDoctorId(List<String> list);
 
     List<Contract> selectByMemberId(Member member);
+
+    List<Contract> selectTrends(ContractBean contractBean);
 }

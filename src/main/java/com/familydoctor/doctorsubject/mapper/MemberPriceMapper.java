@@ -15,11 +15,9 @@ public interface MemberPriceMapper {
 
     MemberPrice selectByPrimaryKey(String id);
 
-    MemberPrice selectBySelective(MemberPrice memberPrice);
+    List<MemberPrice> selectTrends(MemberPriceBean memberPriceBean);
 
     List<MemberPrice> selectThreePram(MemberPriceBean memberPriceBean);
-
-    List<MemberPrice> selectTwoPram(MemberPrice memberPrice);
 
     int updateByPrimaryKeySelective(MemberPrice record);
 

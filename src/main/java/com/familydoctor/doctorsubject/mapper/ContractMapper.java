@@ -1,5 +1,6 @@
 package com.familydoctor.doctorsubject.mapper;
 
+import com.familydoctor.doctorsubject.bean.ContractBean;
 import com.familydoctor.doctorsubject.entity.Contract;
 import com.familydoctor.doctorsubject.entity.Member;
 
@@ -15,6 +16,8 @@ public interface ContractMapper {
     Contract selectByPrimaryKey(String id);
 
     List<Contract> selectByDoctor(List<String> list);
+
+    List<Contract> selectTrends(ContractBean contractBean);
 
     List<Contract> selectByMemberId(Member member);
 

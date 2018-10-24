@@ -19,6 +19,8 @@ public interface MemberPriceMapper {
 
     List<MemberPrice> selectThreePram(MemberPriceBean memberPriceBean);
 
+    List<MemberPrice> selectTwoPram(MemberPrice memberPrice);
+
     int updateByPrimaryKeySelective(MemberPrice record);
 
     int updateByPrimaryKey(MemberPrice record);

@@ -114,7 +114,7 @@ public class SignController extends BaseController {
         memberPrice.setPrice(produce.getProducePrice());
         memberPrice.setIspay("1");
         memberPrice.setOrderId(produce.getId());
-        memberPrice.setPriceTypeId(priceTypeService.selectParam(priceType).getId());
+        memberPrice.setPriceTypeId(priceTypeService.selectParam(priceType).get(0).getId());
         int n = memberPriceService.addMemberPrice(memberPrice);
         if (n <= 0) {
             return requestInsertFail("添加memberPrice失败");

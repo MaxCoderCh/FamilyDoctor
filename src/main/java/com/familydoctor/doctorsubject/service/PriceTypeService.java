@@ -11,7 +11,7 @@ public interface PriceTypeService {
      *
      * @param priceType
      */
-    PriceType selectParam(PriceType priceType);
+    List<PriceType> selectParam(PriceType priceType);
 
     /**
      * 添加缴费类型

@@ -21,7 +21,7 @@ public class PriceTypeServiceImpl implements PriceTypeService {
      * @return priceTypeMapper.selectTrends(priceType)
      */
     @Override
-    public PriceType selectParam(PriceType priceType) {
+    public List<PriceType> selectParam(PriceType priceType) {
         return priceTypeMapper.selectTrends(priceType);
     }
 

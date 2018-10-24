@@ -9,7 +9,7 @@ public interface PriceTypeMapper {
 
     int softDeleteById(PriceType priceType);
 
-    PriceType selectTrends(PriceType priceType);
+    List<PriceType> selectTrends(PriceType priceType);
 
     int insert(PriceType record);
 

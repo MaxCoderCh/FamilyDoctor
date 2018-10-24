@@ -15,7 +15,7 @@ public interface DrugPriceMapper {
 
     DrugPrice selectByPrimaryKey(String id);
 
-    DrugPrice selectTrends(DrugPrice drugPrice);
+    List<DrugPrice> selectTrends(DrugPrice drugPrice);
 
     List<DrugPrice> selectRoundPrice();
 

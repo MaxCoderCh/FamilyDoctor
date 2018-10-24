@@ -40,7 +40,7 @@ public interface ProduceService {
      *
      * @param produce
      */
-    Produce selectTrends(Produce produce);
+    List<Produce> selectTrends(Produce produce);
 
     int softDel(Produce produce);
 

@@ -75,7 +75,7 @@ public class DrugPriceServiceImpl implements DrugPriceService {
      * @return drugPriceMapper.selectTrends(drugPrice)
      */
     @Override
-    public DrugPrice getByParam(DrugPrice drugPrice) {
+    public List<DrugPrice> getByParam(DrugPrice drugPrice) {
         return drugPriceMapper.selectTrends(drugPrice);
     }
 

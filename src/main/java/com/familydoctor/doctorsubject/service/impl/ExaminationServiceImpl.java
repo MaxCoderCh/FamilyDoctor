@@ -19,6 +19,6 @@ public class ExaminationServiceImpl implements ExaminationService {
 
     @Override
     public Examination selectBySelect(String id) {
-        return examinationMapper.selectBySelective(id);
+        return examinationMapper.selectByPrimaryKey(id);
     }
 }

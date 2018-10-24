@@ -82,7 +82,7 @@ public class ProduceServiceImpl implements ProduceService {
     }
 
     @Override
-    public Produce selectTrends(Produce produce) {
+    public List<Produce> selectTrends(Produce produce) {
         return produceMapper.selectTrends(produce);
     }
 }

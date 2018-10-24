@@ -34,6 +34,9 @@ public class MemberPriceController extends BaseController {
     @Autowired
     private PrescriptionService prescriptionService;
 
+    @Autowired
+    private MemberService memberService;
+
     /**
      * 查询缴费member
      *
@@ -67,12 +70,12 @@ public class MemberPriceController extends BaseController {
         //查询priceTypeName为"年费","普通"的PriceTypeId
         if (produce.getProduceName().equals("年费")) {
             priceType.setPriceTypeName("produce.getProduceName()");
-            priceTypeId = priceTypeService.selectParam(priceType).getId();
+            priceTypeId = priceTypeService.selectParam(priceType).get(0).getId();
             memberPriceBean.setPriceTypeId(priceTypeId);
             memberPriceBean.setProduceId(produce.getId());
         } else if (produce.getProduceName().equals("普通")) {
             priceType.setPriceTypeName("produce.getProduceName()");
-            priceTypeId = priceTypeService.selectParam(priceType).getId();
+            priceTypeId = priceTypeService.selectParam(priceType).get(0).getId();
             memberPriceBean.setPriceTypeId(priceTypeId);
             memberPriceBean.setProduceId(produce.getId());
 
@@ -131,7 +134,92 @@ public class MemberPriceController extends BaseController {
         return requestUpdateSuccess("成功付款");
     }
 
-/*    @GetMapping(value = "selectPrice")
-    public Map selectPrice() {
-    }*/
+
+    /**
+     * 根据条件(身份证号.日期.费用类型)查询列表
+     *
+     * @param memberCard
+     * @param priceTypeName
+     * @param startTime
+     * @param stopTime
+     */
+    @GetMapping(value = "selectPrice")
+    public Map selectPrice(String memberCard, String priceTypeName, String startTime, String stopTime) {
+        if (StringUtils.isBlank(memberCard) || StringUtils.isBlank(priceTypeName)) {
+            return requestArgumentEmpty("memberCard与priceTypeName为空");
+        }
+
+        // 获取memnberId
+        Member member = new Member();
+        member.setMemberCard(memberCard);
+        String memberId = memberService.selectByCard(member).getId();
+
+        if (StringUtils.isBlank(memberCard)) {
+            return requestSelectFail("memberCard获取memberId失败");
+        }
+
+        MemberPrice memberPrice = new MemberPrice();
+        //设置查找memberId
+        memberPrice.setMemberId(memberId);
+
+        PriceType priceType = new PriceType();
+        switch (priceTypeName) {
+            case "0":
+                priceType.setPriceTypeName("会员费用");
+                String priceTypeIdOne = priceTypeService.selectParam(priceType).get(0).getId();
+                //设置查找priceTypeId
+                memberPrice.setPriceTypeId(priceTypeIdOne);
+                break;
+            case "1":
+                priceType.setPriceTypeName("诊疗费用");
+                String priceTypeIdTwo = priceTypeService.selectParam(priceType).get(0).getId();
+                //设置查找priceTypeId
+                memberPrice.setPriceTypeId(priceTypeIdTwo);
+                break;
+            case "2":
+                priceType.setPriceTypeName("药品费用");
+                String priceTypeIdThree = priceTypeService.selectParam(priceType).get(0).getId();
+                //设置查找priceTypeId
+                memberPrice.setPriceTypeId(priceTypeIdThree);
+                break;
+            default:
+                return requestArgumentError("传入priceTypeName错误或查询priceTypeId出错");
+        }
+
+        //查询MemberPrice列表
+        List<MemberPrice> memberPriceList = memberPriceService.selectTwoPram(memberPrice);
+        if (memberPriceList == null || memberPriceList.isEmpty()) {
+            return requestSelectFail("memberId,priceTypeName查询memberPrice失败");
+        }
+
+        return requestSelectSuccess(memberPriceList);
+    }
+
+    //费用类型查询医生收益列表
+    @GetMapping(value = "selectDoctorIncome")
+    public Map DoctorIncome(String priceTypeName) {
+
+        if (StringUtils.isBlank(priceTypeName)) {
+            return requestArgumentEmpty("参数为空");
+        }
+
+        //由priceTypeName查询MemberPrice
+        PriceType priceType = new PriceType();
+        if (priceTypeName.equals("0")) {// 年费
+            priceType.setPriceTypeName("会员费用");
+        } else if (priceTypeName.equals("1")) {// 单次
+            priceType.setPriceTypeName("诊疗费用");
+        } else if (priceTypeName.equals("2")) {// 药品
+            priceType.setPriceTypeName("药品费用");
+        }
+        String priceTypeId = priceTypeService.selectParam(priceType).get(0).getId();
+        if (StringUtils.isBlank(priceTypeId)) {
+            return requestSelectFail("查询的priceTypeId为空");
+        }
+        MemberPrice memberPrice = new MemberPrice();
+        memberPrice.setPriceTypeId(priceTypeId);
+
+        return requestSelectFail("占位");
+    }
+
 }

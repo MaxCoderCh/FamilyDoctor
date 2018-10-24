@@ -43,7 +43,7 @@ public interface DrugPriceService {
      * 动态查询
      * @param drugPrice
      */
-    DrugPrice getByParam(DrugPrice drugPrice);
+    List<DrugPrice> getByParam(DrugPrice drugPrice);
 
     List<DrugPrice> selectPage(DrugPrice drugPrice);
 }

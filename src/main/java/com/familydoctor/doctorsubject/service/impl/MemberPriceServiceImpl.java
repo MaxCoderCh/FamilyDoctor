@@ -46,4 +46,9 @@ public class MemberPriceServiceImpl implements MemberPriceService {
     public List<MemberPrice> selectThreePram(MemberPriceBean memberPriceBean) {
         return memberPriceMapper.selectThreePram(memberPriceBean);
     }
+
+    @Override
+    public List<MemberPrice> selectTwoPram(MemberPrice memberPrice) {
+        return memberPriceMapper.selectTwoPram(memberPrice);
+    }
 }

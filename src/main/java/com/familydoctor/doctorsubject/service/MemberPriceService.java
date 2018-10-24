@@ -24,4 +24,6 @@ public interface MemberPriceService {
     int updateByPrimaryKeySelective(MemberPrice record);
 
     List<MemberPrice> selectThreePram(MemberPriceBean memberPriceBean);
+
+    List<MemberPrice> selectTwoPram(MemberPrice memberPrice);
 }

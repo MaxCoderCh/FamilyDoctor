@@ -15,7 +15,7 @@ public interface ProduceMapper {
 
     Produce selectByPrimaryKey(String id);
 
-    Produce selectTrends(Produce produce);
+    List<Produce> selectTrends(Produce produce);
 
     List<Produce> selectByDoctor(String id);
 

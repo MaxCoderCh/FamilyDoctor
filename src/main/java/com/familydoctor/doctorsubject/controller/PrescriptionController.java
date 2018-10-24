@@ -60,17 +60,17 @@ public class PrescriptionController extends BaseController {
         //药品价格设置
         drugPrice.setDrugId(prescription.getDrugId());
         drugPrice.setStartTime(addTime());
-        drugPrice = drugPriceService.getByParam(drugPrice);
+        List<DrugPrice> drugPriceList = drugPriceService.getByParam(drugPrice);
 
         //缴费类型设置
         PriceType priceType = new PriceType();
         priceType.setPriceTypeNumber("00001");
-        priceType = priceTypeService.selectParam(priceType);
+        priceType = priceTypeService.selectParam(priceType).get(0);
 
         //添加会员价格
         memberPrice.setMemberId(cases.getMemberId());
         memberPrice.setPriceTypeId(priceType.getId());
-        memberPrice.setPrice(drugPrice.getDrugOutPrice());
+        memberPrice.setPrice(drugPriceList.get(0).getDrugOutPrice());
         //是否需要查询?
         memberPrice.setOrderId(prescription.getId());
         memberPrice.setCreateTime(addTime());

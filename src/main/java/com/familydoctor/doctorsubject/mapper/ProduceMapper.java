@@ -21,6 +21,8 @@ public interface ProduceMapper {
 
     List<String> selectByDoctorIdGetId(String id);
 
+    String selectByName(Produce produce);
+
     int updateByPrimaryKeySelective(Produce record);
 
     int updateByPrimaryKey(Produce record);

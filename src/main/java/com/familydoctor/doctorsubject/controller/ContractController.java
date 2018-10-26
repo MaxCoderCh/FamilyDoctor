@@ -7,6 +7,7 @@ import com.familydoctor.doctorsubject.service.ProduceService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,6 +28,21 @@ public class ContractController extends BaseController {
 
     @Autowired
     private ProduceService produceService;
+
+    @PostMapping(value = "add")
+    public Map addContract(Contract contract) {
+        if (contract == null) {
+            return requestArgumentEmpty("contract为空");
+        }
+
+        contract.setCreateUser(getCurrentUser());
+        int i = contractService.insertContract(contract);
+        if (i < 1) {
+            return requestInsertFail("添加Contract失败");
+        }
+
+        return requestInsertSuccess("添加成功");
+    }
 
     /**
      * 查询一个医生的所有患者

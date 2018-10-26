@@ -132,9 +132,9 @@ public class PrescriptionController extends BaseController {
 
                 MemberPrice memberPrice = new MemberPrice();
                 memberPrice.setOrderId(ption.getId());
-                memberPrice = memberPriceService.selectBySelective(memberPrice);
+                List<MemberPrice> memberPriceList = memberPriceService.selectBySelective(memberPrice);
 
-                if (memberPrice.getIspay().equals("1")) {
+                if (memberPriceList.get(0).getIspay().equals("1")) {
                     return BadRequest("该处方药品已经结算,不可以修改");
                 }
 

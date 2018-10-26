@@ -49,44 +49,11 @@
             resultMap="BaseResultMap">
         select * from contract
         <where>
-            AND delFlag= "0"
+            AND del_flag= "0"
             AND create_time &gt;=#{startDateL}
             AND create_time &lt;=#{endDateL}
-            <if test="id != null">
-                AND id,
-            </if>
-            <if test="memberId != null">
-                AND member_id,
-            </if>
-            <if test="produceId != null">
-                AND produce_id,
-            </if>
-            <if test="beginDate != null">
-                AND begin_date,
-            </if>
-            <if test="endDate != null">
-                AND end_date,
-            </if>
-            <if test="createTime != null">
-                AND create_time,
-            </if>
-            <if test="updateTime != null">
-                AND update_time,
-            </if>
-            <if test="deleteTime != null">
-                AND delete_time,
-            </if>
             <if test="createUser != null">
-                AND create_user,
-            </if>
-            <if test="updateUser != null">
-                AND update_user,
-            </if>
-            <if test="deleteUser != null">
-                AND delete_user,
-            </if>
-            <if test="delFlag != null">
-                AND del_flag,
+                AND create_user= #{createUser,jdbcType=VARCHAR}
             </if>
         </where>
 
@@ -117,7 +84,7 @@
         insert into contract
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
-                id,
+                id ,
             </if>
             <if test="memberId != null">
                 member_id,

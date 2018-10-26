@@ -25,11 +25,17 @@
         where id = #{id,jdbcType=VARCHAR}
     </select>
     <!--由member.id查询MemberLable-->
-    <select id="selectByMemberId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <select id="selectByMemberId" parameterType="com.familydoctor.doctorsubject.entity.MemberLable"
+            resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from member_lable
-        where id = #{id,jdbcType=VARCHAR}
+        <where>
+            <if test="memberId != null">
+                AND member_id = #{memberId,jdbcType=VARCHAR}
+            </if>
+        </where>
+
     </select>
     <!--由lableName列表查询对应的MemberLable列表-->
     <select id="selectByList" parameterType="com.familydoctor.doctorsubject.bean.MemberLableBean"
@@ -43,7 +49,7 @@
                 #{lableName}
             </foreach>
         </where>
-        limit #{pageSize},#{pageNo}
+        limit #{beginNo},#{pageSize}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from member_lable

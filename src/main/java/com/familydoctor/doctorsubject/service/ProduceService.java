@@ -45,4 +45,6 @@ public interface ProduceService {
     int softDel(Produce produce);
 
     int updateById(Produce record);
+
+    String selectByName(Produce produce);
 }

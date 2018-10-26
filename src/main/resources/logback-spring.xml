@@ -95,14 +95,14 @@
                 <!--<password>Qlxlm123456</password>-->
         <!--</connectionSource>-->
     <!--</appender>-->
-    <!--<springProfile name="dev">-->
-        <!--<logger name="com.prostate" level="DEBUG" additivity="false">-->
-            <!--<appender-ref ref="SQL_CONSOLE_LOG"/>-->
-        <!--</logger>-->
-        <!--<logger name="com.prostate.doctor.mapper" level="DEBUG" additivity="false">-->
-            <!--<appender-ref ref="SQL_CONSOLE_LOG"/>-->
-        <!--</logger>-->
-    <!--</springProfile>-->
+    <springProfile name="dev">
+        <logger name="com.familydoctor" level="DEBUG" additivity="false">
+            <appender-ref ref="SQL_CONSOLE_LOG"/>
+        </logger>
+        <logger name="com.familydoctor.doctorsubject.mapper" level="DEBUG" additivity="false">
+            <appender-ref ref="SQL_CONSOLE_LOG"/>
+        </logger>
+    </springProfile>
 
     <!-- 生产环境. -->
     <!--<springProfile name="prd">-->

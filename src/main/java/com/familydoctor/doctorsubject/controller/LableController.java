@@ -35,6 +35,7 @@ public class LableController extends BaseController {
             return requestArgumentEmpty("参数为空");
         }
 
+        lable.setCreateUser(getCurrentUser());
         int i = lableService.addLable(lable);
         if (i > 0) {
             return requestSelectSuccess(lable);

@@ -24,7 +24,7 @@ public class MemberLableServceImpl implements MemberLableServce {
      */
     @Override
     public MemberLable selectByMember(MemberLable memberLable) {
-        return memberLableMapper.selectByMemberId(memberLable.getId());
+        return memberLableMapper.selectByMemberId(memberLable);
     }
 
     /**

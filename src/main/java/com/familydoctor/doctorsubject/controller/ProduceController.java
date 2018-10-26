@@ -1,5 +1,6 @@
 package com.familydoctor.doctorsubject.controller;
 
+import com.familydoctor.doctorsubject.entity.Doctor;
 import com.familydoctor.doctorsubject.entity.Produce;
 import com.familydoctor.doctorsubject.service.ProduceService;
 import org.apache.commons.lang.StringUtils;
@@ -31,10 +32,7 @@ public class ProduceController extends BaseController {
     @PostMapping(value = "add")
     public Map addProduceMsg(Produce produce) {
 
-        if (StringUtils.isBlank(produce.getDoctorId())) {
-            return requestArgumentEmpty("doctorId为空");
-        }
-
+        produce.setDoctorId(getCurrentUser());
         produce.setCreateUser(getCurrentUser());
         int i = produceService.insertByDoctor(produce);
         if (i > 0) {

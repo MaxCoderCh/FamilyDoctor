@@ -31,7 +31,20 @@
         from member
         where id = #{id,jdbcType=VARCHAR}
     </select>
-
+    <!--查询所有Id在传入列表中的Member-->
+    <select id="selectByIdList" parameterType="com.familydoctor.doctorsubject.bean.MemberBean"
+            resultMap="BaseResultMap">
+        select * from member
+        <where>
+            del_flag = '0'
+            <if test="memberIdList != null">
+                AND id in
+                <foreach collection="memberIdList" item="id" index="index" open="(" close=")" separator=",">
+                    #{id}
+                </foreach>
+            </if>
+        </where>
+    </select>
     <!--分页查询-->
     <select id="selectPage" parameterType="com.familydoctor.doctorsubject.entity.Member" resultMap="BaseResultMap">
         select

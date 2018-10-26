@@ -1,5 +1,6 @@
 package com.familydoctor.doctorsubject.service;
 
+import com.familydoctor.doctorsubject.bean.MemberBean;
 import com.familydoctor.doctorsubject.entity.Member;
 
 import java.util.List;
@@ -50,4 +51,12 @@ public interface MemberService {
     List<Member> selectAll();
 
     List<Member> selectPage(Member member);
+
+    /**
+     * 查询所有Id在传入列表中的Member
+     *
+     * @param memberBean
+     */
+    List<Member> selectByIdList(MemberBean memberBean);
+
 }

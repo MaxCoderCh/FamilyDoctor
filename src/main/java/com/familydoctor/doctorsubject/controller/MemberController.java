@@ -1,6 +1,7 @@
 package com.familydoctor.doctorsubject.controller;
 
 import com.familydoctor.doctorsubject.YoonaLTsUtils.DateUtils;
+import com.familydoctor.doctorsubject.YoonaLTsUtils.IdentityCard;
 import com.familydoctor.doctorsubject.entity.Member;
 import com.familydoctor.doctorsubject.service.MemberService;
 import org.apache.commons.lang.StringUtils;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -30,13 +32,18 @@ public class MemberController extends BaseController {
      * @return requestInsertSuccess(member)
      */
     @PostMapping(value = "add")
-    public Map addMemberMsg(Member member, String birthday) {
+    public Map addMemberMsg(Member member) {
 
-        if (member == null) {
+        if (member == null || StringUtils.isBlank(member.getMemberCard())) {
             return requestArgumentEmpty("参数为空");
         }
-
-        member.setMemberBirthday(DateUtils.stringToDate(birthday));
+        String card = member.getMemberCard();
+        Date memberBirthday = DateUtils.stringToDate2(IdentityCard.getBirthByIdCard(card));
+        String memberAge = String.valueOf(IdentityCard.getAgeByIdCard(card));
+        String memberSex = IdentityCard.getGenderByIdCard(card);
+        member.setMemberBirthday(memberBirthday);
+        member.setMemberAge(memberAge);
+        member.setMemberSex(memberSex);
         int i = memberService.add(member);
         if (i > 0) {
             return requestInsertSuccess(member);

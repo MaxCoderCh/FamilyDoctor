@@ -27,6 +27,16 @@
         where doctor_id = #{id,jdbcType=VARCHAR}
     </select>
 
+    <select id="selectByName" parameterType="com.familydoctor.doctorsubject.entity.Produce"
+            resultType="java.lang.String">
+        select id from produce
+        <where>
+            <if test="produceName != null">
+                AND produce_name = #{produceName,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
     <!--动态查询-->
     <select id="selectTrends" parameterType="com.familydoctor.doctorsubject.entity.Produce"
             resultMap="BaseResultMap">

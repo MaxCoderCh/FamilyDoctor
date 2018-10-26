@@ -563,15 +563,15 @@ public class IdentityCard {
      * @return 性别(M - 男 ， F - 女 ， N - 未知)
      */
     public static String getGenderByIdCard(String idCard) {
-        String sGender = "N";
+        String sGender = "未知";
         if (idCard.length() == MIN_LENGTH) {
             idCard = conver15CardTo18(idCard);
         }
         String sCardNum = idCard.substring(16, 17);
         if (Integer.parseInt(sCardNum) % 2 != 0) {
-            sGender = "M";
+            sGender = "男";
         } else {
-            sGender = "F";
+            sGender = "女";
         }
         return sGender;
     }

@@ -1,8 +1,10 @@
 package com.familydoctor.doctorsubject.service.impl;
 
+import com.familydoctor.doctorsubject.bean.MemberBean;
 import com.familydoctor.doctorsubject.entity.Member;
 import com.familydoctor.doctorsubject.mapper.MemberMapper;
 import com.familydoctor.doctorsubject.service.MemberService;
+import com.sun.org.apache.bcel.internal.generic.RETURN;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -84,4 +86,15 @@ public class MemberServiceImpl implements MemberService {
     public List<Member> selectPage(Member member) {
         return memberMapper.selectPage(member);
     }
+
+    /**
+     * 查询所有Id在传入列表中的Member
+     *
+     * @param memberBean
+     */
+    @Override
+    public List<Member> selectByIdList(MemberBean memberBean) {
+        return memberMapper.selectByIdList(memberBean);
+    }
+
 }

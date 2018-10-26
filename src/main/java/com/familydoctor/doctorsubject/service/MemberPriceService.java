@@ -21,7 +21,17 @@ public interface MemberPriceService {
      */
     List<MemberPrice> selectTrends(MemberPriceBean memberPriceBean);
 
+    List<MemberPrice> selectBySelective(MemberPrice memberPrice);
+
     int updateByPrimaryKeySelective(MemberPrice record);
 
     List<MemberPrice> selectThreePram(MemberPriceBean memberPriceBean);
+
+    /**
+     * memberIdList查询memberPriceList
+     *
+     * @param memberIdList
+     */
+    List<String> selectPriceByMemberIdList(List<String> memberIdList);
+
 }

@@ -35,6 +35,7 @@ public class DiseaseClassController extends BaseController {
             return requestArgumentEmpty("传入对象为空");
         }
 
+        diseaseClass.setCreateUser(getCurrentUser());
         int i = diseaseClassService.insertDiseaseClsass(diseaseClass);
         if (i > 0) {
             return requestInsertSuccess(diseaseClass);

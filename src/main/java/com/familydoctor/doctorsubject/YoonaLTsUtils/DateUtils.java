@@ -56,7 +56,29 @@ public class DateUtils {
         }
 
     }
+    public static Date stringToDate2(String string) {
 
+        //传入日期格式为19000000格式,转换为1900-00-00
+        if (string.length() == 8) {
+            StringBuffer stringBuffer = new StringBuffer(string);
+            stringBuffer.insert(4, "-");
+            stringBuffer.insert(7, "-");
+            string = stringBuffer.toString();
+        }
+
+
+        Date date;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        try {
+            date = simpleDateFormat.parse(string); //toString -->Mon Jan 14 00:00:00 CST 2013
+            return date;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
     /**
      * Date yo String("yyyy-MM-dd HH:mm:ss")
      *

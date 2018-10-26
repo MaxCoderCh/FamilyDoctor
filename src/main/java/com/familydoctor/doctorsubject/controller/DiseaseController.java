@@ -35,6 +35,7 @@ public class DiseaseController extends BaseController {
             return requestArgumentEmpty("传入值为空");
         }
 
+        disease.setCreateUser(getCurrentUser());
         int i = diseaseService.addDisease(disease);
         if (i > 0) {
             return requestInsertSuccess(disease);

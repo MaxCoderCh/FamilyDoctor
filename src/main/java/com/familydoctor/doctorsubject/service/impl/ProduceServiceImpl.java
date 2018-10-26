@@ -85,4 +85,9 @@ public class ProduceServiceImpl implements ProduceService {
     public List<Produce> selectTrends(Produce produce) {
         return produceMapper.selectTrends(produce);
     }
+
+    @Override
+    public String selectByName(Produce produce) {
+        return produceMapper.selectByName(produce);
+    }
 }

@@ -1,5 +1,6 @@
 package com.familydoctor.doctorsubject.mapper;
 
+import com.familydoctor.doctorsubject.bean.MemberBean;
 import com.familydoctor.doctorsubject.entity.Member;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public interface MemberMapper {
 
     List<Member> selectPage(Member member);
 
+    List<Member> selectByIdList(MemberBean memberBean);
 
     int updateByPrimaryKeySelective(Member record);
 

@@ -36,6 +36,7 @@ public class LableClassController extends BaseController {
             return requestArgumentEmpty("参数为空");
         }
 
+        lableClass.setCreateUser(getCurrentUser());
         int i = lableClassService.addLableClass(lableClass);
         if (i > 0) {
             return requestSelectSuccess(lableClass);

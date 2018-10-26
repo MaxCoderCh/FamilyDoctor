@@ -14,7 +14,7 @@ public interface MemberLableMapper {
 
     MemberLable selectByPrimaryKey(String id);
 
-    MemberLable selectByMemberId(String id);
+    MemberLable selectByMemberId(MemberLable memberLable);
 
     List<MemberLable> selectByList(MemberLableBean memberLableBean);
 

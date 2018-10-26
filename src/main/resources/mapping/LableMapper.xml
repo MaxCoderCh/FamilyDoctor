@@ -53,9 +53,9 @@
         <include refid="Base_Column_List"/>
         from lable
         <where>
-            lableName in
+            lable_name in
             <foreach collection="array" item="lablename" index="index" open="(" close=")" separator=",">
-                # {lablename}
+                #{lablename}
             </foreach>
         </where>
     </select>

@@ -37,12 +37,23 @@
             <if test="priceTypeId != null">
                 AND price_type_id = #{priceTypeId,jdbcType=VARCHAR}
             </if>
-            <if test="orderId != null">
+            <if test="orderIds != null">
                 AND order_id in
                 <foreach collection="orderIds" item="orderId" index="index" open="(" close=")" separator=",">
                     #{orderId}
                 </foreach>
             </if>
+        </where>
+    </select>
+    <!--memberIdList查询price-->
+    <select id="selectPriceByMemberIdList" parameterType="java.util.List" resultType="java.lang.String">
+        select price
+        from member_price
+        <where>
+            member_id in
+            <foreach collection="list" item="memberId" index="index" open="(" close=")" separator=",">
+                #{memberId}
+            </foreach>
         </where>
     </select>
     <!--动态查询-->
@@ -56,6 +67,49 @@
             AND ispay = "1"
             AND create_time &gt;=#{startDate}
             AND create_time &lt;=#{stopDate}
+            <if test="price != null">
+                AND price = #{price,jdbcType=VARCHAR}
+            </if>
+            <if test="ispay != null">
+                AND ispay = #{ispay,jdbcType=CHAR}
+            </if>
+            <if test="memberId != null">
+                AND member_id = #{memberId,jdbcType=VARCHAR}
+            </if>
+            <if test="orderId != null">
+                AND order_id = #{orderId,jdbcType=VARCHAR}
+            </if>
+            <if test="priceTypeId != null">
+                AND price_type_id = #{priceTypeId,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null">
+                AND create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null">
+                AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="deleteTime != null">
+                AND delete_time = #{deleteTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="createDoctor != null">
+                AND create_doctor = #{createDoctor,jdbcType=VARCHAR}
+            </if>
+            <if test="updateDoctor != null">
+                AND update_doctor = #{updateDoctor,jdbcType=VARCHAR}
+            </if>
+            <if test="deleteUser != null">
+                AND delete_user = #{deleteUser,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+    <!--动态查询-->
+    <select id="selectBySelective" parameterType="com.familydoctor.doctorsubject.entity.MemberPrice"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from member_price
+        <where>
+            AND del_flag = "0"
             <if test="price != null">
                 AND price = #{price,jdbcType=VARCHAR}
             </if>

@@ -47,4 +47,18 @@ public class MemberPriceServiceImpl implements MemberPriceService {
         return memberPriceMapper.selectThreePram(memberPriceBean);
     }
 
+    @Override
+    public List<MemberPrice> selectBySelective(MemberPrice memberPrice) {
+        return memberPriceMapper.selectBySelective(memberPrice);
+    }
+
+    /**
+     * memberIdList查询memberPriceList
+     *
+     * @param memberIdList
+     */
+    @Override
+    public List<String> selectPriceByMemberIdList(List<String> memberIdList) {
+        return memberPriceMapper.selectPriceByMemberIdList(memberIdList);
+    }
 }

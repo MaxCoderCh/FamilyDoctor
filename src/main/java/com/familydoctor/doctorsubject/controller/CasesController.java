@@ -40,6 +40,7 @@ public class CasesController extends BaseController {
             return requestArgumentError("添加内容为空");
         }
 
+        cases.setCreateDoctor(getCurrentUser());
         int i = casesService.addCases(cases);
         if (i > 0) {
             return requestInsertSuccess(cases);

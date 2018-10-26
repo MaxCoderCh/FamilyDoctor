@@ -105,7 +105,7 @@ public class SignController extends BaseController {
         //添加患者缴费信息
         MemberPrice memberPrice = new MemberPrice();
         PriceType priceType = new PriceType();
-        priceType.setPriceTypeNumber("00003");
+        priceType.setPriceTypeNumber("00002");
         memberPrice.setMemberId(member.getId());
         memberPrice.setCreateDoctor(getCurrentUser());
         memberPrice.setUpdateDoctor(getCurrentUser());
@@ -113,7 +113,7 @@ public class SignController extends BaseController {
         memberPrice.setUpdateTime(addTime());
         memberPrice.setPrice(produce.getProducePrice());
         memberPrice.setIspay("1");
-        memberPrice.setOrderId(produce.getId());
+        memberPrice.setOrderId(produceId);
         memberPrice.setPriceTypeId(priceTypeService.selectParam(priceType).get(0).getId());
         int n = memberPriceService.addMemberPrice(memberPrice);
         if (n <= 0) {
@@ -132,7 +132,7 @@ public class SignController extends BaseController {
             memberLable.setUpdateTime(addTime());
 
             String lableClassName = (lableClassService.selectById(lable.getLableClassId())).getClassName();
-            System.out.println(lableClassName);
+
 
             if (lableClassName.equals("性别标签")) {
                 if (sex.equals(lable.getLableName())) {
@@ -142,23 +142,23 @@ public class SignController extends BaseController {
                 }
             } else if (lableClassName.equals("会员标签")) {
                 if (produce.getProduceName().equals(lable.getLableName())) {
-                    memberLable.setShowView("3");
+                    memberLable.setShowView("5");
                     memberLable.setLableId(lable.getId());
                     int o = memberLableService.insertSelect(memberLable);
                 }
 
             } else if (lableClassName.equals("关注标签")) {
-                memberLable.setShowView("0");
+                memberLable.setShowView("3");
                 memberLable.setLableId(lable.getId());
                 int o = memberLableService.insertSelect(memberLable);
             } else if (lableClassName.equals("慢病标签")) {
-                memberLable.setShowView("0");
+                memberLable.setShowView("4");
                 memberLable.setLableId(lable.getId());
                 int o = memberLableService.insertSelect(memberLable);
             }
 
         }
-        return requestInsertFail("添加memberLable失败");
+        return requestInsertFail("创建合约成功");
     }
 
 }

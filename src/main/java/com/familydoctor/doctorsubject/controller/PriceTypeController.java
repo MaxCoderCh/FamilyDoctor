@@ -36,6 +36,7 @@ public class PriceTypeController extends BaseController {
             return requestArgumentEmpty("priceType为空");
         }
 
+        priceType.setCreateUser(getCurrentUser());
         int i = priceTypeService.insertSelective(priceType);
         if (i > 0) {
             return requestInsertSuccess(priceType);

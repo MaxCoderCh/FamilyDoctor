@@ -37,6 +37,35 @@
         where case_id = #{caseId,jdbcType=VARCHAR}
     </select>
 
+    <!--drigId,prescriptionIdList查询prescription-->
+    <select id="selectByIdListAndDrug" parameterType="com.familydoctor.doctorsubject.bean.PrescriptionBean"
+            resultMap="BaseResultMap">
+        select * from prescription
+        <where>
+            AND del_flag= "0"
+            <if test="drugId !=null">
+                AND drug_id = #{drugId,jdbcType=VARCHAR}
+            </if>
+            AND id in
+            <foreach collection="prescriptionIds" item="id" index="index" open="(" close=")" separator=",">
+                #{id}
+            </foreach>
+        </where>
+    </select>
+
+    <!--idList查询drugIdList-->
+    <select id="selectByIdListAndDrug" parameterType="java.util.List"
+            resultMap="BaseResultMap">
+        select * from prescription
+        <where>
+            AND del_flag= "0"
+            AND id in
+            <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+                #{id}
+            </foreach>
+        </where>
+    </select>
+
     <!--逻辑删除-->
     <update id="softDelete" parameterType="com.familydoctor.doctorsubject.entity.Prescription">
     update member

@@ -44,7 +44,7 @@
         from contract
         where memberId=#{memberId,jdbcType=VARCHAR}
     </select>
-    <!--memberPrice统计数据查询-->
+    <!--memberPrice  统计数据查询-->
     <select id="selectTrends" parameterType="com.familydoctor.doctorsubject.bean.ContractBean"
             resultMap="BaseResultMap">
         select * from contract

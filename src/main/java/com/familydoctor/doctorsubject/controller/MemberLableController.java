@@ -1,13 +1,11 @@
 package com.familydoctor.doctorsubject.controller;
 
-import com.alibaba.druid.sql.visitor.functions.If;
 import com.familydoctor.doctorsubject.YoonaLTsUtils.DateUtils;
 import com.familydoctor.doctorsubject.bean.ContractBean;
 import com.familydoctor.doctorsubject.bean.MemberBean;
 import com.familydoctor.doctorsubject.bean.MemberLableBean;
 import com.familydoctor.doctorsubject.entity.*;
 import com.familydoctor.doctorsubject.service.*;
-import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,7 +43,7 @@ public class MemberLableController extends BaseController {
      * @param memberLable
      * @return requestSelectSuccess(resultMemberLable1)
      */
-    @GetMapping(value = "selectById")
+    @GetMapping(value = "selectbyid")
     public Map selectMemberLableByMember(MemberLable memberLable) {
 
         if (StringUtils.isBlank(memberLable.getMemberId())) {
@@ -89,7 +87,7 @@ public class MemberLableController extends BaseController {
      * @param lableNames
      * @param lableNames
      */
-    @GetMapping(value = "selectByTerm")
+    @GetMapping(value = "selectbyterm")
     public Map selectTerm(String[] lableNames) {
 
         if (lableNames == null) {
@@ -270,7 +268,7 @@ public class MemberLableController extends BaseController {
         memberLableBean.setTotalPrice(totalPrice);
 
         return requestSelectSuccess(memberLableBean);
-        
+
     }
 
 }

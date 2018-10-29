@@ -189,4 +189,31 @@ public abstract class BaseController {
         return resultMap;
     }
 
+    /**
+     * 请求成功
+     *
+     * @param result
+     * @return resultMap
+     */
+    public Map requestSuccessful(Object result) {
+        resultMap = new LinkedHashMap<>();
+        resultMap.put("code", "40001");
+        resultMap.put("msg", "Request_Success");
+        resultMap.put("result", result);
+        return resultMap;
+    }
+
+    /**
+     * 请求失败
+     *
+     * @param result
+     * @return resultMap
+     */
+    public Map requestUnsuccessful(Object result) {
+        resultMap = new LinkedHashMap<>();
+        resultMap.put("code", "41001");
+        resultMap.put("msg", "Request_Unsuccessful");
+        resultMap.put("result", result);
+        return resultMap;
+    }
 }

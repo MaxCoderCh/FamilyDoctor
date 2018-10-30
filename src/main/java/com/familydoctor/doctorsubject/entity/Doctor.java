@@ -1,7 +1,10 @@
 package com.familydoctor.doctorsubject.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.util.Date;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Doctor extends BaseEntity {
     private String id;
 

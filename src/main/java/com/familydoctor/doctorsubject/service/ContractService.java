@@ -23,13 +23,20 @@ public interface ContractService {
     Contract selectById(String id);
 
     /**
-     * 由医生Id查询其所患者(contractId - produceId - doctorId - List<produceID> - List<contract>)
+     * 由医生Id查询其所患者
      *
-     * @param list
+     * @param contract
      */
-    List<Contract> selectByDoctorId(List<String> list);
+    List<Contract> selectParm(Contract contract);
 
     List<Contract> selectByMemberId(Member member);
 
     List<Contract> selectTrends(ContractBean contractBean);
+
+    /**
+     * memberIdList查询Contract
+     *
+     * @param memberIdList
+     */
+    List<Contract> selectByMemberList(List<String> memberIdList);
 }

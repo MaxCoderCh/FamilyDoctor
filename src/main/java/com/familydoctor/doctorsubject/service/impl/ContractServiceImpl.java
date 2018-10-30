@@ -41,12 +41,12 @@ public class ContractServiceImpl implements ContractService {
     /**
      * 查询一个医生的所有患者
      *
-     * @param list
+     * @param contract
      * @return
      */
     @Override
-    public List<Contract> selectByDoctorId(List<String> list) {
-        return contractMapper.selectByDoctor(list);
+    public List<Contract> selectParm(Contract contract) {
+        return contractMapper.selectParm(contract);
     }
 
     @Override
@@ -57,5 +57,15 @@ public class ContractServiceImpl implements ContractService {
     @Override
     public List<Contract> selectTrends(ContractBean contractBean) {
         return contractMapper.selectTrends(contractBean);
+    }
+
+    /**
+     * memberIdList查询Contract
+     *
+     * @param memberIdList
+     */
+    @Override
+    public List<Contract> selectByMemberList(List<String> memberIdList) {
+        return contractMapper.selectByMemberList(memberIdList);
     }
 }

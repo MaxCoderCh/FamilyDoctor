@@ -1,7 +1,9 @@
 package com.familydoctor.doctorsubject.bean;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Data
 public class IntradayDataBean {
     private String id;

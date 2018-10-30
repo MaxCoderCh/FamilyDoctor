@@ -1,10 +1,12 @@
 package com.familydoctor.doctorsubject.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Cases extends BaseEntity{
     private String id;
 

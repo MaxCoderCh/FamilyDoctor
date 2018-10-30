@@ -46,17 +46,12 @@ public class ProduceController extends BaseController {
     /**
      * 医生套餐列表查询
      *
-     * @param produce
      * @return requestSelectSuccess(produceList)
      */
     @GetMapping(value = "selectByDoctor")
-    public Map selectProduceByDoctor(Produce produce) {
+    public Map selectProduceByDoctor() {
 
-        if (StringUtils.isBlank(produce.getDoctorId())) {
-            return requestArgumentEmpty("doctorId为空");
-        }
-
-        List<Produce> produceList = produceService.selectByDoctorId(produce.getDoctorId());
+        List<Produce> produceList = produceService.selectByDoctorId(getCurrentUser());
         if (produceList != null && !produceList.isEmpty()) {
             return requestSelectSuccess(produceList);
         } else {

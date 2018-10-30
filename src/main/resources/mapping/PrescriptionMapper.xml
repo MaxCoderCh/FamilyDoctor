@@ -54,7 +54,7 @@
     </select>
 
     <!--idList查询drugIdList-->
-    <select id="selectByIdListAndDrug" parameterType="java.util.List"
+    <select id="selectByIds" parameterType="java.util.List"
             resultMap="BaseResultMap">
         select * from prescription
         <where>

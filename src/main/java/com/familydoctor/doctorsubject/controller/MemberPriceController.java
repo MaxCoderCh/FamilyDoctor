@@ -2,6 +2,7 @@ package com.familydoctor.doctorsubject.controller;
 
 import com.familydoctor.doctorsubject.YoonaLTsUtils.DateUtils;
 import com.familydoctor.doctorsubject.bean.ContractBean;
+import com.familydoctor.doctorsubject.bean.DoctorOutCallBean;
 import com.familydoctor.doctorsubject.bean.MemberPriceBean;
 import com.familydoctor.doctorsubject.bean.PrescriptionBean;
 import com.familydoctor.doctorsubject.entity.*;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.*;
-
 
 @RestController
 @RequestMapping(value = "familydoctor/memberPrice")
@@ -39,7 +39,7 @@ public class MemberPriceController extends BaseController {
     private MemberService memberService;
 
     /**
-     * 查询缴费member--检查
+     * 查询需要缴费
      *
      * @param member
      * @param cases
@@ -459,8 +459,133 @@ public class MemberPriceController extends BaseController {
      * @return
      */
     @GetMapping(value = "outcall")
-    public Map outCall() {
-        return requestUnsuccessful("占位");
+    public Map outCall(String startTime, String stopTime) {
+
+        if (StringUtils.isBlank(startTime) || StringUtils.isBlank(stopTime)) {
+            return requestArgumentEmpty("参数为空");
+        }
+
+        Date startDate = DateUtils.stringToDate(startTime);
+        Date endDate = DateUtils.stringToDate(stopTime);
+
+        MemberPriceBean memberPriceBean = new MemberPriceBean();
+        memberPriceBean.setStartDate(startDate);
+        memberPriceBean.setEndDate(endDate);
+        memberPriceBean.setCreateDoctor(getCurrentUser());
+
+        List<MemberPrice> memberPriceList = memberPriceService.selectTrends(memberPriceBean);
+        if (memberPriceList.isEmpty() || memberPriceBean == null) {
+            return requestSelectFail("startDate,endDate,createDpctor查询memberList失败");
+        }
+
+        PriceType priceType = new PriceType();
+        priceType.setPriceTypeName("会员费用");
+        String priceTypeIdVip = priceTypeService.selectParam(priceType).get(0).getId();
+        priceType.setPriceTypeName("诊疗费用");
+        String priceTypeIdTherapy = priceTypeService.selectParam(priceType).get(0).getId();
+        Produce produce = new Produce();
+        produce.setProduceName("年费");
+        String yearId = produceService.selectByName(produce);
+        String yearPrice = produceService.selectById(yearId).getProducePrice();
+        produce.setProduceName("普通");
+        String singleId = produceService.selectByName(produce);
+        String commonPrice = produceService.selectById(singleId).getProducePrice();
+
+        Map<String, Map<String, String>> outCallDay = new LinkedHashMap<>();
+        int yearSize = 0;  // 初始年费次数
+        int singleSize = 0;  // 初始普通次数
+        int outSize = 0;  // 初始出诊次数
+        int price = 0;    // 初始出诊费用
+
+        List<String> memberIds = new ArrayList<>();
+        List<String> yearMember = new ArrayList<>();
+        List<String> singleMember = new ArrayList<>();
+        List<MemberPrice> memberPriceTherapyList = new ArrayList<>();
+
+        // 会员费用,诊疗费用分类
+        for (MemberPrice memberPrice : memberPriceList) {
+            if (memberPrice.getPriceTypeId().equals(priceTypeIdVip)) {
+                memberIds.add(memberPrice.getMemberId());
+            } else if (memberPrice.getPriceTypeId().equals(priceTypeIdTherapy)) {
+                memberPriceTherapyList.add(memberPrice);
+                price += Integer.parseInt(memberPrice.getPrice());
+                outSize++;
+                if (outCallDay.get(memberPrice.getMemberId()) == null) {
+                    Member member = new Member();
+                    member.setId(memberPrice.getMemberId());
+                    Member resMember = memberService.selectById(member);
+                    Map<String, String> tempMap = new HashMap<String, String>();
+                    tempMap.put("price", memberPrice.getPrice());
+                    tempMap.put("number", "1");
+                    tempMap.put("name", resMember.getMemberName());
+                    tempMap.put("cardId", resMember.getMemberCard());
+                    outCallDay.put(memberPrice.getMemberId(), tempMap);
+                } else if (outCallDay.containsKey(memberPrice.getMemberId())) {
+                    Map<String, String> tempMap = outCallDay.get(memberPrice.getMemberId());
+                    double a = Double.parseDouble(tempMap.get("price"));
+                    double b = Double.parseDouble(memberPrice.getPrice());
+                    tempMap.put("price", String.valueOf(a + b));
+                    int number = Integer.parseInt(tempMap.get("number"));
+                    number++;
+                    tempMap.put("number", String.valueOf(number));
+                    outCallDay.put(memberPrice.getMemberId(), tempMap);
+                }
+            }
+        }
+        List<Map<String, String>> diagnosisListMap = new ArrayList<Map<String, String>>();
+        for (Map<String, String> v : outCallDay.values()) {
+            diagnosisListMap.add(v);
+        }
+        // 按年费yearMember,普通singleMember分类
+        List<Contract> contractList = contractService.selectByMemberList(memberIds);
+        for (Contract contract : contractList) {
+            if (contract.getProduceId().equals(yearId)) {
+                yearMember.add(contract.getMemberId());
+            } else if (contract.getProduceId().equals(singleId)) {
+                singleMember.add(contract.getMemberId());
+            }
+        }
+
+        for (MemberPrice memberPrice : memberPriceList) {
+            if (yearMember.contains(memberPrice.getMemberId())) {
+                yearSize++;
+            } else if (singleMember.contains(memberPrice.getMemberId())) {
+                singleSize++;
+            }
+        }
+
+        // 获取startDate,endDate之间的天数
+        int countDay = DateUtils.daysBetween(startDate, endDate);
+        int subsidy = countDay * 10;  // 补贴费用,按每天10元计算
+
+/*        // memberPriceTherapyList诊疗费用列表每天筛选
+        Map<String, String> dayPrice = new HashMap<>();
+        for (int i = 0; i < countDay; i++) {
+            for (MemberPrice memberPrice : memberPriceTherapyList) {
+                Date memberPriceDate = memberPrice.getCreateTime();
+                if (memberPriceDate.after(DateUtils.dayBegin(startDate)) && memberPriceDate.before(DateUtils.dayEnd(startDate))) {
+                    dayPrice.put(String.valueOf(startDate), String.valueOf(price += Integer.parseInt(memberPrice.getPrice())));
+                }
+            }
+            startDate = DateUtils.dayAddDay(startDate);
+        }*/
+
+        // 总费用为年费+普通+出诊+补贴
+        int memberTotal = yearSize * Integer.parseInt(yearPrice);
+        int diagnosisTotal = singleSize * Integer.parseInt(commonPrice);
+        int totalPrice = memberTotal + diagnosisTotal + price + subsidy;
+
+        DoctorOutCallBean doctorOutCallBean = new DoctorOutCallBean();
+        doctorOutCallBean.setYearSize(String.valueOf(yearSize));
+        doctorOutCallBean.setSingleSize(String.valueOf(singleSize));
+        doctorOutCallBean.setOutSize(String.valueOf(outSize));
+        doctorOutCallBean.setSubsidy(String.valueOf(subsidy));
+        doctorOutCallBean.setTotalPrice(String.valueOf(totalPrice));
+        doctorOutCallBean.setMemberTotal(String.valueOf(memberTotal));
+        doctorOutCallBean.setDiagnosisTotal(String.valueOf(diagnosisTotal));
+        doctorOutCallBean.setDiagnosisListMap(diagnosisListMap);
+
+        return requestUnsuccessful(doctorOutCallBean);
     }
 
 }

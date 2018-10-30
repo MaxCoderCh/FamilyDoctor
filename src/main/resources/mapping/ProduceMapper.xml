@@ -81,10 +81,10 @@
     <!--由doctorId查询列表-->
     <select id="selectByDoctor" parameterType="com.familydoctor.doctorsubject.entity.Produce" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
+        id, produce_name ,produce_price
         from produce
         <where>
-            del_flag!="1"
+            del_flag ="0"
             AND
             doctor_id = #{doctorId,jdbcType=VARCHAR}
         </where>

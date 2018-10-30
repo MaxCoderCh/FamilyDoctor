@@ -26,16 +26,49 @@
         where id = #{id,jdbcType=VARCHAR}
     </select>
     <!--查询一个医生的所有患者-->
-    <select id="selectByDoctor" resultType="com.familydoctor.doctorsubject.entity.Contract">
+    <select id="selectParm" parameterType="com.familydoctor.doctorsubject.entity.Contract" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from contract
-        where produce_id in
-        <foreach item="item" index="index" collection="list"
-                 open="(" separator="," close=")">
-            #{item}
-        </foreach>
+        <where>
+            AND del_flag="0"
+            <if test="id != null">
+                AND id = #{id,jdbcType=VARCHAR}
+            </if>
+            <if test="memberId != null">
+                AND member_id = #{memberId,jdbcType=CHAR}
+            </if>
+            <if test="produceId != null">
+                AND produce_id = #{produceId,jdbcType=VARCHAR}
+            </if>
+            <if test="beginDate != null">
+                AND begin_date = #{beginDate,jdbcType=CHAR}
+            </if>
+            <if test="endDate != null">
+                AND end_date = #{endDate,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null">
+                AND create_time = #{createTime,jdbcType=CHAR}
+            </if>
+            <if test="updateTime != null">
+                AND update_time = #{updateTime,jdbcType=VARCHAR}
+            </if>
+            <if test="deleteTime != null">
+                AND delete_time = #{deleteTime,jdbcType=CHAR}
+            </if>
+            <if test="createUser != null">
+                AND create_user = #{createUser,jdbcType=VARCHAR}
+            </if>
+            <if test="updateUser != null">
+                AND update_user = #{updateUser,jdbcType=CHAR}
+            </if>
+            <if test="deleteUser != null">
+                AND delete_user = #{deleteUser,jdbcType=VARCHAR}
+            </if>
+
+        </where>
     </select>
+
     <!--memberId查询contract-->
     <select id="selectByMemberId" parameterType="com.familydoctor.doctorsubject.entity.Member"
             resultMap="BaseResultMap">
@@ -44,6 +77,20 @@
         from contract
         where memberId=#{memberId,jdbcType=VARCHAR}
     </select>
+
+    <!--memberIds查询contract-->
+    <select id="selectByMemberList" parameterType="java.util.List"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from contract
+        where member_id in
+        <foreach item="item" index="index" collection="list"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
     <!--memberPrice  统计数据查询-->
     <select id="selectTrends" parameterType="com.familydoctor.doctorsubject.bean.ContractBean"
             resultMap="BaseResultMap">

@@ -45,26 +45,18 @@ public class ContractController extends BaseController {
     }
 
     /**
-     * 查询一个医生的所有患者
+     * 查询一个医生的所有contract
      *
-     * @param contractId
+     * @param
      * @return requestSelectSuccess(contractsList)
      */
     @GetMapping(value = "selectByDoctor")
-    public Map selectByDoctor(String contractId) {
+    public Map selectByDoctor() {
 
-        //获取ProduceId
-        String produceId = contractService.selectById(contractId).getProduceId();//OK
 
-        //通过ProduceId获取对应的DoctoreId
-        String doctorId = produceService.selectById(produceId).getDoctorId();//OK
-
-        //由DoctoreId查询Produce列表,并获取ProduceId列表
-        List<String> produceIdList = produceService.selectByDoctorToId(doctorId);//OK
-
-        //查询患者列表
-        List<Contract> contractsList = contractService.selectByDoctorId(produceIdList);
-        log.info(String.valueOf(contractsList));
+        Contract contract = new Contract();
+        contract.setCreateUser(getCurrentUser());
+        List<Contract> contractsList = contractService.selectParm(contract);
 
         if (contractsList == null || contractsList.isEmpty()) {
             return requestSelectFail("查询失败");

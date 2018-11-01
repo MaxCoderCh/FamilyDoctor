@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 
 /**
- * 体检
+ * 体检接口(familydoctor/examination)
+ * 添加(add)
  */
 @RestController
 @RequestMapping(value = "familydoctor/examination")

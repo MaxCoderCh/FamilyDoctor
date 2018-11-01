@@ -13,10 +13,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 疾病所属类别,返回值为成功返回值
+ * 疾病所属类别(familydoctor/diseaseclass)
+ * 添加(add),删除(softdelete),修改(update),查询所有(selectall),分页查询(selectpage)
  */
 @RestController
-@RequestMapping(value = "familydoctor/diseaseClass")
+@RequestMapping(value = "familydoctor/diseaseclass")
 public class DiseaseClassController extends BaseController {
 
     @Autowired
@@ -26,7 +27,6 @@ public class DiseaseClassController extends BaseController {
      * 添加疾病类别
      *
      * @param diseaseClass
-     * @return requestInsertSuccess(diseaseClass)
      */
     @PostMapping(value = "add")
     public Map addDiseaseClass(DiseaseClass diseaseClass) {
@@ -49,9 +49,8 @@ public class DiseaseClassController extends BaseController {
      * 删除疾病类别
      *
      * @param diseaseClass
-     * @return requestDeleteSuccess(diseaseClass)
      */
-    @GetMapping(value = "softDelete")
+    @GetMapping(value = "softdelete")
     public Map deleteDiseaseClass(DiseaseClass diseaseClass) {
 
         if (StringUtils.isBlank(diseaseClass.getId())) {
@@ -71,7 +70,6 @@ public class DiseaseClassController extends BaseController {
      * 修改DiseaseClass
      *
      * @param diseaseClass
-     * @return requestUpdateSuccess(diseaseClass)
      */
     @PostMapping(value = "update")
     public Map updateDiseaseClass(DiseaseClass diseaseClass) {
@@ -92,10 +90,8 @@ public class DiseaseClassController extends BaseController {
 
     /**
      * 查询所有疾病
-     *
-     * @return requestSelectSuccess(diseaseClassList), 结果存储在List列表
      */
-    @GetMapping(value = "selectAll")
+    @GetMapping(value = "selectall")
     public Map selectAllDiseaseClass() {
 
         List<DiseaseClass> diseaseClassList = diseaseClassService.selectAll();
@@ -109,15 +105,15 @@ public class DiseaseClassController extends BaseController {
     /**
      * 分页查询
      *
-     * @param
+     * @param diseaseClass
      */
-    @GetMapping(value = "selectPage")
+    @GetMapping(value = "selectpage")
     public Map selectPage(DiseaseClass diseaseClass) {
 
         List<DiseaseClass> diseaseClassList = diseaseClassService.selectPage(diseaseClass);
 
         if (diseaseClassList != null && !diseaseClassList.isEmpty()) {
-            return requestSelectSuccess(diseaseClass);
+            return requestSelectSuccess(diseaseClassList);
         }
 
         return requestSelectFail("查询失败");

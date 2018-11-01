@@ -16,7 +16,7 @@ import java.util.Map;
 
 
 /**
- * 科室相关,返回值为操作成功返回值
+ * 科室接口,含有添加(add),由Id查询(selectbyid),更新(update),删除(softdelete),由hospitalid查询(selective)
  */
 @Slf4j
 @RestController
@@ -38,6 +38,8 @@ public class BranchController extends BaseController {
         if (branch == null) {
             return requestArgumentEmpty("传入数据为空");
         }
+
+        branch.setCreateUser(getCurrentUser());
         int i = branchService.addBranch(branch);
         if (i > 0) {
             return requestInsertSuccess(branch);
@@ -54,7 +56,7 @@ public class BranchController extends BaseController {
      * @param branch
      * @return requestSelectSuccess(branch)
      */
-    @GetMapping(value = "selectById")
+    @GetMapping(value = "selectbyid")
     public Map selectBranchById(Branch branch) {
 
         if (StringUtils.isBlank(branch.getId())) {
@@ -98,7 +100,7 @@ public class BranchController extends BaseController {
      * @param branch
      * @return requestDeleteSuccess(branch)
      */
-    @GetMapping(value = "softDelete")
+    @GetMapping(value = "softdelete")
     public Map softDelBranchMassage(Branch branch) {
 
         if (StringUtils.isBlank(branch.getId())) {

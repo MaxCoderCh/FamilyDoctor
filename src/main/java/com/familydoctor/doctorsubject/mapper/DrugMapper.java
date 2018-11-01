@@ -22,7 +22,5 @@ public interface DrugMapper {
 
     List<Drug> selectAroundDrug(Drug drug);
 
-    List<Drug> selectPage(Drug drug);
-
     int updateByPrimaryKey(Drug record);
 }

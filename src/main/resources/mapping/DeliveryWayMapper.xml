@@ -31,7 +31,7 @@
         <where>
             del_flag = '0'
         </where>
-        limit #{pageSize},#{pageNo}
+        limit #{beginNo},#{pageSize}
     </select>
 
     <!--查询所有给药-->
@@ -39,6 +39,9 @@
         select
         <include refid="Base_Column_List"/>
         from delivery_way
+        <!--        <where>
+                    limit #{beginNo},#{pageSize}
+                </where>-->
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from delivery_way

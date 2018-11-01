@@ -29,16 +29,18 @@
         from cases
         where id = #{id,jdbcType=VARCHAR}
     </select>
+
     <!--分页查询-->
     <select id="selectPage" parameterType="com.familydoctor.doctorsubject.entity.Cases" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from cases
         <where>
-            del_flag = '0'
+            del_flag = "0"
         </where>
-        limit #{pageSize},#{pageNo}
+        limit #{beginNo},#{pageSize}
     </select>
+
     <!--由MemberId查询所有病历-->
     <select id="selectCasesByMember" parameterType="java.lang.String"
             resultMap="BaseResultMap">
@@ -46,6 +48,7 @@
         <include refid="Base_Column_List"/>
         from cases
         <where>
+            AND del_flag = "0"
             AND member_id = #{memberId,jdbcType=VARCHAR}
         </where>
     </select>

@@ -39,5 +39,4 @@ public interface DrugService {
      */
     List<Drug> selectAllDrug(Drug drug);
 
-    List<Drug> selectPage(Drug drug);
 }

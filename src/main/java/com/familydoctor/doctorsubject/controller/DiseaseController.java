@@ -13,7 +13,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 疾病信息,返回值为成功返回值
+ * 疾病信息(familydoctor/disease)
+ * 添加(add),删除(softdelete),修改(update),查询所有(selectall),分页查询(selectpage)
  */
 @RestController
 @RequestMapping(value = "familydoctor/disease")
@@ -26,7 +27,6 @@ public class DiseaseController extends BaseController {
      * 添加疾病信息
      *
      * @param disease
-     * @return requestInsertSuccess(disease)
      */
     @PostMapping(value = "add")
     public Map addDiseaseMsg(Disease disease) {
@@ -38,7 +38,7 @@ public class DiseaseController extends BaseController {
         disease.setCreateUser(getCurrentUser());
         int i = diseaseService.addDisease(disease);
         if (i > 0) {
-            return requestInsertSuccess(disease);
+            return requestInsertSuccess("添加成功");
         } else {
             return requestSelectFail("添加失败");
         }
@@ -48,7 +48,6 @@ public class DiseaseController extends BaseController {
      * 修改疾病信息
      *
      * @param disease
-     * @return requestUpdateSuccess(disease)
      */
     @PostMapping(value = "update")
     public Map updateDiseaseMsg(Disease disease) {
@@ -60,7 +59,7 @@ public class DiseaseController extends BaseController {
         disease.setUpdateTime(addTime());
         int i = diseaseService.updateDisease(disease);
         if (i > 0) {
-            return requestUpdateSuccess(disease);
+            return requestUpdateSuccess("修改成功");
         } else {
             return requestUpdateFail("更新失败");
         }
@@ -70,9 +69,8 @@ public class DiseaseController extends BaseController {
      * 删除疾病信息
      *
      * @param disease
-     * @return requestDeleteSuccess(disease)
      */
-    @GetMapping(value = "softDelete")
+    @GetMapping(value = "softdelete")
     public Map deleteDiseaseMsg(Disease disease) {
 
         if (StringUtils.isBlank(disease.getId())) {
@@ -91,10 +89,8 @@ public class DiseaseController extends BaseController {
 
     /**
      * 查询所有疾病列表
-     *
-     * @return requestSelectSuccess(diseaseList)
      */
-    @GetMapping(value = "selectAll")
+    @GetMapping(value = "selectall")
     public Map selectAllDisease() {
 
         List<Disease> diseaseList = diseaseService.selectAll();
@@ -110,15 +106,16 @@ public class DiseaseController extends BaseController {
      *
      * @param disease
      */
-    @GetMapping(value = "selectPage")
+    @GetMapping(value = "selectpage")
     public Map selectPage(Disease disease) {
 
         List<Disease> diseaseList = diseaseService.selectPage(disease);
 
-        if (diseaseList != null && !diseaseList.isEmpty()) {
-            return requestSelectSuccess(disease);
+        if (diseaseList == null || diseaseList.isEmpty()) {
+            return requestSelectFail("查询失败");
+
         }
 
-        return requestSelectFail("查询失败");
+        return requestSelectSuccess(diseaseList);
     }
 }

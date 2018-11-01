@@ -17,7 +17,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 病历相关,返回值均为请求成功返回值
+ * 病历接口(familydoctor/cases)
+ * 含有添加(add),修改(update),memberid查询(selectbymemberid),id查询(selectbymemberid),查询所有,分页(selectpage)
  */
 @Slf4j
 @RestController
@@ -31,7 +32,6 @@ public class CasesController extends BaseController {
      * 添加病历
      *
      * @param cases
-     * @return requestInsertSuccess(cases)
      */
     @PostMapping(value = "add")
     public Map addCasesMassage(Cases cases) {
@@ -43,7 +43,7 @@ public class CasesController extends BaseController {
         cases.setCreateDoctor(getCurrentUser());
         int i = casesService.addCases(cases);
         if (i > 0) {
-            return requestInsertSuccess(cases);
+            return requestInsertSuccess("添加病例成功");
         } else {
             return requestInsertFail("添加失败");
         }
@@ -53,11 +53,11 @@ public class CasesController extends BaseController {
      * 修改病历
      *
      * @param cases
-     * @return return requestUpdateSuccess(cases)
      */
     @PostMapping(value = "update")
     public Map updateCasesMassage(Cases cases) {
 
+        // 病例创建时间超过一天无法修改
         Date date = casesService.selectById(cases.getId()).getCreateTime();
         if (cases == null) {
             return requestArgumentEmpty("传入修改对象为空");
@@ -68,7 +68,7 @@ public class CasesController extends BaseController {
         cases.setUpdateTime(addTime());
         int i = casesService.updateCases(cases);
         if (i > 0) {
-            return requestUpdateSuccess(cases);
+            return requestUpdateSuccess("修改成功");
         } else {
             return requestArgumentError("修改失败");
         }
@@ -79,9 +79,8 @@ public class CasesController extends BaseController {
      * 由MemberId查询其诊疗所有病历列表
      *
      * @param cases
-     * @return requestSelectSuccess(casesList)
      */
-    @GetMapping(value = "selectByMemberId")
+    @GetMapping(value = "selectbymemberid")
     public Map selectCasesByMemberId(Cases cases) {
 
         if (StringUtils.isBlank(cases.getMemberId())) {
@@ -101,9 +100,8 @@ public class CasesController extends BaseController {
      * 根据病历ID查询对应的病历
      *
      * @param cases
-     * @return requestSelectSuccess(cases)
      */
-    @GetMapping(value = "selectById")
+    @GetMapping(value = "selectbyid")
     public Map selectCasesById(Cases cases) {
 
         if (StringUtils.isBlank(cases.getId())) {
@@ -123,20 +121,20 @@ public class CasesController extends BaseController {
      *
      * @param cases
      */
-    @GetMapping(value = "selectPage")
+    @GetMapping(value = "selectpage")
     public Map selectPage(Cases cases) {
+
+        if (cases == null) {
+            return requestArgumentEmpty("pageNo,pageSize为空");
+        }
 
         List<Cases> casesList = casesService.selectPage(cases);
 
-        if (casesList != null && !casesList.isEmpty()) {
-            return requestSelectSuccess(casesList);
+        if (casesList == null && casesList.isEmpty()) {
+            return requestSelectFail("查询失败");
+
         }
-
-        return requestSelectFail("查询失败");
+        return requestSelectSuccess(casesList);
     }
 
-    @GetMapping(value = "deleteAll")
-    public void delAllCases() {
-        casesService.delAll();
-    }
 }

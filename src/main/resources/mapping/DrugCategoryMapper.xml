@@ -23,23 +23,27 @@
         from drug_category
         where id = #{id,jdbcType=VARCHAR}
     </select>
+
     <!--查询所有药品类别信息-->
     <select id="selectAll" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from drug_category
-        <where>del_flag!="1"</where>
+        <where>del_flag = "0"</where>
     </select>
+
     <!--分页查询-->
-    <select id="selectPage" parameterType="com.familydoctor.doctorsubject.entity.DrugCategory" resultMap="BaseResultMap">
+    <select id="selectPage" parameterType="com.familydoctor.doctorsubject.entity.DrugCategory"
+            resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from drug_category
         <where>
-            del_flag = '0'
+            del_flag = "0"
         </where>
-        limit #{pageSize},#{pageNo}
+        limit #{beginNo},#{pageSize}
     </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from drug_category
     where id = #{id,jdbcType=VARCHAR}

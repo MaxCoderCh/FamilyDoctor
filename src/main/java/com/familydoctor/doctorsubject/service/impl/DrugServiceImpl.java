@@ -74,9 +74,4 @@ public class DrugServiceImpl implements DrugService {
         return drugMapper.selectAroundDrug(drug);
 
     }
-
-    @Override
-    public List<Drug> selectPage(Drug drug) {
-        return drugMapper.selectPage(drug);
-    }
 }

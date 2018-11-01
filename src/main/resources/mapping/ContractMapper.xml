@@ -25,7 +25,7 @@
         from contract
         where id = #{id,jdbcType=VARCHAR}
     </select>
-    <!--查询一个医生的所有患者-->
+
     <select id="selectParm" parameterType="com.familydoctor.doctorsubject.entity.Contract" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
@@ -75,7 +75,7 @@
         select
         <include refid="Base_Column_List"/>
         from contract
-        where memberId=#{memberId,jdbcType=VARCHAR}
+        where member_Id=#{memberId,jdbcType=VARCHAR}
     </select>
 
     <!--memberIds查询contract-->

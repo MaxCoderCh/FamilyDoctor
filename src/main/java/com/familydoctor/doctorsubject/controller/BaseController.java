@@ -1,9 +1,13 @@
 package com.familydoctor.doctorsubject.controller;
 
+import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.web.bind.ServletRequestDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -23,6 +27,18 @@ public abstract class BaseController {
         HttpServletRequest request = ((ServletRequestAttributes) (RequestContextHolder.currentRequestAttributes())).getRequest();
 
         return request.getHeader("token");
+    }
+
+    /**
+     * date类型参数报错
+     *
+     * @param bin
+     */
+    @InitBinder
+    public void initBinder(ServletRequestDataBinder bin) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        CustomDateEditor cust = new CustomDateEditor(sdf, true);
+        bin.registerCustomEditor(Date.class, cust);
     }
 
     private Map<String, Object> resultMap;

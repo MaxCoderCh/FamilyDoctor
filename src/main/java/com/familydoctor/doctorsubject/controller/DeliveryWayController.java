@@ -1,7 +1,6 @@
 package com.familydoctor.doctorsubject.controller;
 
 import com.familydoctor.doctorsubject.entity.DeliveryWay;
-import com.familydoctor.doctorsubject.mapper.DeliveryWayMapper;
 import com.familydoctor.doctorsubject.service.DeliveryWayService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -15,11 +14,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 给药,返回值为成功返回值
+ * 给药(familydoctor/deliveryway)
+ * 含有添加(add),删除(softdelete),修改(update),查询(selectbyidorall,查询内容由I的是否传入判断)
  */
 @Slf4j
 @RestController
-@RequestMapping(value = "familydoctor/deliveryWay")
+@RequestMapping(value = "familydoctor/deliveryway")
 public class DeliveryWayController extends BaseController {
 
     @Autowired
@@ -29,7 +29,6 @@ public class DeliveryWayController extends BaseController {
      * 添加给药信息
      *
      * @param deliveryWay
-     * @return requestInsertSuccess(deliveryWay)
      */
     @PostMapping(value = "add")
     public Map addDeliveryWay(DeliveryWay deliveryWay) {
@@ -50,9 +49,8 @@ public class DeliveryWayController extends BaseController {
      * 删除给药
      *
      * @param deliveryWay
-     * @return requestDeleteSuccess(deliveryWay)
      */
-    @GetMapping(value = "delete")
+    @GetMapping(value = "softdelete")
     public Map deleteDelivery(DeliveryWay deliveryWay) {
 
         if (StringUtils.isBlank(deliveryWay.getId())) {
@@ -62,9 +60,9 @@ public class DeliveryWayController extends BaseController {
         deliveryWay.setDeleteTime(addTime());
         int i = deliveryWayService.softDel(deliveryWay);
         if (i > 0) {
-            return requestDeleteSuccess(deliveryWay);
+            return requestDeleteSuccess("删除成功");
         } else {
-            return requestDeleteFail(deliveryWay);
+            return requestDeleteFail("删除失败");
         }
     }
 
@@ -96,7 +94,7 @@ public class DeliveryWayController extends BaseController {
      * @param deliveryWay
      * @return deliveryWay
      */
-    @GetMapping(value = "selectByIdOrAll")
+    @GetMapping(value = "selectbyidorall")
     public Map selectDelivery(DeliveryWay deliveryWay) {
 
         if (StringUtils.isBlank(deliveryWay.getId())) {
@@ -122,7 +120,7 @@ public class DeliveryWayController extends BaseController {
      *
      * @param deliveryWay
      */
-    @GetMapping(value = "selectPage")
+    @GetMapping(value = "selectpage")
     public Map selectPage(DeliveryWay deliveryWay) {
 
         List<DeliveryWay> deliveryWayList = deliveryWayService.selectPage(deliveryWay);

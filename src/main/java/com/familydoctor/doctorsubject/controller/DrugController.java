@@ -11,7 +11,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 药品
+ * 药品(familydoctor/drug)
+ * 添加(add),修改(update),删除(softdelete),id查询(selectbyid),查询所有(selectall),分页查询(selectpage)
  */
 @Slf4j
 @RestController
@@ -25,7 +26,6 @@ public class DrugController extends BaseController {
      * 添加药品
      *
      * @param drug
-     * @return requestInsertSuccess(drug)
      */
     @PostMapping(value = "add")
     public Map addDrugMsg(Drug drug) {
@@ -36,18 +36,16 @@ public class DrugController extends BaseController {
 
         int i = drugService.addDrug(drug);
         if (i > 0) {
-            return requestInsertSuccess(drug);
-        } else {
-            return requestInsertFail("添加药品失败");
+            return requestInsertSuccess("添加成功");
         }
-
+        return requestInsertFail("添加药品失败");
     }
+
 
     /**
      * 更新药品
      *
      * @param drug
-     * @return requestUpdateSuccess(drug)
      */
     @PostMapping(value = "update")
     public Map updateDrugMsg(Drug drug) {
@@ -57,23 +55,19 @@ public class DrugController extends BaseController {
         }
 
         drug.setUpdateTime(addTime());
-        drug.setUpdateTime(addTime());
         int i = drugService.updateDrug(drug);
         if (i > 0) {
-            return requestUpdateSuccess(drug);
-        } else {
-            return requestUpdateFail("更新失败");
+            return requestUpdateSuccess("更新成功");
         }
-
+        return requestUpdateFail("更新失败");
     }
 
     /**
      * 删除药品
      *
      * @param drug
-     * @return requestDeleteSuccess(drug)
      */
-    @GetMapping(value = "softDel")
+    @GetMapping(value = "softdelete")
     public Map deleteDrugMsg(Drug drug) {
 
         if (StringUtils.isBlank(drug.getId())) {
@@ -83,20 +77,18 @@ public class DrugController extends BaseController {
         drug.setDeleteTime(addTime());
         int i = drugService.softDel(drug);
         if (i > 0) {
-            return requestDeleteSuccess(drug);
-        } else {
-            return requestDeleteFail("删除失败");
+            return requestDeleteSuccess("delete_succeed");
         }
-
+        return requestDeleteFail("删除失败");
     }
+
 
     /**
      * 由Id查询药品
      *
      * @param drug
-     * @return
      */
-    @GetMapping(value = "selectById")
+    @GetMapping(value = "selectbyid")
     public Map selectDrugMsgById(Drug drug) {
 
         if (StringUtils.isBlank(drug.getId())) {
@@ -106,39 +98,24 @@ public class DrugController extends BaseController {
         Drug resultDrug = drugService.selectDrugById(drug.getId());
         if (resultDrug != null) {
             return requestSelectSuccess(resultDrug);
-        } else {
-            return requestSelectFail("查询失败");
         }
-
+        return requestSelectFail("查询失败");
     }
 
-    //查询药品列表
-    @GetMapping(value = "selectAll")
+    /**
+     * 查询所有药品
+     *
+     * @param drug
+     */
+    @GetMapping(value = "selectall")
     public Map selectAllDrugMsg(Drug drug) {
 
         List<Drug> drugList = drugService.selectAllDrug(drug);
 
         if (drugList != null && !drugList.isEmpty()) {
             return requestSelectSuccess(drugList);
-        } else {
-            return requestSelectFail("查询失败");
         }
-    }
-
-    /**
-     * 分页查询
-     *
-     * @param drug
-     */
-    @GetMapping(value = "selectPage")
-    public Map selectPage(Drug drug) {
-
-        List<Drug> drugList = drugService.selectPage(drug);
-
-        if (drugList != null && !drugList.isEmpty()) {
-            return requestSelectSuccess(drugList);
-        }
-
         return requestSelectFail("查询失败");
     }
+
 }

@@ -13,10 +13,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 药品类别
+ * 药品类别(familydoctor/drugcategory)
+ * 添加(add),修改(update),删除(softdelete),id查询(selectbyid),查询所有(selectall),分页查询(selectpage)
  */
 @RestController
-@RequestMapping(value = "familydoctor/drugCategory")
+@RequestMapping(value = "familydoctor/drugcategory")
 public class DrugCategoryController extends BaseController {
 
     @Autowired
@@ -26,7 +27,6 @@ public class DrugCategoryController extends BaseController {
      * 添加药品类别
      *
      * @param drugCategory
-     * @return requestInsertSuccess(drugCategory)
      */
     @PostMapping(value = "add")
     public Map addDrugCategoryMsg(DrugCategory drugCategory) {
@@ -38,9 +38,8 @@ public class DrugCategoryController extends BaseController {
         int i = drugCategoryService.addDrugCategory(drugCategory);
         if (i > 0) {
             return requestInsertSuccess(drugCategory);
-        } else {
-            return requestInsertFail("添加失败");
         }
+        return requestInsertFail("添加失败");
 
     }
 
@@ -48,7 +47,6 @@ public class DrugCategoryController extends BaseController {
      * 修改药品类别信息
      *
      * @param drugCategory
-     * @return requestUpdateSuccess(drugCategory)
      */
     @PostMapping(value = "update")
     public Map updateDrugCategoryMsg(DrugCategory drugCategory) {
@@ -60,10 +58,9 @@ public class DrugCategoryController extends BaseController {
         drugCategory.setUpdateTime(addTime());
         int i = drugCategoryService.updateDrugCategory(drugCategory);
         if (i > 0) {
-            return requestUpdateSuccess(drugCategory);
-        } else {
-            return requestUpdateFail("修改失败");
+            return requestUpdateSuccess("修改成功");
         }
+        return requestUpdateFail("修改失败");
 
     }
 
@@ -71,9 +68,8 @@ public class DrugCategoryController extends BaseController {
      * 删除药品类别
      *
      * @param drugCategory
-     * @return requestDeleteSuccess(drugCategory)
      */
-    @GetMapping(value = "softDel")
+    @GetMapping(value = "softdelete")
     public Map deleteDrugCategoryMsg(DrugCategory drugCategory) {
 
         if (StringUtils.isBlank(drugCategory.getId())) {
@@ -83,10 +79,9 @@ public class DrugCategoryController extends BaseController {
         drugCategory.setDeleteTime(addTime());
         int i = drugCategoryService.softDel(drugCategory);
         if (i > 0) {
-            return requestDeleteSuccess(drugCategory);
-        } else {
-            return requestDeleteFail("删除失败");
+            return requestDeleteSuccess("删除成功");
         }
+        return requestDeleteFail("删除失败");
 
     }
 
@@ -94,9 +89,8 @@ public class DrugCategoryController extends BaseController {
      * 由Id查询所属药品类别信息
      *
      * @param drugCategory
-     * @return requestSelectSuccess(drugCategoryService.selectDrugCategory ( drugCategory))
      */
-    @GetMapping(value = "selectById")
+    @GetMapping(value = "selectbyid")
     public Map selectDrugCategoryById(DrugCategory drugCategory) {
         if (StringUtils.isBlank(drugCategory.getId())) {
             return requestArgumentEmpty("传入参数为空");
@@ -105,9 +99,8 @@ public class DrugCategoryController extends BaseController {
         DrugCategory resultDrugCategory = drugCategoryService.selectDrugCategory(drugCategory);
         if (resultDrugCategory != null) {
             return requestSelectSuccess(resultDrugCategory);
-        } else {
-            return requestSelectFail("查询结果为空");
         }
+        return requestSelectFail("查询结果为空");
     }
 
     /**
@@ -115,15 +108,15 @@ public class DrugCategoryController extends BaseController {
      *
      * @return drugCategoryList
      */
-    @GetMapping(value = "selectAll")
+    @GetMapping(value = "selectall")
     public Map selectAllDrugCategory() {
 
         List<DrugCategory> drugCategoryList = drugCategoryService.selectAllMsg();
         if (drugCategoryList != null && !drugCategoryList.isEmpty()) {
             return requestSelectSuccess(drugCategoryList);
-        } else {
-            return requestSelectFail("查询结果为空");
         }
+
+        return requestSelectFail("查询结果失败");
 
     }
 
@@ -132,7 +125,7 @@ public class DrugCategoryController extends BaseController {
      *
      * @param drugCategory
      */
-    @GetMapping(value = "selectPage")
+    @GetMapping(value = "selectpage")
     public Map selectPage(DrugCategory drugCategory) {
 
         List<DrugCategory> drugCategoryList = drugCategoryService.selectPage(drugCategory);

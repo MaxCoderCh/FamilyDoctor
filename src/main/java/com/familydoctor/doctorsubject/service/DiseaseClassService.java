@@ -35,5 +35,10 @@ public interface DiseaseClassService {
      */
     List<DiseaseClass> selectAll();
 
+    /**
+     * 分页查询
+     *
+     * @param diseaseClass
+     */
     List<DiseaseClass> selectPage(DiseaseClass diseaseClass);
 }

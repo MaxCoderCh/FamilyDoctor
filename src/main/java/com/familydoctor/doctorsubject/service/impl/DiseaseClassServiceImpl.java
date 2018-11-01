@@ -55,6 +55,11 @@ public class DiseaseClassServiceImpl implements DiseaseClassService {
         return diseaseClassMapper.selectRound();
     }
 
+    /**
+     * 分页查询
+     *
+     * @param diseaseClass
+     */
     @Override
     public List<DiseaseClass> selectPage(DiseaseClass diseaseClass) {
         return diseaseClassMapper.selectPage(diseaseClass);

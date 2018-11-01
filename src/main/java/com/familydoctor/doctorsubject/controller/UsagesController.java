@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
 /**
- * 药品用法用量
+ * 药品用法用量(familydoctor/usages)
  */
 @RestController
 @RequestMapping(value = "familydoctor/usages")
@@ -25,7 +25,6 @@ public class UsagesController extends BaseController {
      * 添加药品用法用量
      *
      * @param usages
-     * @return requestSelectSuccess(usages)
      */
     @PostMapping(value = "add")
     public Map addUsagesMsg(Usages usages) {
@@ -36,18 +35,15 @@ public class UsagesController extends BaseController {
 
         int i = usagesService.addSelect(usages);
         if (i > 0) {
-            return requestSelectSuccess(usages);
-        } else {
-            return requestInsertFail("添加失败");
+            return requestSelectSuccess("添加成功");
         }
-
+        return requestInsertFail("添加失败");
     }
 
     /**
      * 物理删除药品用法用量
      *
      * @param usages
-     * @return requestDeleteSuccess(usages)
      */
     @GetMapping(value = "Del")
     public Map DelUsages(Usages usages) {
@@ -59,18 +55,16 @@ public class UsagesController extends BaseController {
         usages.setDeleteTime(addTime());
         int i = usagesService.deleteById(usages.getId());
         if (i > 0) {
-            return requestDeleteSuccess(usages);
-        } else {
-            return requestDeleteFail("删除失败");
+            return requestDeleteSuccess("删除成功");
         }
-
+        return requestDeleteFail("删除失败");
     }
+
 
     /**
      * 删除药品用法用量
      *
      * @param usages
-     * @return requestDeleteSuccess(usages)
      */
     @GetMapping(value = "softDel")
     public Map softDelUsages(Usages usages) {
@@ -82,10 +76,9 @@ public class UsagesController extends BaseController {
         usages.setDeleteTime(addTime());
         int i = usagesService.softDel(usages);
         if (i > 0) {
-            return requestDeleteSuccess(usages);
-        } else {
-            return requestDeleteFail("删除失败");
+            return requestDeleteSuccess("删除成功");
         }
+        return requestDeleteFail("删除失败");
 
     }
 
@@ -93,7 +86,6 @@ public class UsagesController extends BaseController {
      * 修改药品用法用量
      *
      * @param usages
-     * @return requestUpdateSuccess(lable)
      */
     @PostMapping(value = "update")
     public Map updateUsages(Usages usages) {
@@ -105,10 +97,9 @@ public class UsagesController extends BaseController {
         usages.setUpdateTime(addTime());
         int i = usagesService.updateById(usages);
         if (i > 0) {
-            return requestUpdateSuccess(usages);
-        } else {
-            return requestUpdateFail("修改失败");
+            return requestUpdateSuccess("修改成功");
         }
+        return requestUpdateFail("修改失败");
 
     }
 
@@ -116,9 +107,8 @@ public class UsagesController extends BaseController {
      * 由Id查询
      *
      * @param usages
-     * @return requestSelectSuccess(resultUsages)
      */
-    @GetMapping(value = "selectById")
+    @GetMapping(value = "selectbyid")
     public Map selectUsagesById(Usages usages) {
 
         if (StringUtils.isBlank(usages.getId())) {
@@ -128,10 +118,8 @@ public class UsagesController extends BaseController {
         Usages resultUsages = usagesService.selectById(usages.getId());
         if (resultUsages != null) {
             return requestSelectSuccess(resultUsages);
-        } else {
-            return requestSelectFail("查询失败");
         }
-
+        return requestSelectFail("查询失败");
     }
 
 }

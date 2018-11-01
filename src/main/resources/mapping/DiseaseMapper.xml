@@ -24,7 +24,7 @@
         <include refid="Base_Column_List"/>
         from disease
         <where>
-            del_flag !="1"
+            del_flag ="0"
         </where>
     </select>
     <!--分页查询-->
@@ -33,10 +33,11 @@
         <include refid="Base_Column_List"/>
         from disease
         <where>
-            del_flag = '0'
+            del_flag = "0"
         </where>
-        limit #{pageSize},#{pageNo}
+        limit #{beginNo},#{pageSize}
     </select>
+
     <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>

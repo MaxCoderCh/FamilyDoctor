@@ -3,7 +3,6 @@ package com.familydoctor.doctorsubject.controller;
 
 import com.familydoctor.doctorsubject.entity.Contract;
 import com.familydoctor.doctorsubject.service.ContractService;
-import com.familydoctor.doctorsubject.service.ProduceService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +15,8 @@ import java.util.Map;
 
 
 /**
- * 医生查询患者列表
+ * 合同接口(familydoctor/contract),sign接口中创建
+ * 含有医生查询其合同(selectbydoctor)
  */
 @Slf4j
 @RestController
@@ -25,9 +25,6 @@ public class ContractController extends BaseController {
 
     @Autowired
     private ContractService contractService;
-
-    @Autowired
-    private ProduceService produceService;
 
     @PostMapping(value = "add")
     public Map addContract(Contract contract) {
@@ -50,7 +47,7 @@ public class ContractController extends BaseController {
      * @param
      * @return requestSelectSuccess(contractsList)
      */
-    @GetMapping(value = "selectByDoctor")
+    @GetMapping(value = "selectbydoctor")
     public Map selectByDoctor() {
 
 

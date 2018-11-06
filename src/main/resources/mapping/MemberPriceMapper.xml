@@ -26,6 +26,7 @@
         from member_price
         where id = #{id,jdbcType=VARCHAR}
     </select>
+
     <!--memberId,priceTypeId,orderIdList查询-->
     <select id="selectThreePram" parameterType="com.familydoctor.doctorsubject.bean.MemberPriceBean"
             resultMap="BaseResultMap">
@@ -45,6 +46,7 @@
             </if>
         </where>
     </select>
+
     <!--memberIdList查询price-->
     <select id="selectPriceByMemberIdList" parameterType="java.util.List" resultType="java.lang.String">
         select price
@@ -56,6 +58,7 @@
             </foreach>
         </where>
     </select>
+
     <!--动态查询-->
     <select id="selectTrends" parameterType="com.familydoctor.doctorsubject.bean.MemberPriceBean"
             resultMap="BaseResultMap">
@@ -102,6 +105,7 @@
             </if>
         </where>
     </select>
+
     <!--动态查询-->
     <select id="selectBySelective" parameterType="com.familydoctor.doctorsubject.entity.MemberPrice"
             resultMap="BaseResultMap">
@@ -145,6 +149,7 @@
             </if>
         </where>
     </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from member_price
     where id = #{id,jdbcType=VARCHAR}

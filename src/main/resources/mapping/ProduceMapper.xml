@@ -24,7 +24,7 @@
         select
         id
         from produce
-        where doctor_id = #{id,jdbcType=VARCHAR}
+        where doctor_id = #{doctorId,jdbcType=VARCHAR}
     </select>
 
     <select id="selectByName" parameterType="com.familydoctor.doctorsubject.entity.Produce"

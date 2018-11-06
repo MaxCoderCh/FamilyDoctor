@@ -31,14 +31,15 @@
         <include refid="Base_Column_List"/>
         from lable
         <where>
-            del_flag = '0'
+            del_flag = "0"
         </where>
-        limit #{pageSize},#{pageNo}
+        limit #{begingNo},#{pageSize}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from lable
     where id = #{id,jdbcType=VARCHAR}
   </delete>
+
     <!--逻辑删除-->
     <update id="softDelete" parameterType="com.familydoctor.doctorsubject.entity.Lable">
     update lable
@@ -47,6 +48,7 @@
      del_flag = "1"
     where id = #{id,jdbcType=VARCHAR}
   </update>
+
     <!--由多个LableName查询对应的Lable-->
     <select id="selectByName" parameterType="java.util.Arrays" resultMap="BaseResultMap">
         select
@@ -59,13 +61,15 @@
             </foreach>
         </where>
     </select>
+
     <!--查询列表-->
     <select id="selectRound" parameterType="com.familydoctor.doctorsubject.entity.Lable" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from lable
-        <where>del_flag!="1"</where>
+        <where>del_flag="0"</where>
     </select>
+
     <insert id="insert" parameterType="com.familydoctor.doctorsubject.entity.Lable">
         <selectKey keyProperty="id" resultType="string" order="BEFORE">
             select replace(uuid(), '-', '') as id from dual

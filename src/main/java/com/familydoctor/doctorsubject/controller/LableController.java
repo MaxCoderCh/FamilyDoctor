@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 标签
+ * 标签(familydoctor/lable)
  */
 @RestController
 @RequestMapping(value = "familydoctor/lable")
@@ -26,7 +26,6 @@ public class LableController extends BaseController {
      * 添加标签
      *
      * @param lable
-     * @return requestSelectSuccess(lableClass)
      */
     @PostMapping(value = "add")
     public Map addLLableMsg(Lable lable) {
@@ -38,20 +37,18 @@ public class LableController extends BaseController {
         lable.setCreateUser(getCurrentUser());
         int i = lableService.addLable(lable);
         if (i > 0) {
-            return requestSelectSuccess(lable);
-        } else {
-            return requestInsertFail("添加失败");
+            return requestSelectSuccess("添加成功");
         }
-
+        return requestInsertFail("添加失败");
     }
+
 
     /**
      * 删除标签
      *
      * @param lable
-     * @return requestDeleteSuccess(lableClass)
      */
-    @GetMapping(value = "softDel")
+    @GetMapping(value = "softdelete")
     public Map softDelLable(Lable lable) {
 
         if (StringUtils.isBlank(lable.getId())) {
@@ -61,18 +58,16 @@ public class LableController extends BaseController {
         lable.setDeleteTime(addTime());
         int i = lableService.softDel(lable);
         if (i > 0) {
-            return requestDeleteSuccess(lable);
-        } else {
-            return requestDeleteFail("删除失败");
+            return requestDeleteSuccess("删除成功");
         }
-
+        return requestDeleteFail("删除失败");
     }
+
 
     /**
      * 修改标签
      *
      * @param lable
-     * @return requestUpdateSuccess(lable)
      */
     @PostMapping(value = "update")
     public Map updateLable(Lable lable) {
@@ -84,11 +79,9 @@ public class LableController extends BaseController {
         lable.setUpdateTime(addTime());
         int i = lableService.updateById(lable);
         if (i > 0) {
-            return requestUpdateSuccess(lable);
-        } else {
-            return requestUpdateFail("修改失败");
+            return requestUpdateSuccess("修改成功");
         }
-
+        return requestUpdateFail("修改失败");
     }
 
     /**
@@ -118,19 +111,24 @@ public class LableController extends BaseController {
      *
      * @return requestSelectSuccess(lableList)
      */
-    @GetMapping(value = "selectAll")
+    @GetMapping(value = "selectall")
     public Map selectAllLable() {
 
         List<Lable> lableList = lableService.selectAll();
         if (lableList != null && !lableList.isEmpty()) {
             return requestSelectSuccess(lableList);
-        } else {
-            return requestSelectFail("查询失败");
         }
+        return requestSelectFail("查询失败");
     }
 
-    //由多个lablename获取对应的lableId
-    @GetMapping(value = "selectByName")
+
+    /**
+     * 多个lableName获取对应的Lable对象
+     *
+     * @param lableNames
+
+     */
+    @GetMapping(value = "selectbyName")
     public Map selectByLableName(String[] lableNames) {
 
         if (lableNames == null) {
@@ -150,7 +148,7 @@ public class LableController extends BaseController {
      *
      * @param lable
      */
-    @GetMapping(value = "selectPage")
+    @GetMapping(value = "selectpage")
     public Map selectPage(Lable lable) {
 
         List<Lable> lableList = lableService.selectPage(lable);

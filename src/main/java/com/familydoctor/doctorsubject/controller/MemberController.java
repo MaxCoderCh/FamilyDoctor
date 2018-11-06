@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Member
+ * Member(familydoctor/member)
  */
 @RestController
 @RequestMapping(value = "familydoctor/member")
@@ -47,17 +47,14 @@ public class MemberController extends BaseController {
         int i = memberService.add(member);
         if (i > 0) {
             return requestInsertSuccess(member);
-        } else {
-            return requestInsertFail("添加失败");
         }
-
+        return requestInsertFail("添加失败");
     }
 
     /**
      * 删除Member
      *
      * @param member
-     * @return
      */
     @GetMapping(value = "softDel")
     public Map deleteMember(Member member) {
@@ -69,10 +66,10 @@ public class MemberController extends BaseController {
         member.setDeleteTime(addTime());
         int i = memberService.softDel(member);
         if (i > 0) {
-            return requestDeleteSuccess(member);
-        } else {
-            return requestDeleteFail("删除失败");
+            return requestDeleteSuccess("删除成功");
         }
+        return requestDeleteFail("删除失败");
+
 
     }
 
@@ -80,7 +77,6 @@ public class MemberController extends BaseController {
      * 更新Member
      *
      * @param member
-     * @return requestUpdateSuccess(member)
      */
     @PostMapping(value = "update")
     public Map updateMember(Member member) {
@@ -92,12 +88,11 @@ public class MemberController extends BaseController {
         member.setUpdateTime(addTime());
         int i = memberService.updateById(member);
         if (i > 0) {
-            return requestUpdateSuccess(member);
-        } else {
-            return requestUpdateFail("更新失败");
+            return requestUpdateSuccess("更新成功");
         }
-
+        return requestUpdateFail("更新失败");
     }
+
 
     /**
      * 由Id查询Member
@@ -115,17 +110,14 @@ public class MemberController extends BaseController {
         Member resultMember = memberService.selectById(member);
         if (resultMember != null) {
             return requestSelectSuccess(resultMember);
-        } else {
-            return requestSelectFail("查询失败");
         }
-
+        return requestSelectFail("查询失败");
     }
 
     /**
      * 由身份证查询Member
      *
      * @param member
-     * @return requestSelectSuccess(resultMember)
      */
     @GetMapping(value = "selectByCard")
     public Map selectMemberByCard(Member member) {
@@ -137,35 +129,36 @@ public class MemberController extends BaseController {
         Member resultMember = memberService.selectByCard(member);
         if (resultMember != null) {
             return requestSelectSuccess(resultMember);
-        } else {
-            return requestSelectFail("查询失败");
         }
-
+        return requestSelectFail("查询失败");
     }
+
 
     /**
      * 查询Member列表
-     *
-     * @return requestSelectSuccess(memberList)
      */
-    @GetMapping(value = "selectAll")
+    @GetMapping(value = "selectall")
     public Map selectAllMember() {
 
         List<Member> memberList = memberService.selectAll();
         if (memberList != null && !memberList.isEmpty()) {
             return requestSelectSuccess(memberList);
-        } else {
-            return requestSelectFail("查询失败");
         }
+        return requestSelectFail("查询失败");
     }
+
 
     /**
      * 分页查询
      *
      * @param member
      */
-    @GetMapping(value = "selectPage")
+    @GetMapping(value = "selectpage")
     public Map selectPage(Member member) {
+
+        if (member == null) {
+            return requestArgumentEmpty("参数为空");
+        }
 
         List<Member> memberList = memberService.selectPage(member);
 

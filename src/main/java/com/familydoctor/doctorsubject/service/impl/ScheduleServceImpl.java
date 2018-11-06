@@ -1,10 +1,13 @@
 package com.familydoctor.doctorsubject.service.impl;
 
+import com.familydoctor.doctorsubject.bean.ScheduleBean;
 import com.familydoctor.doctorsubject.entity.Schedule;
 import com.familydoctor.doctorsubject.mapper.ScheduleMapper;
 import com.familydoctor.doctorsubject.service.ScheduleServce;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ScheduleServceImpl implements ScheduleServce {
@@ -61,5 +64,25 @@ public class ScheduleServceImpl implements ScheduleServce {
     @Override
     public Schedule selectById(String id) {
         return scheduleMapper.selectByPrimaryKey(id);
+    }
+
+    /**
+     * 查询当天之后所有日程
+     *
+     * @param schedule
+     */
+    @Override
+    public List<Schedule> selectIntraDayLater(ScheduleBean schedule) {
+        return scheduleMapper.selectIntraDayLater(schedule);
+    }
+
+    /**
+     * 查询当天开始所有日程
+     *
+     * @param schedule
+     */
+    @Override
+    public List<Schedule> selectDayAndLate(Schedule schedule) {
+        return scheduleMapper.selectDayAndLate(schedule);
     }
 }

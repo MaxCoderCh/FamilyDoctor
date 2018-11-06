@@ -1,7 +1,6 @@
 package com.familydoctor.doctorsubject.mapper;
 
 import com.familydoctor.doctorsubject.entity.Branch;
-import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 

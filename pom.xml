@@ -6,11 +6,13 @@
     <groupId>com.familydoctor</groupId>
     <artifactId>FamilyDoctorApp</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <!--部署时打包类别-->
     <packaging>jar</packaging>
 
     <name>doctorsubject</name>
     <description>Demo project for Spring Boot</description>
 
+    <!--maven依赖-->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -27,10 +29,12 @@
 
     <dependencies>
         <!--SpringMVC-->
+        <!--添加Spring Boot Starter Web依赖项,要构建RESTful Web服务,-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+
         <!--Eureka-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>

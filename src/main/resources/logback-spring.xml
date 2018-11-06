@@ -114,6 +114,7 @@
         <!--</logger>-->
     <!--</springProfile>-->
 
+    <!--配置root级别的日志-->
     <root level="info">
         <appender-ref ref="SQL_CONSOLE_LOG"/>
         <!--<appender-ref ref="fileInfoLog"/>-->

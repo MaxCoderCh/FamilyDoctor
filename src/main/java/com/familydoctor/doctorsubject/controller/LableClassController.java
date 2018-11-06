@@ -14,10 +14,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 标签类别
+ * 标签类别(familydoctor/lableclass)
  */
 @RestController
-@RequestMapping(value = "familydoctor/lableClass")
+@RequestMapping(value = "familydoctor/lableclass")
 public class LableClassController extends BaseController {
 
     @Autowired
@@ -27,7 +27,6 @@ public class LableClassController extends BaseController {
      * 添加标签类别
      *
      * @param lableClass
-     * @return requestSelectSuccess(lableClass)
      */
     @PostMapping(value = "add")
     public Map addLLableClassMsg(LableClass lableClass) {
@@ -39,20 +38,18 @@ public class LableClassController extends BaseController {
         lableClass.setCreateUser(getCurrentUser());
         int i = lableClassService.addLableClass(lableClass);
         if (i > 0) {
-            return requestSelectSuccess(lableClass);
-        } else {
-            return requestInsertFail("添加失败");
+            return requestSelectSuccess("添加成功");
         }
-
+        return requestInsertFail("添加失败");
     }
+
 
     /**
      * 删除标签类别
      *
      * @param lableClass
-     * @return requestDeleteSuccess(lableClass)
      */
-    @GetMapping(value = "softDel")
+    @GetMapping(value = "softdelete")
     public Map softDelLableClass(LableClass lableClass) {
 
         if (StringUtils.isBlank(lableClass.getId())) {
@@ -62,18 +59,16 @@ public class LableClassController extends BaseController {
         lableClass.setDeleteTime(addTime());
         int i = lableClassService.softDel(lableClass);
         if (i > 0) {
-            return requestDeleteSuccess(lableClass);
-        } else {
-            return requestDeleteFail("删除失败");
+            return requestDeleteSuccess("删除成功");
         }
-
+        return requestDeleteFail("删除失败");
     }
+
 
     /**
      * 修改标签类别
      *
      * @param lableClass
-     * @return requestUpdateSuccess(lableClass)
      */
     @PostMapping(value = "update")
     public Map updateLableClass(LableClass lableClass) {
@@ -85,20 +80,17 @@ public class LableClassController extends BaseController {
         lableClass.setUpdateTime(addTime());
         int i = lableClassService.updateById(lableClass);
         if (i > 0) {
-            return requestUpdateSuccess(lableClass);
-        } else {
-            return requestUpdateFail("修改失败");
+            return requestUpdateSuccess("修改成功");
         }
-
+        return requestUpdateFail("修改失败");
     }
 
     /**
      * 由Id查询对应的标签类别
      *
      * @param lableClass
-     * @return requestSelectSuccess(resultLableClass)
      */
-    @GetMapping(value = "selectById")
+    @GetMapping(value = "selectbyid")
     public Map selectLableClassById(LableClass lableClass) {
 
         if (StringUtils.isBlank(lableClass.getId())) {
@@ -108,16 +100,14 @@ public class LableClassController extends BaseController {
         LableClass resultLableClass = lableClassService.selectById(lableClass.getId());
         if (resultLableClass != null) {
             return requestSelectSuccess(resultLableClass);
-        } else {
-            return requestSelectFail("查询失败");
         }
+        return requestSelectFail("查询失败");
+
 
     }
 
     /**
      * 查询全部标签类别
-     *
-     * @return requestSelectSuccess(lableClassList)
      */
     @GetMapping(value = "selectAll")
     public Map selectAllLableClass() {
@@ -125,9 +115,8 @@ public class LableClassController extends BaseController {
         List<LableClass> lableClassList = lableClassService.selectAll();
         if (lableClassList != null && !lableClassList.isEmpty()) {
             return requestSelectSuccess(lableClassList);
-        } else {
-            return requestSelectFail("查询失败");
         }
+        return requestSelectFail("查询失败");
     }
 
     /**
@@ -135,7 +124,7 @@ public class LableClassController extends BaseController {
      *
      * @param lableClass
      */
-    @GetMapping(value = "selectPage")
+    @GetMapping(value = "selectpage")
     public Map selectPage(LableClass lableClass) {
 
         List<LableClass> lableClassList = lableClassService.selectPage(lableClass);

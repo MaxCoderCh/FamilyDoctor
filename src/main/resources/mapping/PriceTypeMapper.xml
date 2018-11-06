@@ -29,9 +29,9 @@
         <include refid="Base_Column_List"/>
         from price_type
         <where>
-            del_flag = '0'
+            del_flag = "0"
         </where>
-        limit #{pageSize},#{pageNo}
+        limit #{beginNo},#{pageSize}
     </select>
 
 
@@ -43,6 +43,7 @@
       del_flag = "1"
     where id = #{id,jdbcType=VARCHAR}
   </update>
+
     <!-- 动态SQL 查询 -->
     <select resultMap="BaseResultMap" id="selectTrends" parameterType="com.familydoctor.doctorsubject.entity.PriceType">
         select

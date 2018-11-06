@@ -22,11 +22,35 @@
     id, doctor_id, member_id, place, schedule_time, telephone, event, remind, create_time, 
     update_time, delete_time, create_doctor, update_doctor, delete_user, del_flag
   </sql>
+
     <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from schedule
         where id = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <!--查询当天之后的日程-->
+    <select id="selectIntraDayLater" parameterType="com.familydoctor.doctorsubject.bean.ScheduleBean"
+            resultMap="BaseResultMap">
+        select * from schedule
+        <where>
+            AND create_time &gt;=#{startDate}
+            AND create_time &lt;=#{endDate}
+            AND create_doctor = #{createDoctor,jdbcType=VARCHAR}
+        </where>
+        limit #{beginNo},#{pageSize}
+    </select>
+
+    <!--查询当天以及之后的日程-->
+    <select id="selectIntraDayLater" parameterType="com.familydoctor.doctorsubject.entity.Schedule"
+            resultMap="BaseResultMap">
+        select * from schedule
+        <where>
+            AND create_time &gt;=#{createTime}
+            AND create_doctor = #{createDoctor,jdbcType=VARCHAR}
+        </where>
+        limit #{beginNo},#{pageSize}
     </select>
     <!--逻辑删除-->
     <update id="softDelete" parameterType="com.familydoctor.doctorsubject.entity.Schedule">

@@ -13,7 +13,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 给药
+ * 给药(familydoctor/frequency)
+ * 添加(add),修改(update),删除(softdelete),查询(selectall),id查询(selectbyid),分页(selectpage)
  */
 @RestController
 @RequestMapping(value = "familydoctor/frequency")
@@ -26,7 +27,6 @@ public class FrequencyController extends BaseController {
      * 添加给药
      *
      * @param frequency
-     * @return requestInsertSuccess(frequency)
      */
     @PostMapping(value = "add")
     public Map AddFFrequencyMsg(Frequency frequency) {
@@ -37,12 +37,11 @@ public class FrequencyController extends BaseController {
 
         int i = frequencyService.addFrequency(frequency);
         if (i > 0) {
-            return requestInsertSuccess(frequency);
-        } else {
-            return requestInsertFail("添加失败");
+            return requestInsertSuccess("添加成功");
         }
-
+        return requestInsertFail("添加失败");
     }
+
 
     /**
      * 物理删除给药
@@ -58,17 +57,15 @@ public class FrequencyController extends BaseController {
 
         int i = frequencyService.deleteById(frequency);
         if (i > 0) {
-            return requestDeleteSuccess(frequency);
-        } else {
-            return requestDeleteFail(frequency);
+            return requestDeleteSuccess("已成功删除");
         }
+        return requestDeleteFail("删除失败");
     }
 
     /**
      * 罗逻辑删除给药
      *
      * @param frequency
-     * @return requestDeleteSuccess(frequency)
      */
     @GetMapping(value = "softDel")
     public Map softDelFrequency(Frequency frequency) {
@@ -80,17 +77,15 @@ public class FrequencyController extends BaseController {
         frequency.setDeleteTime(addTime());
         int i = frequencyService.softDel(frequency);
         if (i > 0) {
-            return requestDeleteSuccess(frequency);
-        } else {
-            return requestDeleteFail("删除失败");
+            return requestDeleteSuccess("删除成功");
         }
+        return requestDeleteFail("删除失败");
     }
 
     /**
      * 修改给药
      *
      * @param frequency
-     * @return
      */
     @PostMapping(value = "update")
     public Map updateFrequencyMsg(Frequency frequency) {
@@ -103,19 +98,17 @@ public class FrequencyController extends BaseController {
         int i = frequencyService.updateById(frequency);
         if (i > 0) {
             return requestUpdateSuccess(frequency);
-        } else {
-            return requestUpdateFail("更新失败");
         }
-
+        return requestUpdateFail("更新失败");
     }
+
 
     /**
      * 由Id查询对应的给药
      *
      * @param frequency
-     * @return requestSelectSuccess(resultFrequency)
      */
-    @GetMapping(value = "selectById")
+    @GetMapping(value = "selectbyid")
     public Map selectFrequencyMsg(Frequency frequency) {
 
         if (StringUtils.isBlank(frequency.getId())) {
@@ -125,28 +118,24 @@ public class FrequencyController extends BaseController {
         Frequency resultFrequency = frequencyService.selectById(frequency);
         if (resultFrequency != null) {
             return requestSelectSuccess(resultFrequency);
-        } else {
-            return requestSelectFail("查询失败");
         }
-
+        return requestSelectFail("查询失败");
     }
+
 
     /**
      * 查询给药列表
-     *
-     * @return requestSelectSuccess(frequencyList)
      */
-    @GetMapping(value = "selectAll")
+    @GetMapping(value = "selectall")
     public Map selectAllFrequency() {
 
         List<Frequency> frequencyList = frequencyService.selectAll();
         if (frequencyList != null && !frequencyList.isEmpty()) {
             return requestSelectSuccess(frequencyList);
-        } else {
-            return requestSelectFail("查询失败");
         }
-
+        return requestSelectFail("查询失败");
     }
+
 
     /**
      * 分页查询

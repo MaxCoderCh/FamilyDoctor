@@ -24,6 +24,7 @@
         from member_lable
         where id = #{id,jdbcType=VARCHAR}
     </select>
+
     <!--由member.id查询MemberLable-->
     <select id="selectByMemberId" parameterType="com.familydoctor.doctorsubject.entity.MemberLable"
             resultMap="BaseResultMap">
@@ -37,6 +38,7 @@
         </where>
 
     </select>
+
     <!--由lableName列表查询对应的MemberLable列表-->
     <select id="selectByList" parameterType="com.familydoctor.doctorsubject.bean.MemberLableBean"
             resultMap="BaseResultMap">

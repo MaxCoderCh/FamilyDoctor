@@ -13,6 +13,7 @@ import java.util.Map;
 
 /**
  * 药品用法用量(familydoctor/usages)
+ * 添加(add),删除(softdelete),更新(update),查询(selectbyid)
  */
 @RestController
 @RequestMapping(value = "familydoctor/usages")
@@ -66,7 +67,7 @@ public class UsagesController extends BaseController {
      *
      * @param usages
      */
-    @GetMapping(value = "softDel")
+    @GetMapping(value = "softdelete")
     public Map softDelUsages(Usages usages) {
 
         if (StringUtils.isBlank(usages.getId())) {

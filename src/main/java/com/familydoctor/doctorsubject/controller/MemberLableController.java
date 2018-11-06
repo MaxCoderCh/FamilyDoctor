@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.*;
 
 @RestController
-@RequestMapping(value = "familydoctor/memberLable")
+@RequestMapping(value = "familydoctor/memberlable")
 public class MemberLableController extends BaseController {
 
     @Autowired
@@ -41,29 +41,26 @@ public class MemberLableController extends BaseController {
      * 由Member.Id查询MemberLable
      *
      * @param memberLable
-     * @return requestSelectSuccess(resultMemberLable1)
      */
-    @GetMapping(value = "selectbyid")
+    @GetMapping(value = "selectbymemberid")
     public Map selectMemberLableByMember(MemberLable memberLable) {
 
         if (StringUtils.isBlank(memberLable.getMemberId())) {
             return requestArgumentEmpty("参数为空");
         }
 
-        MemberLable resultMemberLable1 = memberLableServce.selectByMember(memberLable);
-        if (resultMemberLable1 != null) {
-            return requestSelectSuccess(resultMemberLable1);
-        } else {
-            return requestSelectFail("查询结果为空");
+        MemberLable resultMemberLable = memberLableServce.selectByMember(memberLable);
+        if (resultMemberLable != null) {
+            return requestSelectSuccess(resultMemberLable);
         }
-
+        return requestSelectFail("查询结果为空");
     }
+
 
     /**
      * 修改MemberLable
      *
      * @param memberLable
-     * @return requestUpdateSuccess(memberLable)
      */
     @PostMapping(value = "update")
     public Map updateMemberLableMsg(MemberLable memberLable) {
@@ -74,12 +71,12 @@ public class MemberLableController extends BaseController {
 
         int i = memberLableServce.updateMemberLable(memberLable);
         if (i > 0) {
-            return requestUpdateSuccess(memberLable);
-        } else {
-            return requestUpdateFail("修改失败");
-
+            return requestUpdateSuccess("修改成功");
         }
+        return requestUpdateFail("修改失败");
+
     }
+
 
     /**
      * 按照lableName查询lableClassName为慢病标签的memberLable

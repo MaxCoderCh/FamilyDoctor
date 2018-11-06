@@ -142,6 +142,22 @@ public class DateUtils {
     }
 
     /**
+     * 获取传入日期0:0:0时刻
+     */
+    public static Date parmDateBegin(Date date) {
+        Calendar day = Calendar.getInstance();
+        day.setTime(date);
+        day.set(Calendar.HOUR_OF_DAY, 0);
+        day.set(Calendar.MINUTE, 0);
+        day.set(Calendar.SECOND, 0);
+        day.set(Calendar.MILLISECOND, 0);
+        Date resDate = day.getTime();
+
+        return resDate;
+
+    }
+
+    /**
      * 获取当天24:00:00时刻
      */
     public static Date intradayEnd() {

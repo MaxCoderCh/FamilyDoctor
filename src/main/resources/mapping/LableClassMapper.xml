@@ -23,22 +23,24 @@
         from lable_class
         where id = #{id,jdbcType=VARCHAR}
     </select>
+
     <!--分页查询-->
     <select id="selectPage" parameterType="com.familydoctor.doctorsubject.entity.LableClass" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from lable_class
         <where>
-            del_flag = '0'
+            del_flag = "0"
         </where>
-        limit #{pageSize},#{pageNo}
+        limit #{beginNo},#{pageSize}
     </select>
+
     <!--逻辑删除-->
     <update id="softDelete" parameterType="com.familydoctor.doctorsubject.entity.LableClass">
     update lable_class
     set
          delete_time = #{deleteTime,jdbcType=TIMESTAMP},
-     del_flag = "1"
+     del_flag="1"
     where id = #{id,jdbcType=VARCHAR}
   </update>
 
@@ -47,8 +49,9 @@
         select
         <include refid="Base_Column_List"/>
         from lable_class
-        <where>del_flag!="1"</where>
+        <where>del_flag="0"</where>
     </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from lable_class
     where id = #{id,jdbcType=VARCHAR}

@@ -7,7 +7,7 @@ import java.util.Date;
 
 @Data
 public class ScheduleBean extends Schedule {
-    private Date startDate;  //每天开始时间
+    private Date startDate;
 
-    private Date endDate;  //每天结束时间
+    private Date endDate;
 }

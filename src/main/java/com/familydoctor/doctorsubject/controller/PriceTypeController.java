@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 缴费类型
+ * 缴费类型(familydoctor/priceType)
  */
 @RestController
 @RequestMapping(value = "familydoctor/priceType")
@@ -27,7 +27,6 @@ public class PriceTypeController extends BaseController {
      * 添加缴费类型
      *
      * @param priceType
-     * @return requestInsertSuccess(priceType)
      */
     @PostMapping(value = "add")
     public Map addPriceType(PriceType priceType) {
@@ -50,7 +49,6 @@ public class PriceTypeController extends BaseController {
      * 删除缴费类型
      *
      * @param priceType
-     * @return requestDeleteSuccess(priceType)
      */
     @GetMapping(value = "softDel")
     public Map softDelPriceType(PriceType priceType) {
@@ -73,9 +71,8 @@ public class PriceTypeController extends BaseController {
      * 物理删除缴费类型
      *
      * @param priceType
-     * @return requestDeleteSuccess(priceType)
      */
-    @GetMapping(value = "Del")
+    @GetMapping(value = "delete")
     public Map DelPriceType(PriceType priceType) {
 
         if (StringUtils.isBlank(priceType.getId())) {
@@ -96,7 +93,6 @@ public class PriceTypeController extends BaseController {
      * 修改缴费类型
      *
      * @param priceType
-     * @return requestUpdateSuccess(priceType)
      */
     @PostMapping(value = "update")
     public Map updatePriceType(PriceType priceType) {
@@ -120,7 +116,7 @@ public class PriceTypeController extends BaseController {
      *
      * @param priceType
      */
-    @GetMapping(value = "selectPage")
+    @GetMapping(value = "selectpage")
     public Map selectPage(PriceType priceType) {
 
         List<PriceType> priceTypeList = priceTypeService.selectPage(priceType);

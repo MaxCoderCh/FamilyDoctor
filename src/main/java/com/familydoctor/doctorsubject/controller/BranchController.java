@@ -3,6 +3,7 @@ package com.familydoctor.doctorsubject.controller;
 
 import com.familydoctor.doctorsubject.entity.Branch;
 import com.familydoctor.doctorsubject.service.BranchService;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
+import javax.validation.constraints.NotNull;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -25,7 +30,6 @@ public class BranchController extends BaseController {
 
     @Autowired
     private BranchService branchService;
-
 
     /**
      * 添加科室信息

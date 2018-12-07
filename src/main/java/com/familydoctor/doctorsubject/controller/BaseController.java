@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * controller基础模板
+ * controller基类
  */
 public abstract class BaseController {
 
